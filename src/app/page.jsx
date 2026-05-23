@@ -42,7 +42,7 @@ export default function Index() {
                 execution services.
               </p>
               <button
-                className="flex items-center gap-4 px-8 sm:px-10 lg:px-12 py-4 lg:py-5 border border-white/50 bg-[#53466C] shadow-md hover:bg-[#5e4f7a] transition-colors"
+                className="flex items-center gap-4 px-8 sm:px-10 lg:px-12 py-4 lg:py-5 border border-white/50 bg-primary shadow-md hover:bg-[#5e4f7a] transition-colors"
               >
                 <span className="font-helvetica text-white text-[13px] sm:text-[14px] lg:text-[16px] font-medium leading-[24px] tracking-[1.6px] uppercase">
                   BOOK A FREE CONSULTATION

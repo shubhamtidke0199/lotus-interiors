@@ -31,7 +31,7 @@ export default function Navbar() {
             <Link
               key={link.label}
               href={link.href}
-              className="font-fraunces text-[20px] font-normal leading-[20px] uppercase text-[#080808] hover:text-[#53466C] transition-colors"
+              className="font-fraunces text-[20px] font-normal leading-[20px] uppercase text-[#080808] hover:text-primary transition-colors"
             >
               {link.label}
             </Link>
@@ -43,10 +43,10 @@ export default function Navbar() {
           {/* Search bar */}
           <div className="flex items-center gap-4 bg-[#FFEEDD] h-[52px] pl-1.5 pr-6">
             <div className="flex w-[42px] h-[42px] p-[9px] justify-center items-center bg-white flex-shrink-0">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-primary">
                 <path
                   d="M21 21L17 17M19 11C19 13.1217 18.1571 15.1566 16.6569 16.6569C15.1566 18.1571 13.1217 19 11 19C8.87827 19 6.84344 18.1571 5.34315 16.6569C3.84285 15.1566 3 13.1217 3 11C3 8.87827 3.84285 6.84344 5.34315 5.34315C6.84344 3.84285 8.87827 3 11 3C13.1217 3 15.1566 3.84285 16.6569 5.34315C18.1571 6.84344 19 8.87827 19 11Z"
-                  stroke="#53466C"
+                  stroke="currentColor"
                   strokeWidth="1.5"
                   strokeMiterlimit="10"
                   strokeLinecap="round"
@@ -54,20 +54,20 @@ export default function Navbar() {
                 />
               </svg>
             </div>
-            <span className="font-helvetica text-[#53466C] text-[12px] font-medium leading-[24px] tracking-[1.6px] uppercase whitespace-nowrap">
+            <span className="text-primary text-[12px] font-medium leading-[24px] tracking-[1.6px] uppercase whitespace-nowrap">
               Search products...
             </span>
           </div>
 
           {/* GET APPOINTMENT button */}
-          <button className="flex items-center gap-4 h-[52px] px-5 border border-[#53466C] hover:bg-[#53466C]/5 transition-colors">
-            <span className="font-helvetica text-[#53466C] text-[14px] font-medium leading-[24px] uppercase whitespace-nowrap">
+          <button className="flex items-center gap-4 h-[52px] px-5 border border-primary hover:bg-primary/5 transition-colors">
+            <span className="text-primary text-[14px] font-medium leading-[24px] uppercase whitespace-nowrap">
               GET Appointment
             </span>
-            <svg width="15" height="12" viewBox="0 0 15 12" fill="none">
+            <svg width="15" height="12" viewBox="0 0 15 12" fill="none" className="text-primary">
               <path
                 d="M9.34611 11.3076L8.29228 10.2231L12.1115 6.4038H0V4.90384H12.1115L8.29228 1.08459L9.34611 0L14.9999 5.65382L9.34611 11.3076Z"
-                fill="#53466C"
+                fill="currentColor"
               />
             </svg>
           </button>
@@ -110,7 +110,7 @@ export default function Navbar() {
             <Link
               key={link.label}
               href={link.href}
-              className="font-fraunces text-[18px] font-normal uppercase text-[#080808] hover:text-[#53466C] transition-colors"
+              className="font-sans text-[18px] font-normal uppercase text-[#080808] hover:text-primary transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}
@@ -120,10 +120,10 @@ export default function Navbar() {
           {/* Mobile search */}
           <div className="flex items-center gap-3 bg-[#FFEEDD] h-[48px] pl-1.5 pr-4 w-fit">
             <div className="flex w-[38px] h-[38px] p-2 justify-center items-center bg-white flex-shrink-0">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-primary">
                 <path
                   d="M21 21L17 17M19 11C19 13.1217 18.1571 15.1566 16.6569 16.6569C15.1566 18.1571 13.1217 19 11 19C8.87827 19 6.84344 18.1571 5.34315 16.6569C3.84285 15.1566 3 13.1217 3 11C3 8.87827 3.84285 6.84344 5.34315 5.34315C6.84344 3.84285 8.87827 3 11 3C13.1217 3 15.1566 3.84285 16.6569 5.34315C18.1571 6.84344 19 8.87827 19 11Z"
-                  stroke="#53466C"
+                  stroke="currentColor"
                   strokeWidth="1.5"
                   strokeMiterlimit="10"
                   strokeLinecap="round"
@@ -131,20 +131,20 @@ export default function Navbar() {
                 />
               </svg>
             </div>
-            <span className="font-helvetica text-[#53466C] text-[11px] font-medium tracking-[1.6px] uppercase">
+            <span className="text-primary text-[11px] font-medium tracking-[1.6px] uppercase">
               Search products...
             </span>
           </div>
 
           {/* Mobile CTA */}
-          <button className="flex items-center gap-4 h-[48px] px-5 border border-[#53466C] w-fit">
-            <span className="font-helvetica text-[#53466C] text-[13px] font-medium uppercase">
+          <button className="flex items-center gap-4 h-[48px] px-5 border border-primary w-fit">
+            <span className="text-primary text-[13px] font-medium uppercase">
               GET Appointment
             </span>
-            <svg width="15" height="12" viewBox="0 0 15 12" fill="none">
+            <svg width="15" height="12" viewBox="0 0 15 12" fill="none" className="text-primary">
               <path
                 d="M9.34611 11.3076L8.29228 10.2231L12.1115 6.4038H0V4.90384H12.1115L8.29228 1.08459L9.34611 0L14.9999 5.65382L9.34611 11.3076Z"
-                fill="#53466C"
+                fill="currentColor"
               />
             </svg>
           </button>
