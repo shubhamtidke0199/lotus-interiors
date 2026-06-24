@@ -10,9 +10,34 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: #53466c;
+  --color-accent-lavender: #bca3de;
+  --color-accent-cream: #ffeedd;
+  --color-eyebrow: #7c5050;
+  --color-heading: #1c1b1b;
+  --color-muted: #49454d;
   --font-sans: var(--font-fraunces);
   --font-fraunces: var(--font-fraunces);
   --font-helvetica: var(--font-helvetica);
+  --tracking-eyebrow: 4.8px;
+  --tracking-cta: 1.6px;
+  --tracking-heading: -1.8px;
+  --color-nav: #080808;
+}
+
+.hero-content-panel {
+  background-image: linear-gradient(
+    77.68deg,
+    rgba(0, 0, 0, 0.4) 5.21%,
+    rgba(83, 70, 108, 0.64) 100%
+  );
+}
+
+.hero-stats-panel {
+  background-image: linear-gradient(
+    52.64deg,
+    rgba(0, 0, 0, 0.4) 5.21%,
+    rgba(83, 70, 108, 0.64) 100%
+  );
 }
 
 @media (prefers-color-scheme: dark) {
