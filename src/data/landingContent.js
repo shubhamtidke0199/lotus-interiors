@@ -178,11 +178,17 @@ export const footerColumns = [
     links: ["Curation", "Integrity", "Sustainability"],
   },
   {
-    title: "Services",
-    links: ["Residential", "Commercial", "Consultancy"],
+    title: "Philosophy",
+    links: ["Curation", "Integrity", "Sustainability"],
   },
   {
     title: "Explore",
     links: ["Portfolio", "Shop All", "Locations"],
   },
+];
+
+export const footerLegalLinks = [
+  "Privacy Policy",
+  "Terms of Service",
+  "Press Kit",
 ];
