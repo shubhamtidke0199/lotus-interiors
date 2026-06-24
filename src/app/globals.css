@@ -32,6 +32,8 @@
   --color-why-choose-lavender: #eadff9;
   --font-display: var(--font-big-shoulders);
   --font-marcellus: var(--font-marcellus);
+  --color-footer-muted: #8a7354;
+  --color-footer-border: #e5e5e5;
 }
 
 .service-card-overlay {
