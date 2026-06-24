@@ -1,4 +1,4 @@
-import { Fraunces } from "next/font/google";
+import { Fraunces, Marcellus } from "next/font/google";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -6,6 +6,13 @@ const fraunces = Fraunces({
   subsets: ["latin"],
   display: "swap",
   weight: ["400", "600"],
+});
+
+const marcellus = Marcellus({
+  variable: "--font-marcellus",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400"],
 });
 
 export const metadata = {
@@ -17,7 +24,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${marcellus.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>

@@ -22,6 +22,18 @@
   --tracking-cta: 1.6px;
   --tracking-heading: -1.8px;
   --color-nav: #080808;
+  --color-services-eyebrow: #c46705;
+  --color-services-muted: #868686;
+  --color-services-watermark: #fdf0ff;
+  --font-marcellus: var(--font-marcellus);
+}
+
+.service-card-overlay {
+  background-image: linear-gradient(
+    65deg,
+    rgba(0, 0, 0, 0.096) 5.21%,
+    rgba(223, 200, 228, 0.154) 100%
+  );
 }
 
 .hero-content-panel {
