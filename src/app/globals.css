@@ -1,9 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@900&display=swap");
 @import "tailwindcss";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
   --font-helvetica: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-big-shoulders: "Big Shoulders Display", sans-serif;
 }
 
 @theme inline {
@@ -25,15 +27,18 @@
   --color-services-eyebrow: #c46705;
   --color-services-muted: #868686;
   --color-services-watermark: #fdf0ff;
+  --color-accent-peach: #fadec0;
+  --color-product-bg: #f5f3f7;
+  --color-why-choose-lavender: #eadff9;
+  --font-display: var(--font-big-shoulders);
   --font-marcellus: var(--font-marcellus);
 }
 
 .service-card-overlay {
-  background-image: linear-gradient(
-    65deg,
-    rgba(0, 0, 0, 0.096) 5.21%,
-    rgba(223, 200, 228, 0.154) 100%
-  );
+  background-color: rgba(28, 27, 27, 0.42);
+  -webkit-backdrop-filter: blur(27px);
+  backdrop-filter: blur(27px);
+  isolation: isolate;
 }
 
 .hero-content-panel {
@@ -49,6 +54,25 @@
     52.64deg,
     rgba(0, 0, 0, 0.4) 5.21%,
     rgba(83, 70, 108, 0.64) 100%
+  );
+}
+
+.why-choose-content-panel {
+  background-image: linear-gradient(
+    171.24deg,
+    #53466c 3.75%,
+    #53466c 33.47%,
+    #bc6375 94.67%
+  );
+}
+
+.why-choose-noise {
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+  background-image: radial-gradient(
+    circle at 20% 20%,
+    rgba(255, 255, 255, 0.12) 0,
+    transparent 45%
   );
 }
 

@@ -1,6 +1,6 @@
 export default function ServicesSectionHeader({ titleId }) {
   return (
-    <header className="relative mb-10 pt-12 lg:mb-[52px] lg:pt-20">
+    <header className="relative mb-8 overflow-hidden pt-10 sm:mb-10 sm:pt-12 lg:mb-[52px] lg:pt-20">
       <p
         aria-hidden="true"
         className="pointer-events-none absolute left-1 top-8 select-none font-marcellus text-[120px] leading-none text-services-watermark opacity-[0.23] sm:text-[180px] lg:left-5 lg:text-[250px]"
