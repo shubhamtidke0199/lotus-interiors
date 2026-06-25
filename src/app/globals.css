@@ -34,6 +34,7 @@
   --font-marcellus: var(--font-marcellus);
   --color-footer-muted: #8a7354;
   --color-footer-border: #e5e5e5;
+  --color-consultation-input: rgba(255, 255, 255, 0.12);
 }
 
 .service-card-overlay {
@@ -76,6 +77,10 @@
     rgba(255, 255, 255, 0.12) 0,
     transparent 45%
   );
+}
+
+.consultation-cta-card {
+  box-shadow: 0 4px 24px rgba(83, 70, 108, 0.12);
 }
 
 @media (prefers-color-scheme: dark) {
