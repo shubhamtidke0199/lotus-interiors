@@ -143,23 +143,24 @@ export const locations = [
   {
     city: "MUMBAI",
     stores: "3 Stores",
-    image: "/images/locations/mumbai.webp",
-    imageClassName:
-      "absolute h-[111.28%] left-[8.56%] w-[91.44%] max-w-none -top-[0.01%] object-cover",
+    image: "/images/presence/mumbai.webp",
+    imageClassName: "size-full object-cover object-center",
+    overlayClassName: "location-card-overlay-mumbai",
   },
   {
     city: "PUNE",
     stores: "3 Stores",
-    image: "/images/locations/pune.webp",
-    imageClassName:
-      "absolute h-[125.87%] left-[19.71%] w-[55.94%] max-w-none object-cover",
+    image: "/images/presence/pune.webp",
+    imageClassName: "size-full object-cover object-center",
+    overlayClassName: "location-card-overlay-pune",
   },
   {
     city: "NAGPUR",
     stores: "3 Stores",
     image: "/images/locations/nagpur.webp",
     imageClassName:
-      "absolute h-[125.22%] left-[20%] w-[55.65%] max-w-none -top-[0.27%] object-cover",
+      "absolute -left-[36.13%] h-full w-[180.63%] max-w-none object-cover",
+    overlayClassName: "location-card-overlay-nagpur",
   },
 ];
 

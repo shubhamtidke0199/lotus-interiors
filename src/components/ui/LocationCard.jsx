@@ -1,10 +1,27 @@
-export default function LocationCard({ city, stores, image, imageClassName }) {
+export default function LocationCard({
+  city,
+  stores,
+  image,
+  imageClassName,
+  overlayClassName = "",
+}) {
   return (
-    <article className="relative h-[280px] overflow-hidden bg-accent-lavender/20 sm:h-[460px]">
-      <img src={image} alt={`${city} store location`} className={imageClassName} loading="lazy" />
-      <div className="service-card-overlay absolute bottom-4 left-4 right-4 backdrop-blur-[27px] px-6 py-4 text-center">
-        <p className="font-helvetica text-[22px] leading-7 text-white">{city}</p>
-        <p className="font-helvetica text-sm leading-5 text-white">{stores}</p>
+    <article className="relative h-[360px] w-[300px] shrink-0 overflow-hidden sm:h-[460px] sm:w-[382px]">
+      <img
+        src={image}
+        alt={`${city} store location`}
+        className={imageClassName}
+        loading="lazy"
+      />
+      <div
+        className={`location-card-overlay absolute inset-x-0 bottom-0 flex min-h-[58px] flex-col items-center justify-center px-6 py-3 text-center sm:min-h-[66px] sm:py-0 ${overlayClassName}`}
+      >
+        <p className="font-helvetica text-lg font-normal leading-7 text-white sm:text-[22px]">
+          {city}
+        </p>
+        <p className="font-helvetica text-xs leading-5 text-white sm:text-sm">
+          {stores}
+        </p>
       </div>
     </article>
   );
