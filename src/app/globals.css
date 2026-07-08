@@ -39,6 +39,7 @@
   --color-appointment-accent: #c59d5f;
   --color-appointment-button: #554d6c;
   --color-appointment-line: #d1d1d1;
+  --color-testimonial-accent: #a68d6f;
 }
 
 .service-card-overlay {
@@ -91,6 +92,13 @@
   background-color: rgba(255, 255, 255, 0.4);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
+}
+
+.testimonial-glass-card {
+  background-color: rgba(255, 255, 255, 0.35);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
 }
 
 @media (prefers-color-scheme: dark) {
