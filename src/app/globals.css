@@ -137,6 +137,13 @@
   border: 1px solid rgba(255, 255, 255, 0.45);
 }
 
+.portfolio-card-overlay {
+  background-color: rgba(83, 70, 108, 0.64);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-left: 2px solid #53466c;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
