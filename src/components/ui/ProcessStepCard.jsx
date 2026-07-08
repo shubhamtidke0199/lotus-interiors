@@ -45,7 +45,7 @@ export default function ProcessStepCard({
           <img
             src={connectorSrc}
             alt=""
-            className="block h-auto w-full max-w-none"
+            className="block h-px w-full max-w-none"
             loading="lazy"
           />
         </div>
