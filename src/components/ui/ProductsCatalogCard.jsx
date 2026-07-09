@@ -1,4 +1,7 @@
+import Link from "next/link";
+
 export default function ProductsCatalogCard({
+  id,
   name,
   description,
   originalPrice,
@@ -12,7 +15,7 @@ export default function ProductsCatalogCard({
     <article
       className={`flex flex-col gap-3 pb-12 ${staggered ? "pt-8" : ""}`}
     >
-      <div className="relative bg-[#f7f3ea]">
+      <Link href={`/products/${id}`} className="relative block bg-[#f7f3ea]">
         <figure className="relative h-[340px] overflow-hidden">
           <img
             src={image}
@@ -26,7 +29,7 @@ export default function ProductsCatalogCard({
             25% off
           </span>
         )}
-      </div>
+      </Link>
 
       <div className="flex items-center gap-2">
         <span className="font-fraunces text-base leading-7 text-nav line-through">
@@ -38,7 +41,11 @@ export default function ProductsCatalogCard({
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <h3 className="font-fraunces text-xl leading-7 text-nav">{name}</h3>
+        <h3 className="font-fraunces text-xl leading-7 text-nav">
+          <Link href={`/products/${id}`} className="hover:text-primary">
+            {name}
+          </Link>
+        </h3>
         <p className="font-fraunces text-sm leading-[23px] text-nav">
           {description}
         </p>
