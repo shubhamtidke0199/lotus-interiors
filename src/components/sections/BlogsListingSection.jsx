@@ -69,7 +69,7 @@ export default function BlogsListingSection() {
                   <BlogFeaturedHorizontalCard
                     key={post.id}
                     {...post}
-                    href={`#${post.id}`}
+                    href={`/blogs/${post.id}`}
                   />
                 ))}
               </div>
@@ -77,7 +77,7 @@ export default function BlogsListingSection() {
             {featuredVertical && (
               <BlogFeaturedVerticalCard
                 {...featuredVertical}
-                href={`#${featuredVertical.id}`}
+                href={`/blogs/${featuredVertical.id}`}
               />
             )}
           </div>
@@ -86,7 +86,7 @@ export default function BlogsListingSection() {
         {standardPosts.length > 0 && (
           <div className="grid gap-x-8 gap-y-12 sm:grid-cols-2 xl:grid-cols-3">
             {standardPosts.map((post) => (
-              <BlogArticleCard key={post.id} {...post} href={`#${post.id}`} />
+              <BlogArticleCard key={post.id} {...post} href={`/blogs/${post.id}`} />
             ))}
           </div>
         )}

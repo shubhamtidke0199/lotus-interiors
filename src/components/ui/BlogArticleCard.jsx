@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ArrowIcon from "@/components/icons/ArrowIcon";
 
 function BlogMeta({ category, date }) {
@@ -13,13 +14,13 @@ function BlogMeta({ category, date }) {
 
 function ExploreLink({ href = "#" }) {
   return (
-    <a
+    <Link
       href={href}
       className="inline-flex items-center gap-2 pt-4 font-fraunces text-xs uppercase tracking-[1.2px] text-primary transition-colors hover:text-primary/80"
     >
       Explore Article
       <ArrowIcon className="size-2 text-primary" />
-    </a>
+    </Link>
   );
 }
 
@@ -45,7 +46,9 @@ export function BlogFeaturedHorizontalCard({
       <div className="flex min-w-0 flex-1 flex-col gap-4">
         <BlogMeta category={category} date={date} />
         <h2 className="font-fraunces text-[30px] leading-[38px] text-nav">
-          {title}
+          <Link href={href} className="hover:text-primary">
+            {title}
+          </Link>
         </h2>
         <p className="font-fraunces text-sm leading-6 text-muted">{excerpt}</p>
         <ExploreLink href={href} />
@@ -76,7 +79,9 @@ export function BlogFeaturedVerticalCard({
       <div className="flex flex-col gap-3 px-2">
         <BlogMeta category={category} date={date} />
         <h2 className="font-fraunces text-[30px] leading-[38px] text-nav">
-          {title}
+          <Link href={href} className="hover:text-primary">
+            {title}
+          </Link>
         </h2>
         <p className="max-w-[356px] font-fraunces text-sm leading-6 text-muted">
           {excerpt}
@@ -110,7 +115,9 @@ export default function BlogArticleCard({
       <div className="flex flex-col gap-3 px-2">
         <BlogMeta category={category} date={date} />
         <h2 className="font-fraunces text-[30px] leading-[38px] text-nav">
-          {title}
+          <Link href={href} className="hover:text-primary">
+            {title}
+          </Link>
         </h2>
         <p className="font-fraunces text-sm leading-6 text-muted">{excerpt}</p>
         <ExploreLink href={href} />
