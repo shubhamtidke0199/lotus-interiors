@@ -1,0 +1,17 @@
+/* fonts definitions */
+
+@font-face {
+	font-family: 'Helvetica Neue';
+	font-style: normal;
+	font-weight: 400;
+	src: url(../fonts/helvetica-neue-medium.otf);
+}
+
+
+@font-face {
+	font-family: 'Helvetica Neue';
+	font-style: normal;
+	font-weight: 500;
+	src: url(../fonts/helvetica-neue-medium.otf);
+}
+

@@ -1,6 +1,9 @@
 import SearchIcon from "@/components/icons/SearchIcon";
 
-export default function ProductSearchBar({ className = "" }) {
+export default function ProductSearchBar({
+  className = "",
+  placeholder = "Search products...",
+}) {
   return (
     <div
       className={`flex h-[52px] items-center gap-4 bg-accent-cream py-5 pl-1.5 pr-6 ${className}`}
@@ -10,7 +13,7 @@ export default function ProductSearchBar({ className = "" }) {
         <SearchIcon className="text-primary" />
       </div>
       <span className="font-helvetica text-xs font-medium uppercase leading-6 tracking-[var(--tracking-cta)] text-primary">
-        Search products...
+        {placeholder}
       </span>
     </div>
   );
