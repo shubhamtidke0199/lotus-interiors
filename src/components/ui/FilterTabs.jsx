@@ -22,7 +22,7 @@ export default function FilterTabs({
     <div
       role="tablist"
       aria-label="Filter options"
-      className={`flex flex-wrap gap-4 lg:gap-4 ${className}`}
+      className={`flex flex-wrap gap-3 ${className}`}
     >
       {tabs.map((tab, index) => {
         const isActive = current === index;
@@ -34,7 +34,7 @@ export default function FilterTabs({
             role="tab"
             aria-selected={isActive}
             onClick={() => handleSelect(index)}
-            className={`border-b-2 px-6 pb-2 pt-2 font-helvetica text-base uppercase leading-[15px] tracking-[1px] transition-colors ${
+            className={`border-b-2 px-4 pb-1.5 pt-1.5 font-helvetica text-sm uppercase leading-4 tracking-wide transition-colors ${
               isActive
                 ? "border-primary text-primary"
                 : "border-transparent text-muted hover:text-heading"

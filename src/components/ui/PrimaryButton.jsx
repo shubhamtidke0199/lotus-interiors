@@ -3,18 +3,18 @@ import ArrowIcon from "@/components/icons/ArrowIcon";
 
 const variants = {
   filled:
-    "bg-primary text-white px-12 py-5 gap-4 hover:bg-primary/90 border border-transparent",
-  hero: "bg-primary text-white px-12 py-5 gap-4 hover:bg-primary/90 border border-white/50 shadow-[0px_4px_4px_rgba(0,0,0,0.12)]",
+    "bg-primary text-white px-8 py-3.5 gap-3 hover:bg-primary/90 border border-transparent",
+  hero: "bg-primary text-white px-8 py-3.5 gap-3 hover:bg-primary/90 border border-white/50 shadow-[0px_4px_4px_rgba(0,0,0,0.12)]",
   outline:
-    "h-[52px] gap-4 border border-primary bg-transparent p-5 hover:bg-primary/5",
+    "h-11 gap-3 border border-primary bg-transparent px-5 py-3 hover:bg-primary/5",
 };
 
 const labelStyles = {
   filled:
-    "font-fraunces text-base font-normal leading-6 tracking-[var(--tracking-cta)] uppercase text-white",
-  hero: "font-helvetica text-base font-medium leading-6 tracking-[var(--tracking-cta)] uppercase text-white",
+    "font-fraunces text-sm font-normal leading-5 tracking-[var(--tracking-cta)] uppercase text-white",
+  hero: "font-helvetica text-sm font-medium leading-5 tracking-[var(--tracking-cta)] uppercase text-white",
   outline:
-    "font-helvetica text-sm font-medium leading-6 uppercase text-primary",
+    "font-helvetica text-sm font-medium leading-5 uppercase text-primary",
 };
 
 export default function PrimaryButton({

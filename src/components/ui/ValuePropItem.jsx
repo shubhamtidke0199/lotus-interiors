@@ -1,17 +1,17 @@
 export default function ValuePropItem({ number, title, description }) {
   return (
-    <article className="flex w-full max-w-[274px] flex-col items-start">
+    <article className="flex w-full max-w-[16rem] flex-col items-start">
       <p
         aria-hidden="true"
-        className="mb-[-42px] flex h-[71px] w-[145px] items-center font-display text-[64px] font-black leading-8 text-white/12"
+        className="mb-[-2rem] flex h-14 w-28 items-center font-display text-5xl font-black leading-none text-white/12"
       >
         {number}
       </p>
-      <div className="flex flex-col gap-2 text-white">
-        <h3 className="max-w-[274px] font-fraunces text-[22px] font-normal leading-8">
+      <div className="flex flex-col gap-1.5 text-white">
+        <h3 className="max-w-[16rem] font-fraunces text-lg font-normal leading-7 sm:text-xl">
           {title}
         </h3>
-        <p className="max-w-[233px] font-fraunces text-base font-normal leading-6">
+        <p className="max-w-[14rem] font-fraunces text-sm font-normal leading-5">
           {description}
         </p>
       </div>

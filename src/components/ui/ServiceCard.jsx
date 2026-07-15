@@ -10,7 +10,9 @@ export default function ServiceCard({
   className = "",
 }) {
   const labelAlignment =
-    labelAlign === "center" ? "text-center items-center" : "text-left items-start";
+    labelAlign === "center"
+      ? "text-center items-center"
+      : "text-left items-start";
 
   return (
     <article
@@ -25,13 +27,16 @@ export default function ServiceCard({
           loading="lazy"
         />
         <figcaption
-          className={`service-card-overlay absolute bottom-3 left-4 max-w-[calc(100%-2rem)] overflow-hidden px-4 py-3 sm:bottom-4 sm:px-6 sm:py-4 ${overlayClassName}`}
+          className={`service-card-overlay absolute bottom-2.5 left-3 max-w-[calc(100%-1.5rem)] overflow-hidden px-3 py-2.5 sm:bottom-3 sm:px-5 sm:py-3 ${overlayClassName}`}
         >
           <div
-            className={`flex flex-col font-fraunces text-lg font-normal leading-8 text-white sm:text-[22px] sm:leading-10 ${labelAlignment}`}
+            className={`flex flex-col font-fraunces text-base font-normal leading-7 text-white sm:text-lg sm:leading-8 ${labelAlignment}`}
           >
             {lines.map((line) => (
-              <span key={line} className={multiline ? "leading-10" : "leading-10"}>
+              <span
+                key={line}
+                className={multiline ? "leading-8" : "leading-8"}
+              >
                 {line}
               </span>
             ))}

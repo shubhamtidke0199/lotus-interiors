@@ -40,16 +40,19 @@ export default function BlogsListingSection() {
   );
 
   return (
-    <section aria-labelledby="blogs-listing-title" className="px-4 pb-24 sm:px-8">
-      <div className="mx-auto flex max-w-[1407px] flex-col gap-16">
-        <header className="flex flex-col gap-6 pt-12 lg:flex-row lg:items-end lg:justify-between lg:gap-28">
-          <div className="flex max-w-[544px] flex-col gap-2">
-            <p className="font-fraunces text-base uppercase tracking-[var(--tracking-eyebrow)] text-services-eyebrow">
+    <section
+      aria-labelledby="blogs-listing-title"
+      className="px-4 pb-12 sm:px-6 lg:px-8 lg:pb-16"
+    >
+      <div className="container-site flex flex-col gap-10 lg:gap-12">
+        <header className="flex flex-col gap-6 pt-12 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+          <div className="flex max-w-xl flex-col gap-2">
+            <p className="type-eyebrow text-services-eyebrow">
               Latest Reflections
             </p>
             <h2
               id="blogs-listing-title"
-              className="font-fraunces text-[28px] font-semibold leading-10 tracking-[var(--tracking-heading)] text-nav sm:text-[32px] lg:text-[36px]"
+              className="type-section-heading text-nav"
             >
               Curated insights from our Lotus Design Studio
             </h2>
@@ -62,9 +65,9 @@ export default function BlogsListingSection() {
         </header>
 
         {(featuredHorizontal.length > 0 || featuredVertical) && (
-          <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_490px]">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-10">
             {featuredHorizontal.length > 0 && (
-              <div className="flex flex-col gap-10">
+              <div className="flex flex-col gap-8">
                 {featuredHorizontal.map((post) => (
                   <BlogFeaturedHorizontalCard
                     key={post.id}
@@ -84,7 +87,7 @@ export default function BlogsListingSection() {
         )}
 
         {standardPosts.length > 0 && (
-          <div className="grid gap-x-8 gap-y-12 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
             {standardPosts.map((post) => (
               <BlogArticleCard key={post.id} {...post} href={`/blogs/${post.id}`} />
             ))}
@@ -93,7 +96,7 @@ export default function BlogsListingSection() {
 
         <nav
           aria-label="Blog pagination"
-          className="flex flex-wrap items-center justify-center gap-8"
+          className="flex flex-wrap items-center justify-center gap-6"
         >
           {blogPagination.map((page, index) =>
             page === 1 ? (
@@ -101,7 +104,7 @@ export default function BlogsListingSection() {
                 key={`page-${page}`}
                 type="button"
                 aria-current="page"
-                className="rounded-lg bg-[#f5f3f7] px-3 py-2.5 font-fraunces text-lg text-primary"
+                className="rounded-lg bg-[#f5f3f7] px-3 py-2 font-fraunces text-base text-primary"
               >
                 {page}
               </button>
@@ -109,7 +112,7 @@ export default function BlogsListingSection() {
               <button
                 key={`page-${page}-${index}`}
                 type="button"
-                className="font-fraunces text-lg text-nav transition-colors hover:text-primary"
+                className="font-fraunces text-base text-nav transition-colors hover:text-primary"
               >
                 {page}
               </button>

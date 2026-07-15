@@ -15,22 +15,27 @@ export default function ProcessStepCard({
   descriptionFont = "fraunces",
   isLast = false,
   connectorSrc = "/images/design-process/connector.svg",
-  connectorWidthClass = "w-[268px]",
+  connectorWidthClass = "w-56",
 }) {
   return (
-    <article className="relative mx-auto w-full max-w-[310px] xl:mx-0">
-      <figure className="relative h-[326px] w-full overflow-hidden bg-accent-lavender">
-        <img src={image} alt={imageAlt} className={imageClassName} loading="lazy" />
+    <article className="relative mx-auto w-full max-w-[18rem] xl:mx-0">
+      <figure className="relative h-72 w-full overflow-hidden bg-accent-lavender">
+        <img
+          src={image}
+          alt={imageAlt}
+          className={imageClassName}
+          loading="lazy"
+        />
       </figure>
 
-      <div className="relative -mt-[41px] flex gap-3">
+      <div className="relative -mt-8 flex gap-2.5">
         <ProcessStepNumberBadge step={step} />
-        <div className="flex min-w-0 max-w-[216px] flex-col justify-center pt-[38px]">
-          <h3 className="font-fraunces text-base font-normal leading-6 text-primary">
+        <div className="flex min-w-0 max-w-[13rem] flex-col justify-center pt-7">
+          <h3 className="font-fraunces text-sm font-normal leading-5 text-primary">
             {title}
           </h3>
           <p
-            className={`mt-3 text-xs font-normal leading-5 text-muted ${descriptionFonts[descriptionFont]}`}
+            className={`mt-2 text-xs font-normal leading-5 text-muted ${descriptionFonts[descriptionFont]}`}
           >
             {description}
           </p>
@@ -40,7 +45,7 @@ export default function ProcessStepCard({
       {!isLast && (
         <div
           aria-hidden="true"
-          className={`pointer-events-none absolute left-[82px] top-[439px] hidden h-px xl:block ${connectorWidthClass}`}
+          className={`pointer-events-none absolute left-16 top-[24.5rem] hidden h-px xl:block ${connectorWidthClass}`}
         >
           <img
             src={connectorSrc}

@@ -9,26 +9,23 @@ export default function PortfolioSection() {
   return (
     <section
       aria-labelledby="portfolio-title"
-      className="bg-white px-4 py-16 sm:px-8 lg:px-8 lg:py-20"
+      className="bg-white px-4 py-12 sm:px-6 lg:px-8 lg:py-16"
     >
-      <div className="mx-auto flex max-w-[1440px] flex-col gap-12 lg:gap-[115px]">
+      <div className="container-site flex flex-col gap-10 lg:gap-16">
         <SectionIntro
           eyebrow="Presence"
           title="Design Excellence in Your City"
           titleId="portfolio-title"
           action={
-            <FilterTabs
-              tabs={productFilters}
-              className="lg:justify-end"
-            />
+            <FilterTabs tabs={productFilters} className="lg:justify-end" />
           }
         />
 
-        <div className="grid gap-8 sm:gap-[50px] lg:grid-cols-3 lg:items-end xl:grid-cols-[388px_500px_388px] xl:justify-between">
+        <div className="grid gap-6 sm:gap-10 lg:grid-cols-3 lg:items-end xl:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_minmax(0,1fr)] xl:justify-between">
           {portfolioProjects.map((project, index) => (
             <div
               key={project.id}
-              className={index === 1 ? "lg:-translate-y-[55px]" : undefined}
+              className={index === 1 ? "lg:-translate-y-10" : undefined}
             >
               <PortfolioCard {...project} />
             </div>

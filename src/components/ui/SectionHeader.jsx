@@ -8,15 +8,10 @@ export default function SectionHeader({
   actionHref = "/contact",
 }) {
   return (
-    <header className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-      <div className="flex max-w-[569px] flex-col gap-2">
-        <p className="font-fraunces text-base font-normal uppercase leading-6 tracking-[var(--tracking-eyebrow)] text-eyebrow">
-          {eyebrow}
-        </p>
-        <h2
-          id={titleId}
-          className="font-fraunces text-[28px] font-semibold leading-10 tracking-[var(--tracking-heading)] text-heading sm:text-[32px] lg:text-[36px]"
-        >
+    <header className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+      <div className="flex max-w-xl flex-col gap-1.5">
+        <p className="type-eyebrow text-eyebrow">{eyebrow}</p>
+        <h2 id={titleId} className="type-section-heading text-heading">
           {title}
         </h2>
       </div>
