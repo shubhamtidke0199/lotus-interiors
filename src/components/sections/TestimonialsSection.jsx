@@ -21,9 +21,9 @@ function ChevronIcon({ direction = "left", className = "" }) {
 
 function QuoteMarkIcon() {
   return (
-    <div aria-hidden="true" className="mb-6 flex gap-3">
-      <span className="size-10 rounded-full bg-white/35" />
-      <span className="size-10 rounded-full bg-white/35" />
+    <div aria-hidden="true" className="mb-5 flex gap-2.5">
+      <span className="size-8 rounded-full bg-white/35" />
+      <span className="size-8 rounded-full bg-white/35" />
     </div>
   );
 }
@@ -36,28 +36,26 @@ function TestimonialCard({
   showNavigation = true,
 }) {
   return (
-    <article className="testimonial-glass-card flex min-h-[535px] w-full max-w-[1011px] flex-col rounded-[32px] px-6 py-10 sm:px-10 lg:px-10 lg:pb-16 lg:pt-32">
-      <div className="grid flex-1 gap-10 lg:grid-cols-2 lg:gap-20">
+    <article className="testimonial-glass-card flex min-h-[26rem] w-full max-w-4xl flex-col rounded-3xl px-5 py-8 sm:px-8 lg:min-h-[28rem] lg:px-8 lg:pb-12 lg:pt-20">
+      <div className="grid flex-1 gap-8 lg:grid-cols-2 lg:gap-14">
         <header className="flex flex-col justify-between">
           <div>
-            <p className="font-fraunces text-base uppercase leading-4 tracking-[var(--tracking-eyebrow)] text-testimonial-accent">
-              Client Voices
-            </p>
+            <p className="type-eyebrow text-testimonial-accent">Client Voices</p>
             <h2
               id={titleId}
-              className="mt-8 font-fraunces text-[28px] font-semibold leading-10 tracking-[var(--tracking-heading)] text-heading sm:text-[32px] lg:text-[36px] lg:leading-12"
+              className="type-section-heading mt-6 text-heading"
             >
               Shared visions, meticulously realized.
             </h2>
           </div>
 
           {showNavigation && (
-            <div className="mt-8 flex gap-4">
+            <div className="mt-6 flex gap-3">
               <button
                 type="button"
                 aria-label="Previous testimonial"
                 onClick={onPrevious}
-                className="inline-flex size-12 items-center justify-center rounded-lg bg-white text-nav shadow-sm transition-opacity hover:opacity-80"
+                className="inline-flex size-10 items-center justify-center rounded-lg bg-white text-nav shadow-sm transition-opacity hover:opacity-80"
               >
                 <ChevronIcon direction="left" />
               </button>
@@ -65,7 +63,7 @@ function TestimonialCard({
                 type="button"
                 aria-label="Next testimonial"
                 onClick={onNext}
-                className="inline-flex size-12 items-center justify-center rounded-lg bg-white text-nav shadow-sm transition-opacity hover:opacity-80"
+                className="inline-flex size-10 items-center justify-center rounded-lg bg-white text-nav shadow-sm transition-opacity hover:opacity-80"
               >
                 <ChevronIcon direction="right" />
               </button>
@@ -75,14 +73,14 @@ function TestimonialCard({
 
         <figure className="flex flex-col">
           <QuoteMarkIcon />
-          <blockquote className="font-fraunces text-lg font-normal leading-8 text-heading sm:text-xl sm:leading-[39px]">
+          <blockquote className="font-fraunces text-base font-normal leading-7 text-heading sm:text-lg sm:leading-8">
             &ldquo;{testimonial.quote}&rdquo;
           </blockquote>
-          <figcaption className="mt-10 flex flex-col gap-1">
-            <cite className="not-italic font-fraunces text-base font-semibold leading-6 text-heading">
+          <figcaption className="mt-8 flex flex-col gap-1">
+            <cite className="not-italic font-fraunces text-sm font-semibold leading-5 text-heading">
               {testimonial.author}
             </cite>
-            <p className="font-fraunces text-xs uppercase leading-4 tracking-[1.2px] text-testimonial-accent">
+            <p className="font-fraunces text-xs uppercase leading-4 tracking-wide text-testimonial-accent">
               {testimonial.role}
             </p>
           </figcaption>
@@ -104,7 +102,7 @@ export default function TestimonialsSection() {
   return (
     <section
       aria-labelledby="testimonials-title"
-      className="relative min-h-[640px] overflow-hidden py-16 lg:min-h-[815px] lg:py-[110px]"
+      className="relative overflow-hidden py-12 lg:py-20"
     >
       <img
         src="/images/testimonials/background.webp"
@@ -114,11 +112,11 @@ export default function TestimonialsSection() {
         loading="lazy"
       />
 
-      <div className="relative z-10 mx-auto max-w-[1440px] px-4 sm:px-8">
-        <div className="flex items-center justify-center gap-6 lg:gap-8">
+      <div className="container-site relative z-10 px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-center gap-5 lg:gap-6">
           <div
             aria-hidden="true"
-            className="testimonial-glass-card hidden min-h-[535px] w-[1011px] max-w-[18vw] shrink-0 scale-[0.92] rounded-[32px] opacity-45 lg:block"
+            className="testimonial-glass-card hidden min-h-[26rem] w-full max-w-[12vw] shrink-0 scale-[0.92] rounded-3xl opacity-45 lg:block"
           />
 
           <TestimonialCard
@@ -130,7 +128,7 @@ export default function TestimonialsSection() {
 
           <div
             aria-hidden="true"
-            className="testimonial-glass-card hidden min-h-[535px] w-[1011px] max-w-[18vw] shrink-0 scale-[0.92] rounded-[32px] opacity-45 lg:block"
+            className="testimonial-glass-card hidden min-h-[26rem] w-full max-w-[12vw] shrink-0 scale-[0.92] rounded-3xl opacity-45 lg:block"
           />
         </div>
       </div>

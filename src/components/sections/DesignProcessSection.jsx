@@ -8,16 +8,16 @@ export default function DesignProcessSection() {
   return (
     <section
       aria-labelledby={titleId}
-      className="bg-white px-4 pb-16 pt-12 sm:px-6 lg:px-8 lg:pb-[47px] lg:pt-[70px]"
+      className="bg-white px-4 pb-12 pt-10 sm:px-6 lg:px-8 lg:pb-12 lg:pt-14"
     >
-      <div className="mx-auto max-w-[1440px]">
+      <div className="container-site">
         <SectionHeader
           eyebrow="DESIGN PROCESS"
           title="How We Bring Your Space to Life"
           titleId={titleId}
         />
 
-        <ol className="mt-10 grid grid-cols-1 gap-y-16 md:grid-cols-2 md:gap-x-[45px] xl:mt-[40px] xl:grid-cols-4 xl:gap-y-0">
+        <ol className="mt-8 grid grid-cols-1 gap-y-12 md:grid-cols-2 md:gap-x-10 xl:mt-10 xl:grid-cols-4 xl:gap-y-0">
           {designProcessSteps.map((item, index) => (
             <li key={item.step} className="list-none">
               <ProcessStepCard
@@ -29,9 +29,7 @@ export default function DesignProcessSection() {
                     : "/images/design-process/connector.svg"
                 }
                 connectorWidthClass={
-                  index === designProcessSteps.length - 2
-                    ? "w-[284px]"
-                    : "w-[268px]"
+                  index === designProcessSteps.length - 2 ? "w-60" : "w-56"
                 }
               />
             </li>

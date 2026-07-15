@@ -18,8 +18,11 @@ export default function Navbar() {
 
   return (
     <header className="relative z-50 bg-white">
-      <div className="mx-auto flex h-[120px] max-w-[1440px] items-center px-4 sm:px-8 lg:px-[35px]">
-        <Link href="/" className="relative size-[90px] shrink-0 overflow-hidden lg:size-[110px]">
+      <div className="container-site flex h-20 items-center px-4 sm:px-6 lg:h-24 lg:px-8">
+        <Link
+          href="/"
+          className="relative size-16 shrink-0 overflow-hidden lg:size-20"
+        >
           <img
             src="/images/navbar/logo.webp"
             alt="LOTUS Design Studio"
@@ -29,20 +32,20 @@ export default function Navbar() {
 
         <nav
           aria-label="Primary"
-          className="hidden flex-1 items-center justify-center gap-[42px] lg:flex"
+          className="hidden flex-1 items-center justify-center gap-8 lg:flex"
         >
           {navLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className="font-fraunces text-xl font-normal uppercase leading-5 text-nav transition-colors hover:text-primary"
+              className="font-fraunces text-sm font-normal uppercase leading-5 tracking-wide text-nav transition-colors hover:text-primary"
             >
               {link.label}
             </Link>
           ))}
         </nav>
 
-        <div className="ml-auto hidden items-center gap-4 lg:flex">
+        <div className="ml-auto hidden items-center gap-3 lg:flex">
           <ProductSearchBar />
           <PrimaryButton href="/contact" variant="outline">
             GET Appointment
@@ -86,21 +89,21 @@ export default function Navbar() {
       {mobileOpen && (
         <nav
           id="mobile-navigation"
-          className="flex flex-col gap-5 border-t border-gray-100 bg-white px-6 py-6 lg:hidden"
+          className="flex flex-col gap-4 border-t border-gray-100 bg-white px-6 py-5 lg:hidden"
         >
           {navLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className="font-fraunces text-lg font-normal uppercase text-nav transition-colors hover:text-primary"
+              className="font-fraunces text-base font-normal uppercase text-nav transition-colors hover:text-primary"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}
             </Link>
           ))}
 
-          <div className="flex h-[48px] w-fit items-center gap-3 bg-accent-cream py-4 pl-1.5 pr-4">
-            <div className="flex size-[38px] shrink-0 items-center justify-center bg-white p-2">
+          <div className="flex h-11 w-fit items-center gap-3 bg-accent-cream py-3 pl-1.5 pr-4">
+            <div className="flex size-8 shrink-0 items-center justify-center bg-white p-1.5">
               <SearchIcon className="text-primary" />
             </div>
             <span className="font-helvetica text-[11px] font-medium uppercase tracking-[var(--tracking-cta)] text-primary">

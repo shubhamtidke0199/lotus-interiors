@@ -15,32 +15,41 @@ export default function ServicesSection() {
   return (
     <section
       aria-labelledby={titleId}
-      className="overflow-x-hidden bg-white px-4 pb-16 pt-8 sm:px-6 lg:px-8 lg:pb-20"
+      className="overflow-x-hidden bg-white px-4 pb-12 pt-6 sm:px-6 lg:px-8 lg:pb-16"
     >
-      <div className="mx-auto max-w-[1440px]">
+      <div className="container-site">
         <ServicesSectionHeader titleId={titleId} />
 
-        <div className="flex flex-col gap-4 sm:gap-5">
-          <div className="grid grid-cols-1 gap-4 sm:gap-5 xl:grid-cols-[minmax(0,872fr)_minmax(0,496fr)] xl:grid-rows-[400px_330px] xl:gap-x-2">
+        <div className="flex flex-col gap-3 sm:gap-4">
+          <div className="grid grid-cols-1 gap-3 sm:gap-4 xl:grid-cols-[minmax(0,1.75fr)_minmax(0,1fr)] xl:grid-rows-[minmax(0,20rem)_minmax(0,16rem)] xl:gap-x-2">
             <ServiceCard
               {...residence}
-              className="h-[260px] sm:h-[360px] xl:col-start-1 xl:row-start-1 xl:h-[400px]"
+              className="h-56 sm:h-72 xl:col-start-1 xl:row-start-1 xl:h-full"
             />
             <ServiceCard
               {...commercial}
-              className="h-[280px] sm:h-[400px] xl:col-start-2 xl:row-span-2 xl:row-start-1 xl:h-[750px]"
+              className="h-64 sm:h-80 xl:col-start-2 xl:row-span-2 xl:row-start-1 xl:h-full"
             />
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-[14px] xl:col-start-1 xl:row-start-2">
-              <ServiceCard {...hospital} className="h-[240px] sm:h-[280px] xl:h-[330px]" />
-              <ServiceCard {...consultancy} className="h-[240px] sm:h-[280px] xl:h-[330px]" />
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-3 xl:col-start-1 xl:row-start-2">
+              <ServiceCard
+                {...hospital}
+                className="h-52 sm:h-60 xl:h-full"
+              />
+              <ServiceCard
+                {...consultancy}
+                className="h-52 sm:h-60 xl:h-full"
+              />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-[12px]">
-            <ServiceCard {...furniture} className="h-[260px] sm:h-[280px] xl:h-[330px]" />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-3">
+            <ServiceCard
+              {...furniture}
+              className="h-56 sm:h-60 xl:h-72"
+            />
             <ServiceCard
               {...projectManagement}
-              className="h-[260px] sm:h-[280px] xl:h-[330px]"
+              className="h-56 sm:h-60 xl:h-72"
             />
           </div>
         </div>

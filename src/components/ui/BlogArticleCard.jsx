@@ -16,7 +16,7 @@ function ExploreLink({ href = "#" }) {
   return (
     <Link
       href={href}
-      className="inline-flex items-center gap-2 pt-4 font-fraunces text-xs uppercase tracking-[1.2px] text-primary transition-colors hover:text-primary/80"
+      className="inline-flex items-center gap-2 pt-3 font-fraunces text-xs uppercase tracking-[1.2px] text-primary transition-colors hover:text-primary/80"
     >
       Explore Article
       <ArrowIcon className="size-2 text-primary" />
@@ -34,8 +34,8 @@ export function BlogFeaturedHorizontalCard({
   href = "#",
 }) {
   return (
-    <article className="flex flex-col gap-8 bg-product-bg p-8 sm:flex-row sm:items-center">
-      <figure className="relative aspect-[4/3] w-full overflow-hidden sm:max-w-[280px] sm:flex-1">
+    <article className="flex flex-col gap-6 bg-product-bg p-6 sm:flex-row sm:items-center">
+      <figure className="relative aspect-[4/3] w-full overflow-hidden sm:max-w-56 sm:flex-1">
         <img
           src={image}
           alt=""
@@ -43,9 +43,9 @@ export function BlogFeaturedHorizontalCard({
           loading="lazy"
         />
       </figure>
-      <div className="flex min-w-0 flex-1 flex-col gap-4">
+      <div className="flex min-w-0 flex-1 flex-col gap-3">
         <BlogMeta category={category} date={date} />
-        <h2 className="font-fraunces text-[30px] leading-[38px] text-nav">
+        <h2 className="font-fraunces text-xl font-semibold leading-7 tracking-[var(--tracking-heading)] text-nav sm:text-2xl">
           <Link href={href} className="hover:text-primary">
             {title}
           </Link>
@@ -67,8 +67,8 @@ export function BlogFeaturedVerticalCard({
   href = "#",
 }) {
   return (
-    <article className="flex flex-col gap-6">
-      <figure className="relative h-[467px] overflow-hidden bg-[#f4f4f2]">
+    <article className="flex flex-col gap-5">
+      <figure className="relative h-96 overflow-hidden bg-[#f4f4f2]">
         <img
           src={image}
           alt=""
@@ -78,12 +78,12 @@ export function BlogFeaturedVerticalCard({
       </figure>
       <div className="flex flex-col gap-3 px-2">
         <BlogMeta category={category} date={date} />
-        <h2 className="font-fraunces text-[30px] leading-[38px] text-nav">
+        <h2 className="font-fraunces text-xl font-semibold leading-7 tracking-[var(--tracking-heading)] text-nav sm:text-2xl">
           <Link href={href} className="hover:text-primary">
             {title}
           </Link>
         </h2>
-        <p className="max-w-[356px] font-fraunces text-sm leading-6 text-muted">
+        <p className="max-w-xs font-fraunces text-sm leading-6 text-muted">
           {excerpt}
         </p>
         <ExploreLink href={href} />
@@ -103,7 +103,7 @@ export default function BlogArticleCard({
   href = "#",
 }) {
   return (
-    <article className={`flex flex-col gap-6 ${staggered ? "pt-8 lg:pt-16" : ""}`}>
+    <article className={`flex flex-col gap-5 ${staggered ? "pt-6 lg:pt-12" : ""}`}>
       <figure className="relative aspect-[4/5] overflow-hidden bg-[#f4f4f2]">
         <img
           src={image}
@@ -114,7 +114,7 @@ export default function BlogArticleCard({
       </figure>
       <div className="flex flex-col gap-3 px-2">
         <BlogMeta category={category} date={date} />
-        <h2 className="font-fraunces text-[30px] leading-[38px] text-nav">
+        <h2 className="font-fraunces text-xl font-semibold leading-7 tracking-[var(--tracking-heading)] text-nav sm:text-2xl">
           <Link href={href} className="hover:text-primary">
             {title}
           </Link>

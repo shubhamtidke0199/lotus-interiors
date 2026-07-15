@@ -21,9 +21,9 @@ export default function FaqAccordionItem({
         aria-expanded={isOpen}
         aria-controls={`${id}-panel`}
         onClick={onToggle}
-        className={`flex w-full items-center justify-between gap-6 px-6 py-8 text-left sm:px-8 ${backgroundClass}`}
+        className={`flex w-full items-center justify-between gap-4 px-5 py-6 text-left sm:px-6 ${backgroundClass}`}
       >
-        <h2 className="font-fraunces text-base leading-8 text-[#1c1c17] sm:text-lg lg:text-2xl">
+        <h2 className="font-fraunces text-base leading-7 text-[#1c1c17] sm:text-lg">
           {question}
         </h2>
         <img
@@ -39,9 +39,9 @@ export default function FaqAccordionItem({
           id={`${id}-panel`}
           role="region"
           aria-labelledby={`${id}-trigger`}
-          className={`border-t border-[rgba(206,198,183,0.1)] px-6 pb-8 sm:px-8 ${backgroundClass}`}
+          className={`border-t border-[rgba(206,198,183,0.1)] px-5 pb-6 sm:px-6 ${backgroundClass}`}
         >
-          <p className="font-fraunces text-sm leading-7 text-[#43474c] sm:text-base">
+          <p className="font-fraunces text-sm leading-6 text-[#43474c] sm:text-base">
             {answer}
           </p>
         </div>
@@ -56,7 +56,7 @@ export function FaqAccordionList({ items, idPrefix = "faq" }) {
   const [openId, setOpenId] = useState(null);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       {items.map((item, index) => (
         <FaqAccordionItem
           key={item.id}

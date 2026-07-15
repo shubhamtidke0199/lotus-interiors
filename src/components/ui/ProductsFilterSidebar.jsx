@@ -7,11 +7,11 @@ import {
 
 function FilterSection({ title, children }) {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <p className="font-fraunces text-xs uppercase tracking-[1.2px] text-[#6c5d33]">
         {title}
       </p>
-      <div className="flex flex-col gap-4">{children}</div>
+      <div className="flex flex-col gap-3">{children}</div>
     </div>
   );
 }
@@ -23,7 +23,7 @@ function CheckboxFilter({ label, rounded = false }) {
         className={`size-4 shrink-0 border border-nav ${rounded ? "rounded-full" : ""}`}
         aria-hidden="true"
       />
-      <span className="font-fraunces text-base text-nav">{label}</span>
+      <span className="font-fraunces text-sm text-nav">{label}</span>
     </label>
   );
 }
@@ -36,15 +36,15 @@ function ColorFilter({ label, color }) {
         style={{ backgroundColor: color }}
         aria-hidden="true"
       />
-      <span className="font-fraunces text-base text-nav">{label}</span>
+      <span className="font-fraunces text-sm text-nav">{label}</span>
     </label>
   );
 }
 
 export default function ProductsFilterSidebar() {
   return (
-    <aside aria-label="Product filters" className="w-full shrink-0 lg:w-72">
-      <div className="flex flex-col gap-12">
+    <aside aria-label="Product filters" className="w-full shrink-0 lg:w-64">
+      <div className="flex flex-col gap-8 lg:gap-10">
         <FilterSection title="Brand">
           {brandFilters.map((brand) => (
             <CheckboxFilter key={brand} label={brand} />
@@ -69,7 +69,7 @@ export default function ProductsFilterSidebar() {
           ))}
         </FilterSection>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3">
           <p className="pb-2 font-fraunces text-xs uppercase tracking-[1.2px] text-[#6c5d33]">
             Price Preference
           </p>

@@ -20,7 +20,7 @@ function ChevronDownIcon({ className = "" }) {
 }
 
 const fieldClassName =
-  "w-full border-0 border-b border-appointment-line bg-transparent pb-2 pt-3 font-fraunces text-base leading-5 text-nav placeholder:text-muted focus-visible:outline-none focus-visible:border-primary";
+  "w-full border-0 border-b border-appointment-line bg-transparent pb-2 pt-2.5 font-fraunces text-sm leading-5 text-nav placeholder:text-muted focus-visible:outline-none focus-visible:border-primary";
 
 export default function FormField({
   id,
@@ -34,7 +34,7 @@ export default function FormField({
     <div className="relative">
       <label
         htmlFor={id}
-        className="mb-1 block font-helvetica text-[15px] uppercase leading-4 tracking-[1px] text-muted"
+        className="mb-1 block font-helvetica text-sm uppercase leading-4 tracking-wide text-muted"
       >
         {label}
       </label>
@@ -44,7 +44,7 @@ export default function FormField({
           name={id}
           rows={rows}
           placeholder={placeholder}
-          className={`${fieldClassName} min-h-[113px] resize-y`}
+          className={`${fieldClassName} min-h-24 resize-y`}
         />
       ) : (
         <input
@@ -64,7 +64,7 @@ export function SelectField({ id, label, options = ["Select City"] }) {
     <div className="relative">
       <label
         htmlFor={id}
-        className="mb-1 block font-helvetica text-[15px] uppercase leading-4 tracking-[1px] text-muted"
+        className="mb-1 block font-helvetica text-sm uppercase leading-4 tracking-wide text-muted"
       >
         {label}
       </label>
@@ -94,7 +94,7 @@ export function SubmitButton({ children = "Submit Request" }) {
   return (
     <button
       type="submit"
-      className="inline-flex h-[52px] w-[254px] items-center justify-center gap-4 bg-appointment-button px-10 font-helvetica text-base uppercase leading-4 tracking-[var(--tracking-cta)] text-white transition-opacity hover:opacity-90"
+      className="inline-flex h-11 w-56 items-center justify-center gap-3 bg-appointment-button px-8 font-helvetica text-sm uppercase leading-4 tracking-[var(--tracking-cta)] text-white transition-opacity hover:opacity-90"
     >
       {children}
       <ArrowIcon className="text-white" />

@@ -1,10 +1,10 @@
 function BlogDetailImage({ src, alt = "" }) {
   return (
-    <figure className="relative mx-auto mt-3 h-[400px] w-full max-w-[1376px] px-4 sm:h-[520px] sm:px-8 lg:h-[660px]">
+    <figure className="container-site relative mt-3 h-[20rem] w-full px-4 sm:h-[26rem] sm:px-6 lg:h-[32rem] lg:px-8">
       <img
         src={src}
         alt={alt}
-        className="size-full rounded-[40px] object-cover sm:rounded-[60px]"
+        className="size-full rounded-3xl object-cover sm:rounded-[2.5rem]"
         loading="lazy"
       />
     </figure>
@@ -16,7 +16,7 @@ export default function BlogDetailArticle({ heroImage, title, body }) {
     <article className="flex flex-col gap-5 pb-12">
       <BlogDetailImage src={heroImage} alt={title} />
 
-      <p className="mx-auto max-w-[1376px] px-4 font-fraunces text-base leading-[26px] text-[#43474c] sm:px-8 lg:text-lg">
+      <p className="container-site px-4 font-fraunces text-sm leading-6 text-[#43474c] sm:px-6 sm:text-base lg:px-8">
         {body.intro}
       </p>
 
@@ -24,14 +24,14 @@ export default function BlogDetailArticle({ heroImage, title, body }) {
         <div key={index} className="flex flex-col gap-5">
           {section.heading && (
             <>
-              <h2 className="px-4 text-center font-fraunces text-[clamp(24px,3vw,36px)] text-nav sm:px-8">
+              <h2 className="type-section-heading px-4 text-center text-nav sm:px-6 lg:px-8">
                 {section.heading}
               </h2>
               {section.image && <BlogDetailImage src={section.image} alt="" />}
               {section.paragraphs?.map((paragraph) => (
                 <p
                   key={paragraph}
-                  className="mx-auto max-w-[1376px] px-4 font-fraunces text-base leading-[26px] text-[#43474c] sm:px-8 lg:text-lg"
+                  className="container-site px-4 font-fraunces text-sm leading-6 text-[#43474c] sm:px-6 sm:text-base lg:px-8"
                 >
                   {paragraph}
                 </p>
@@ -40,7 +40,7 @@ export default function BlogDetailArticle({ heroImage, title, body }) {
           )}
 
           {section.proTip && (
-            <p className="mx-auto max-w-[997px] px-4 text-center font-fraunces text-[clamp(19px,2.5vw,28px)] font-light italic leading-[1.43] text-services-eyebrow sm:px-8">
+            <p className="mx-auto max-w-3xl px-4 text-center font-fraunces text-lg font-light italic leading-relaxed text-services-eyebrow sm:px-6 sm:text-xl lg:px-8">
               <span className="font-semibold not-italic">Pro Tip: </span>
               {section.proTip}
             </p>

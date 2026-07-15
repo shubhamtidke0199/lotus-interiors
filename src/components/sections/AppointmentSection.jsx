@@ -4,24 +4,24 @@ export default function AppointmentSection() {
   return (
     <section
       aria-labelledby="appointment-title"
-      className="bg-appointment-bg px-4 py-16 sm:px-8 lg:py-20"
+      className="bg-appointment-bg px-4 py-12 sm:px-6 lg:px-8 lg:py-16"
     >
-      <div className="mx-auto grid max-w-[1376px] gap-10 lg:grid-cols-[756px_578px] lg:gap-[42px]">
-        <div className="bg-white px-6 py-12 sm:px-12 lg:px-12 lg:py-[60px]">
-          <header className="mb-12 flex flex-col gap-4">
+      <div className="container-site grid gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:gap-10">
+        <div className="bg-white px-5 py-10 sm:px-10 lg:px-10 lg:py-12">
+          <header className="mb-8 flex flex-col gap-3">
             <h2
               id="appointment-title"
-              className="font-fraunces text-[28px] font-normal leading-8 text-heading sm:text-[32px]"
+              className="type-section-heading font-normal text-heading"
             >
               Book an Appointment
             </h2>
-            <p className="font-fraunces text-xl italic leading-10 text-appointment-accent sm:text-2xl">
+            <p className="font-fraunces text-lg italic leading-8 text-appointment-accent sm:text-xl">
               Looks Beautiful in Design!
             </p>
           </header>
 
-          <form className="flex flex-col gap-14">
-            <div className="grid gap-14 sm:grid-cols-2 sm:gap-8">
+          <form className="flex flex-col gap-10">
+            <div className="grid gap-10 sm:grid-cols-2 sm:gap-6">
               <FormField
                 id="full-name"
                 label="Full Name"
@@ -45,8 +45,8 @@ export default function AppointmentSection() {
           </form>
         </div>
 
-        <aside className="relative min-h-[420px] lg:min-h-[719px]">
-          <figure className="relative size-full min-h-[420px] overflow-hidden lg:min-h-[707px]">
+        <aside className="relative min-h-80 lg:min-h-full">
+          <figure className="relative size-full min-h-80 overflow-hidden lg:min-h-[32rem]">
             <img
               src="/images/appointment/consultation.webp"
               alt="Modern interior design render with arched doorway"
@@ -55,12 +55,12 @@ export default function AppointmentSection() {
             />
           </figure>
 
-          <div className="appointment-contact-card absolute bottom-0 left-2 right-2 mx-auto max-w-[562px] px-6 py-6 lg:bottom-8 lg:left-4 lg:right-4">
-            <h3 className="font-helvetica text-[15px] uppercase leading-4 tracking-[1px] text-nav">
+          <div className="appointment-contact-card absolute bottom-0 left-2 right-2 mx-auto max-w-md px-5 py-5 lg:bottom-6 lg:left-3 lg:right-3">
+            <h3 className="font-helvetica text-sm uppercase leading-4 tracking-wide text-nav">
               General Inquiries
             </h3>
-            <address className="mt-4 not-italic">
-              <p className="font-fraunces text-base leading-5 text-nav">
+            <address className="mt-3 not-italic">
+              <p className="font-fraunces text-sm leading-5 text-nav">
                 <a
                   href="mailto:studio@antares.design"
                   className="transition-colors hover:text-primary"
@@ -68,8 +68,11 @@ export default function AppointmentSection() {
                   studio@antares.design
                 </a>
               </p>
-              <p className="mt-1 font-fraunces text-base leading-5 text-nav">
-                <a href="tel:+9198XXXXXXXX" className="transition-colors hover:text-primary">
+              <p className="mt-1 font-fraunces text-sm leading-5 text-nav">
+                <a
+                  href="tel:+9198XXXXXXXX"
+                  className="transition-colors hover:text-primary"
+                >
                   +91 98XXX XXXXX
                 </a>
               </p>

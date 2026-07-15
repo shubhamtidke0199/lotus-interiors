@@ -1,15 +1,13 @@
 export default function FooterNavColumn({ title, links }) {
   return (
-    <div className="w-[140px]">
-      <h3 className="text-[15px] uppercase leading-4 tracking-[1px]">
-        {title}
-      </h3>
-      <ul className="mt-6 flex flex-col">
+    <div className="w-32">
+      <h3 className="text-sm uppercase leading-4 tracking-wide">{title}</h3>
+      <ul className="mt-4 flex flex-col">
         {links.map((link, index) => (
-          <li key={link} className={index > 0 ? "mt-5" : undefined}>
+          <li key={link} className={index > 0 ? "mt-4" : undefined}>
             <a
               href="#"
-              className="text-[15px] uppercase leading-4 tracking-[1px] transition-colors hover:text-primary"
+              className="text-sm uppercase leading-4 tracking-wide transition-colors hover:text-primary"
             >
               {link}
             </a>

@@ -20,9 +20,9 @@
   --font-sans: var(--font-fraunces);
   --font-fraunces: var(--font-fraunces);
   --font-helvetica: var(--font-helvetica);
-  --tracking-eyebrow: 4.8px;
-  --tracking-cta: 1.6px;
-  --tracking-heading: -1.8px;
+  --tracking-eyebrow: 0.2em;
+  --tracking-cta: 0.08em;
+  --tracking-heading: -0.03em;
   --color-nav: #080808;
   --color-services-eyebrow: #c46705;
   --color-services-muted: #868686;
@@ -40,12 +40,55 @@
   --color-appointment-button: #554d6c;
   --color-appointment-line: #d1d1d1;
   --color-testimonial-accent: #a68d6f;
+  --radius-hero: 2rem;
+  --radius-panel: 1.5rem;
+}
+
+@layer utilities {
+  .type-eyebrow {
+    font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 400;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+  }
+
+  .type-section-heading {
+    font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+    font-size: clamp(1.375rem, 1.1rem + 1.1vw, 1.75rem);
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .type-hero-heading {
+    font-family: var(--font-helvetica), "Helvetica Neue", Helvetica, Arial,
+      sans-serif;
+    font-size: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+    line-height: 1.35;
+    font-weight: 400;
+  }
+
+  .type-display-heading {
+    font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+    font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.25rem);
+    line-height: 1.2;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  .container-site {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 80rem;
+  }
 }
 
 .service-card-overlay {
   background-color: rgba(28, 27, 27, 0.42);
-  -webkit-backdrop-filter: blur(27px);
-  backdrop-filter: blur(27px);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   isolation: isolate;
 }
 
@@ -56,8 +99,8 @@
     rgba(0, 0, 0, 0.12) 5.21%,
     rgba(90, 80, 70, 0.38) 100%
   );
-  -webkit-backdrop-filter: blur(27px);
-  backdrop-filter: blur(27px);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   isolation: isolate;
 }
 
@@ -121,7 +164,7 @@
 }
 
 .consultation-cta-card {
-  box-shadow: 0 4px 24px rgba(83, 70, 108, 0.12);
+  box-shadow: 0 4px 20px rgba(83, 70, 108, 0.12);
 }
 
 .appointment-contact-card {
@@ -132,15 +175,15 @@
 
 .testimonial-glass-card {
   background-color: rgba(255, 255, 255, 0.35);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.45);
 }
 
 .portfolio-card-overlay {
   background-color: rgba(83, 70, 108, 0.64);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   border-left: 2px solid #53466c;
 }
 
@@ -154,5 +197,8 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-fraunces), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: var(--font-fraunces), "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.5;
 }
