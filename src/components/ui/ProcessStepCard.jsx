@@ -19,7 +19,7 @@ export default function ProcessStepCard({
 }) {
   return (
     <article className="relative mx-auto w-full md:max-w-[18rem] xl:mx-0">
-      <figure className="relative h-72 w-full overflow-hidden bg-accent-lavender">
+      <figure className="relative h-72 w-full overflow-hidden bg-accent-lavender ">
         <img
           src={image}
           alt={imageAlt}

@@ -2,9 +2,9 @@ export default function ConsultationCTASection() {
   return (
     <section
       aria-labelledby="consultation-cta-title"
-      className="bg-white px-4 py-4 sm:px-6 lg:px-8"
+      className="bg-white  py-4 md:px-6 lg:px-8"
     >
-      <div className="consultation-cta-card container-site overflow-hidden rounded-xl lg:grid lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+      <div className="consultation-cta-card container-site overflow-hidden md:rounded-xl lg:grid lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
         <div className="flex flex-col justify-center bg-primary px-6 py-12 sm:px-10 lg:min-h-[28rem] lg:px-16 lg:py-16">
           <h2
             id="consultation-cta-title"

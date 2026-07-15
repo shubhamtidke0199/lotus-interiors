@@ -11,10 +11,10 @@ export default function WhyChooseUsSection() {
   return (
     <section
       aria-labelledby="why-choose-us-title"
-      className="bg-white px-4 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16"
+      className="bg-white  py-12 md:px-6 sm:py-14 lg:px-8 lg:py-16"
     >
-      <div className="container-site flex flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-6">
-        <figure className="relative h-80 w-full shrink-0 overflow-hidden border-8 border-white bg-why-choose-lavender shadow-[0px_4px_20px_rgba(0,0,0,0.08)] sm:h-[28rem] lg:h-auto lg:min-h-[36rem] lg:w-[45%]">
+      <div className="container-site flex flex-col  lg:flex-row lg:items-stretch lg:gap-2">
+        <figure className="relative h-80 w-full shrink-0 overflow-hidden  bg-why-choose-lavender shadow-[0px_4px_20px_rgba(0,0,0,0.08)] sm:h-[28rem] lg:h-auto lg:min-h-[36rem] lg:w-[45%]">
           <img
             src="/images/why-choose/illus.webp"
             alt="Isometric interior design illustration"

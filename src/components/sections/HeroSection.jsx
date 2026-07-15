@@ -21,8 +21,8 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section aria-label="Hero" className="px-4 pb-4 sm:px-5 sm:pb-5">
-      <div className="container-site relative min-h-[28rem] overflow-hidden rounded-3xl sm:rounded-[2.5rem] lg:min-h-[36rem]">
+    <section aria-label="Hero" className="pb-4 md:px-5 sm:pb-5">
+      <div className="container-site relative min-h-[28rem] overflow-hidden  md:rounded-[2.5rem] lg:min-h-[36rem]">
         {heroBackgrounds.map((background, index) => (
           <img
             key={background.id}

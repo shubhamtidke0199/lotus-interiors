@@ -90,11 +90,11 @@ export function SelectField({ id, label, options = ["Select City"] }) {
   );
 }
 
-export function SubmitButton({ children = "Submit Request" }) {
+export function SubmitButton({ children = "Submit Request",classNames = "" }) {
   return (
     <button
       type="submit"
-      className="inline-flex h-11 w-56 items-center justify-center gap-3 bg-appointment-button px-8 font-helvetica text-sm uppercase leading-4 tracking-[var(--tracking-cta)] text-white transition-opacity hover:opacity-90"
+      className={`inline-flex h-11  items-center justify-center gap-3 bg-appointment-button px-8 font-helvetica text-sm uppercase leading-4 tracking-[var(--tracking-cta)] text-white transition-opacity hover:opacity-90 ${classNames}`}
     >
       {children}
       <ArrowIcon className="text-white" />

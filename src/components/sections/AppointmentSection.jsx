@@ -4,7 +4,7 @@ export default function AppointmentSection() {
   return (
     <section
       aria-labelledby="appointment-title"
-      className="bg-appointment-bg px-4 py-12 sm:px-6 lg:px-8 lg:py-16"
+      className="bg-appointment-bg py-12 md:px-6 lg:px-8 lg:py-16"
     >
       <div className="container-site grid gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:gap-10">
         <div className="bg-white px-5 py-10 sm:px-10 lg:px-10 lg:py-12">
@@ -50,13 +50,13 @@ export default function AppointmentSection() {
             <img
               src="/images/appointment/consultation.webp"
               alt="Modern interior design render with arched doorway"
-              className="absolute inset-0 size-full object-cover"
+              className="absolute inset-0 size-full object-cover object-center"
               loading="lazy"
             />
           </figure>
 
-          <div className="appointment-contact-card absolute bottom-0 left-2 right-2 mx-auto max-w-md px-5 py-5 lg:bottom-6 lg:left-3 lg:right-3">
-            <h3 className="font-helvetica text-sm uppercase leading-4 tracking-wide text-nav">
+          <div className="bg-transparent font-fraunces backdrop-blur-sm border-white/60 border absolute bottom-0 left-2 right-2 mx-auto max-w-full px-5 py-5 lg:bottom-6 lg:left-3 lg:right-3 rounded-3xl">
+            <h3 className=" text-sm font-semibold uppercase leading-4 tracking-wide text-nav">
               General Inquiries
             </h3>
             <address className="mt-3 not-italic">
@@ -73,7 +73,7 @@ export default function AppointmentSection() {
                   href="tel:+9198XXXXXXXX"
                   className="transition-colors hover:text-primary"
                 >
-                  +91 98XXX XXXXX
+                  +91 9834567890
                 </a>
               </p>
             </address>
