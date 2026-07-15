@@ -44,6 +44,10 @@
   --radius-panel: 1.5rem;
 }
 
+button{
+  @apply cursor-pointer;
+}
+
 @layer utilities {
   .type-eyebrow {
     font-family: var(--font-fraunces), ui-serif, Georgia, serif;

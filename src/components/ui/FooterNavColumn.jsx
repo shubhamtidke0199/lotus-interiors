@@ -7,7 +7,7 @@ export default function FooterNavColumn({ title, links }) {
           <li key={link} className={index > 0 ? "mt-4" : undefined}>
             <a
               href="#"
-              className="text-sm uppercase leading-4 tracking-wide transition-colors hover:text-primary"
+              className="text-xs uppercase leading-4 tracking-wide transition-colors hover:text-primary"
             >
               {link}
             </a>

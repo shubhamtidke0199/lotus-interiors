@@ -179,10 +179,6 @@ export const footerColumns = [
     links: ["Curation", "Integrity", "Sustainability"],
   },
   {
-    title: "Philosophy",
-    links: ["Curation", "Integrity", "Sustainability"],
-  },
-  {
     title: "Explore",
     links: ["Portfolio", "Shop All", "Locations"],
   },

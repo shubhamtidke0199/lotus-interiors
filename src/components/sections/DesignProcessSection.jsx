@@ -17,7 +17,7 @@ export default function DesignProcessSection() {
           titleId={titleId}
         />
 
-        <ol className="mt-8 grid grid-cols-1 gap-y-12 md:grid-cols-2 md:gap-x-10 xl:mt-10 xl:grid-cols-4 xl:gap-y-0">
+        <ol className="mt-8 grid grid-cols-1 gap-y-12 md:grid-cols-2 md:gap-x-10 xl:mt-10 xl:grid-cols-4 xl:gap-y-0 ">
           {designProcessSteps.map((item, index) => (
             <li key={item.step} className="list-none">
               <ProcessStepCard
