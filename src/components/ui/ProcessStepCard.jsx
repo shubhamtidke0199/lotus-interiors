@@ -18,7 +18,7 @@ export default function ProcessStepCard({
   connectorWidthClass = "w-56",
 }) {
   return (
-    <article className="relative mx-auto w-full max-w-[18rem] xl:mx-0">
+    <article className="relative mx-auto w-full md:max-w-[18rem] xl:mx-0">
       <figure className="relative h-72 w-full overflow-hidden bg-accent-lavender">
         <img
           src={image}
