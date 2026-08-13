@@ -49,8 +49,9 @@ function PresencePromoCard() {
 export default function PresenceSection() {
   return (
     <section
+      id="presence"
       aria-labelledby="presence-title"
-      className="bg-white px-4 py-12 sm:px-6 lg:px-8 lg:py-14"
+      className="scroll-mt-28 bg-white px-4 py-12 sm:px-6 lg:px-8 lg:py-14"
     >
       <div className="container-site flex flex-col gap-8 lg:gap-10">
         <SectionIntro

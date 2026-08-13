@@ -1,6 +1,4 @@
 import { notFound } from "next/navigation";
-import Navbar from "@/components/layouts/Navbar";
-import SiteFooter from "@/components/layouts/SiteFooter";
 import ProductDetailHero from "@/components/sections/ProductDetailHero";
 import ProductMaterialMasterySection from "@/components/sections/ProductMaterialMasterySection";
 import ProductSustainabilitySection from "@/components/sections/ProductSustainabilitySection";
@@ -18,11 +16,11 @@ export async function generateMetadata({ params }) {
   const product = getProductDetail(slug);
 
   if (!product) {
-    return { title: "Product Not Found | Lotus Design Studio" };
+    return { title: "Product Not Found" };
   }
 
   return {
-    title: `${product.title} | Lotus Design Studio`,
+    title: product.title,
     description: product.summary,
   };
 }
@@ -36,21 +34,17 @@ export default async function ProductDetailPage({ params }) {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-      <main>
-        <ProductDetailHero
-          title={product.title}
-          summary={product.summary}
-          price={product.price}
-          selectedMaterial={product.selectedMaterial}
-          frameFinish={product.frameFinish}
-          gallery={product.gallery}
-        />
-        <ProductMaterialMasterySection />
-        <ProductSustainabilitySection {...product.sustainability} />
-      </main>
-      <SiteFooter />
-    </div>
+    <main className="bg-white">
+      <ProductDetailHero
+        title={product.title}
+        summary={product.summary}
+        price={product.price}
+        selectedMaterial={product.selectedMaterial}
+        frameFinish={product.frameFinish}
+        gallery={product.gallery}
+      />
+      <ProductMaterialMasterySection />
+      <ProductSustainabilitySection {...product.sustainability} />
+    </main>
   );
 }

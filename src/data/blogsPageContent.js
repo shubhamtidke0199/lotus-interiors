@@ -3,7 +3,7 @@ export const blogFilters = ["All", "Residential", "Commercial", "Process"];
 export const blogsHero = {
   title: "Crafting Beautiful Interiors with Expertise",
   description:
-    "Antares Interior Design Studio specializes in creating elegant, functional, and modern spaces. We work on residential, commercial, and hospitality projects with complete design and execution services.",
+    "Lotus Design Studio specializes in creating elegant, functional, and modern spaces. We work on residential, commercial, and hospitality projects with complete design and execution services.",
   image: "/images/blogs/header-img.png",
 };
 

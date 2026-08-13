@@ -24,12 +24,17 @@ const fieldClassName =
 
 export default function FormField({
   id,
+  name,
   label,
   type = "text",
   placeholder,
   as = "input",
   rows = 4,
+  required = false,
+  defaultValue,
 }) {
+  const fieldName = name ?? id;
+
   return (
     <div className="relative">
       <label
@@ -41,17 +46,21 @@ export default function FormField({
       {as === "textarea" ? (
         <textarea
           id={id}
-          name={id}
+          name={fieldName}
           rows={rows}
           placeholder={placeholder}
+          required={required}
+          defaultValue={defaultValue}
           className={`${fieldClassName} min-h-24 resize-y`}
         />
       ) : (
         <input
           id={id}
-          name={id}
+          name={fieldName}
           type={type}
           placeholder={placeholder}
+          required={required}
+          defaultValue={defaultValue}
           className={fieldClassName}
         />
       )}
@@ -59,7 +68,15 @@ export default function FormField({
   );
 }
 
-export function SelectField({ id, label, options = ["Select City"] }) {
+export function SelectField({
+  id,
+  name,
+  label,
+  options = ["Select City"],
+  required = false,
+}) {
+  const fieldName = name ?? id;
+
   return (
     <div className="relative">
       <label
@@ -71,8 +88,9 @@ export function SelectField({ id, label, options = ["Select City"] }) {
       <div className="relative">
         <select
           id={id}
-          name={id}
+          name={fieldName}
           defaultValue=""
+          required={required}
           className={`${fieldClassName} appearance-none pr-8`}
         >
           <option value="" disabled>
@@ -90,11 +108,16 @@ export function SelectField({ id, label, options = ["Select City"] }) {
   );
 }
 
-export function SubmitButton({ children = "Submit Request",classNames = "" }) {
+export function SubmitButton({
+  children = "Submit Request",
+  classNames = "",
+  disabled = false,
+}) {
   return (
     <button
       type="submit"
-      className={`inline-flex h-11  items-center justify-center gap-3 bg-appointment-button px-8 font-helvetica text-sm uppercase leading-4 tracking-[var(--tracking-cta)] text-white transition-opacity hover:opacity-90 ${classNames}`}
+      disabled={disabled}
+      className={`inline-flex h-11 items-center justify-center gap-3 bg-appointment-button px-8 font-helvetica text-sm uppercase leading-4 tracking-[var(--tracking-cta)] text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60 ${classNames}`}
     >
       {children}
       <ArrowIcon className="text-white" />

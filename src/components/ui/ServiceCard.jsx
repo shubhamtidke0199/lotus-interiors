@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function ServiceCard({
   title,
   image,
@@ -8,22 +10,20 @@ export default function ServiceCard({
   lines,
   multiline = false,
   className = "",
+  href,
 }) {
   const labelAlignment =
     labelAlign === "center"
       ? "text-center items-center"
       : "text-left items-start";
 
-  return (
-    <article
-      className={`group relative overflow-hidden ${className}`}
-      aria-label={title}
-    >
+  const content = (
+    <>
       <figure className="relative size-full overflow-hidden">
         <img
           src={image}
           alt={imageAlt}
-          className={`absolute inset-0 size-full object-cover ${imageClassName}`}
+          className={`absolute inset-0 size-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04] ${imageClassName}`}
           loading="lazy"
         />
         <figcaption
@@ -43,6 +43,22 @@ export default function ServiceCard({
           </div>
         </figcaption>
       </figure>
+    </>
+  );
+
+  const sharedClass = `group relative overflow-hidden ${className}`;
+
+  if (href) {
+    return (
+      <Link href={href} className={sharedClass} aria-label={title}>
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <article className={sharedClass} aria-label={title}>
+      {content}
     </article>
   );
 }

@@ -13,14 +13,14 @@ export default function ProductsCatalogCard({
 }) {
   return (
     <article
-      className={`flex flex-col gap-3 pb-8 ${staggered ? "pt-6" : ""}`}
+      className={`group flex flex-col gap-3 pb-8 ${staggered ? "pt-6" : ""}`}
     >
       <Link href={`/products/${id}`} className="relative block bg-[#f7f3ea]">
         <figure className="relative h-72 overflow-hidden">
           <img
             src={image}
             alt={name}
-            className={imageClassName}
+            className={`transition-transform duration-700 ease-out group-hover:scale-[1.04] ${imageClassName}`}
             loading="lazy"
           />
         </figure>
@@ -49,12 +49,12 @@ export default function ProductsCatalogCard({
         <p className="font-fraunces text-sm leading-5 text-nav">{description}</p>
       </div>
 
-      <button
-        type="button"
+      <Link
+        href={`/contact?interest=${encodeURIComponent(name)}`}
         className="mt-1 flex h-11 w-full items-center justify-center border border-[rgba(206,198,183,0.2)] bg-primary font-fraunces text-xs uppercase tracking-[1.2px] text-white transition-colors hover:bg-primary/90"
       >
-        Add to Cart
-      </button>
+        Enquire Now
+      </Link>
     </article>
   );
 }
