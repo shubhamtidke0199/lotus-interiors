@@ -18,33 +18,37 @@ export default function ProductDetailHero({
       aria-labelledby="product-detail-title"
       className="border-t border-product-bg px-4 py-8 sm:px-6 lg:px-8 lg:py-12"
     >
-      <div className="container-site grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-10">
-        <div className="flex flex-col gap-4">
-          <img
-            src={gallery.top}
-            alt=""
-            aria-hidden="true"
-            className="w-full max-w-[22rem] object-cover"
-            loading="eager"
-          />
-          <figure className="relative aspect-square w-full max-w-[22rem] overflow-hidden bg-white">
+      <div className="container-site grid items-start gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)] lg:gap-8">
+        <div className="grid w-full grid-cols-2 gap-2">
+          <figure className="relative col-span-2 aspect-square overflow-hidden bg-white">
             <img
               src={gallery.main}
               alt={title}
-              className="absolute inset-0 size-full object-cover px-4 py-2"
+              className="absolute inset-0 size-full object-cover"
               loading="eager"
             />
           </figure>
-          <img
-            src={gallery.bottom}
-            alt=""
-            aria-hidden="true"
-            className="w-full max-w-[22rem] object-cover"
-            loading="lazy"
-          />
+          <figure className="relative aspect-square overflow-hidden bg-white">
+            <img
+              src={gallery.top}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 size-full object-cover"
+              loading="eager"
+            />
+          </figure>
+          <figure className="relative aspect-square overflow-hidden bg-white">
+            <img
+              src={gallery.bottom}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 size-full object-cover"
+              loading="lazy"
+            />
+          </figure>
         </div>
 
-        <div className="flex flex-col gap-8">
+        <div className="flex min-w-0 flex-col gap-8">
           <div className="flex flex-col gap-4">
             <h1
               id="product-detail-title"
