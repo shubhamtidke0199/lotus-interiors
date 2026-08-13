@@ -37,7 +37,7 @@ export default function AppointmentSection() {
             />
           </figure>
 
-          <div className="absolute bottom-0 left-2 right-2 mx-auto max-w-full rounded-3xl border border-white/60 bg-white/40 px-5 py-5 font-fraunces backdrop-blur-sm lg:bottom-6 lg:left-3 lg:right-3">
+          <div className="absolute bottom-4 left-2 right-2 mx-auto max-w-full rounded-3xl border border-white/60 bg-white/40 px-5 py-5 font-fraunces backdrop-blur-sm lg:bottom-6 lg:left-3 lg:right-3">
             <h3 className="text-sm font-semibold uppercase leading-4 tracking-wide text-nav">
               General Inquiries
             </h3>

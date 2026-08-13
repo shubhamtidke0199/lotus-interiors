@@ -1,0 +1,36 @@
+
+:root {
+	/* responsive margins / paddings */
+	--margin-sm: 16px;
+	--margin-md: 32px;
+}
+
+* {
+	--min-screen-size: 430;
+	--max-screen-size: 1440;
+	--interpolate-diff: calc(var(--max-font-size) - var(--min-font-size));
+	--interpolate: clamp(calc(var(--min-font-size) * 1px), calc((var(--min-font-size) * 1px) + var(--interpolate-diff) * ((100vw - calc(var(--min-screen-size) * 1px)) / (var(--max-screen-size) - var(--min-screen-size)))), calc(var(--max-font-size) * 1px));
+}
+
+html {
+	height: 100%;
+	font-size: 16px;
+}
+
+
+
+/* text utility classes */
+
+.text {
+	font-size: 14px;
+	line-height: 1.625;
+	letter-spacing: 0.35px;
+}
+
+
+
+/* button hover utility classes */
+
+.hover-dark:hover {
+	filter: brightness(0.85);
+}

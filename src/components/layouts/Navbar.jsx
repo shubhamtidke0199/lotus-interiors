@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ProductSearchBar from "@/components/ui/ProductSearchBar";
 import PrimaryButton from "@/components/ui/PrimaryButton";
+import { useContactModal } from "@/components/contact/ContactModalContext";
 
 const navLinks = [
   { label: "About Us", href: "/about-us" },
@@ -13,7 +14,7 @@ const navLinks = [
   { label: "Products", href: "/products" },
   { label: "Blogs", href: "/blogs" },
   { label: "FAQ", href: "/faq" },
-  { label: "Contact", href: "/contact" },
+  { label: "Contact", href: "/contact", opensModal: true },
 ];
 
 function linkIsActive(pathname, href) {
@@ -23,6 +24,7 @@ function linkIsActive(pathname, href) {
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { openContactModal } = useContactModal();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [navPath, setNavPath] = useState(pathname);
@@ -48,6 +50,11 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
+  const handleContactClick = () => {
+    setMobileOpen(false);
+    openContactModal();
+  };
+
   return (
     <header
       className={`sticky top-0 z-50 border-b bg-white/50 backdrop-blur-md transition-[height,box-shadow,border-color] duration-300 ${
@@ -63,15 +70,15 @@ export default function Navbar() {
       >
         <Link
           href="/"
-          className={`relative shrink-0 overflow-hidden transition-[width,height] duration-300 ${
-            scrolled ? "size-14 lg:size-16" : "size-16 lg:size-20"
+          className={`relative shrink-0 transition-[width,height] duration-300 ${
+            scrolled ? "size-12 lg:size-14" : "size-14 lg:size-16"
           }`}
-          aria-label="Lotus Design Studio home"
+          aria-label="Lotus Interior Design Studio home"
         >
           <img
-            src="/images/navbar/logo.webp"
-            alt="LOTUS Design Studio"
-            className="absolute left-[-8.15%] top-[-4.41%] size-[116.08%] max-w-none object-cover"
+            src="/images/brand/lotus-logo.png"
+            alt="Lotus Interior Design Studio"
+            className="size-full object-contain"
           />
         </Link>
 
@@ -81,13 +88,28 @@ export default function Navbar() {
         >
           {navLinks.map((link) => {
             const active = linkIsActive(pathname, link.href);
+            const className = `font-fraunces text-sm font-normal uppercase leading-5 tracking-wide transition-colors hover:text-primary ${
+              active ? "text-primary" : "text-nav"
+            }`;
+
+            if (link.opensModal) {
+              return (
+                <button
+                  key={link.label}
+                  type="button"
+                  className={className}
+                  onClick={handleContactClick}
+                >
+                  {link.label}
+                </button>
+              );
+            }
+
             return (
               <Link
                 key={link.label}
                 href={link.href}
-                className={`font-fraunces text-sm font-normal uppercase leading-5 tracking-wide transition-colors hover:text-primary ${
-                  active ? "text-primary" : "text-nav"
-                }`}
+                className={className}
                 aria-current={active ? "page" : undefined}
               >
                 {link.label}
@@ -144,13 +166,28 @@ export default function Navbar() {
         >
           {navLinks.map((link) => {
             const active = linkIsActive(pathname, link.href);
+            const className = `font-fraunces text-base font-normal uppercase transition-colors hover:text-primary ${
+              active ? "text-primary" : "text-nav"
+            }`;
+
+            if (link.opensModal) {
+              return (
+                <button
+                  key={link.label}
+                  type="button"
+                  className={`${className} text-left`}
+                  onClick={handleContactClick}
+                >
+                  {link.label}
+                </button>
+              );
+            }
+
             return (
               <Link
                 key={link.label}
                 href={link.href}
-                className={`font-fraunces text-base font-normal uppercase transition-colors hover:text-primary ${
-                  active ? "text-primary" : "text-nav"
-                }`}
+                className={className}
                 aria-current={active ? "page" : undefined}
                 onClick={() => setMobileOpen(false)}
               >
