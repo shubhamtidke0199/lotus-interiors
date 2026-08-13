@@ -13,6 +13,7 @@ const navLinks = [
   { label: "Products", href: "/products" },
   { label: "Blogs", href: "/blogs" },
   { label: "FAQ", href: "/faq" },
+  { label: "Contact", href: "/contact" },
 ];
 
 function linkIsActive(pathname, href) {
