@@ -215,6 +215,16 @@ button {
   transition: none;
 }
 
+.presence-locations-viewport {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  touch-action: pan-x;
+}
+
+.presence-locations-viewport::-webkit-scrollbar {
+  display: none;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
