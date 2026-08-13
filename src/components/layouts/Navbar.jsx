@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import SearchIcon from "@/components/icons/SearchIcon";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import ProductSearchBar from "@/components/ui/ProductSearchBar";
 import PrimaryButton from "@/components/ui/PrimaryButton";
 
@@ -10,18 +10,62 @@ const navLinks = [
   { label: "About Us", href: "/about-us" },
   { label: "Services", href: "/services" },
   { label: "Portfolio", href: "/portfolio" },
+  { label: "Products", href: "/products" },
   { label: "Blogs", href: "/blogs" },
+  { label: "FAQ", href: "/faq" },
 ];
 
+function linkIsActive(pathname, href) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export default function Navbar() {
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [navPath, setNavPath] = useState(pathname);
+
+  if (navPath !== pathname) {
+    setNavPath(pathname);
+    if (mobileOpen) setMobileOpen(false);
+  }
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    queueMicrotask(onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!mobileOpen) return undefined;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [mobileOpen]);
 
   return (
-    <header className="relative z-50 bg-white">
-      <div className="container-site flex h-20 items-center px-4 sm:px-6 lg:h-24 lg:px-8">
+    <header
+      className={`sticky top-0 z-50 border-b bg-white/95 backdrop-blur-md transition-[height,box-shadow,border-color] duration-300 ${
+        scrolled
+          ? "border-footer-border shadow-[0_8px_24px_rgba(28,27,27,0.06)]"
+          : "border-transparent"
+      }`}
+    >
+      <div
+        className={`container-site flex items-center px-4 sm:px-6 lg:px-8 transition-[height] duration-300 ${
+          scrolled ? "h-16 lg:h-[4.5rem]" : "h-20 lg:h-24"
+        }`}
+      >
         <Link
           href="/"
-          className="relative size-16 shrink-0 overflow-hidden lg:size-20"
+          className={`relative shrink-0 overflow-hidden transition-[width,height] duration-300 ${
+            scrolled ? "size-14 lg:size-16" : "size-16 lg:size-20"
+          }`}
+          aria-label="Lotus Design Studio home"
         >
           <img
             src="/images/navbar/logo.webp"
@@ -32,17 +76,23 @@ export default function Navbar() {
 
         <nav
           aria-label="Primary"
-          className="hidden flex-1 items-center justify-center gap-8 lg:flex"
+          className="hidden flex-1 items-center justify-center gap-6 xl:gap-8 lg:flex"
         >
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className="font-fraunces text-sm font-normal uppercase leading-5 tracking-wide text-nav transition-colors hover:text-primary"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const active = linkIsActive(pathname, link.href);
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={`font-fraunces text-sm font-normal uppercase leading-5 tracking-wide transition-colors hover:text-primary ${
+                  active ? "text-primary" : "text-nav"
+                }`}
+                aria-current={active ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="ml-auto hidden items-center gap-3 lg:flex">
@@ -55,7 +105,7 @@ export default function Navbar() {
         <button
           type="button"
           className="ml-auto p-2 text-nav lg:hidden"
-          onClick={() => setMobileOpen(!mobileOpen)}
+          onClick={() => setMobileOpen((open) => !open)}
           aria-expanded={mobileOpen}
           aria-controls="mobile-navigation"
           aria-label="Toggle menu"
@@ -89,27 +139,26 @@ export default function Navbar() {
       {mobileOpen && (
         <nav
           id="mobile-navigation"
-          className="flex flex-col gap-4 border-t border-gray-100 bg-white px-6 py-5 lg:hidden"
+          className="flex max-h-[calc(100dvh-4rem)] flex-col gap-4 overflow-y-auto border-t border-gray-100 bg-white px-6 py-5 lg:hidden"
         >
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className="font-fraunces text-base font-normal uppercase text-nav transition-colors hover:text-primary"
-              onClick={() => setMobileOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const active = linkIsActive(pathname, link.href);
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={`font-fraunces text-base font-normal uppercase transition-colors hover:text-primary ${
+                  active ? "text-primary" : "text-nav"
+                }`}
+                aria-current={active ? "page" : undefined}
+                onClick={() => setMobileOpen(false)}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
 
-          <div className="flex h-11 w-fit items-center gap-3 bg-accent-cream py-3 pl-1.5 pr-4">
-            <div className="flex size-8 shrink-0 items-center justify-center bg-white p-1.5">
-              <SearchIcon className="text-primary" />
-            </div>
-            <span className="font-helvetica text-[11px] font-medium uppercase tracking-[var(--tracking-cta)] text-primary">
-              Search products...
-            </span>
-          </div>
+          <ProductSearchBar className="w-full max-w-sm" />
 
           <PrimaryButton
             href="/contact"

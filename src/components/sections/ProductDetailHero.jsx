@@ -1,6 +1,10 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import Link from "next/link";
 import ArrowIcon from "@/components/icons/ArrowIcon";
 import {
-  materialSwatches,
+  materialSwatches as defaultSwatches,
   productHighlights,
   productSpecs,
 } from "@/data/productDetailContent";
@@ -13,38 +17,57 @@ export default function ProductDetailHero({
   frameFinish,
   gallery,
 }) {
+  const [expanded, setExpanded] = useState(false);
+  const [swatches, setSwatches] = useState(defaultSwatches);
+
+  const activeMaterial = useMemo(() => {
+    const selected = swatches.find((swatch) => swatch.selected);
+    return selected
+      ? selected.id.charAt(0).toUpperCase() + selected.id.slice(1)
+      : selectedMaterial;
+  }, [swatches, selectedMaterial]);
+
+  const shortSummary =
+    summary.length > 160 && !expanded
+      ? `${summary.slice(0, 160).trim()}…`
+      : summary;
+
   return (
     <section
       aria-labelledby="product-detail-title"
       className="border-t border-product-bg px-4 py-8 sm:px-6 lg:px-8 lg:py-12"
     >
-      <div className="container-site grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-10">
-        <div className="flex flex-col gap-4">
-          <img
-            src={gallery.top}
-            alt=""
-            aria-hidden="true"
-            className="w-full max-w-[22rem] object-cover"
-            loading="eager"
-          />
-          <figure className="relative aspect-square w-full max-w-[22rem] overflow-hidden bg-white">
+      <div className="container-site grid items-start gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)] lg:gap-8">
+        <div className="grid w-full grid-cols-2 gap-2">
+          <figure className="relative col-span-2 aspect-square overflow-hidden bg-white">
             <img
               src={gallery.main}
               alt={title}
-              className="absolute inset-0 size-full object-cover px-4 py-2"
+              className="absolute inset-0 size-full object-cover"
               loading="eager"
             />
           </figure>
-          <img
-            src={gallery.bottom}
-            alt=""
-            aria-hidden="true"
-            className="w-full max-w-[22rem] object-cover"
-            loading="lazy"
-          />
+          <figure className="relative aspect-square overflow-hidden bg-white">
+            <img
+              src={gallery.top}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 size-full object-cover"
+              loading="eager"
+            />
+          </figure>
+          <figure className="relative aspect-square overflow-hidden bg-white">
+            <img
+              src={gallery.bottom}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 size-full object-cover"
+              loading="lazy"
+            />
+          </figure>
         </div>
 
-        <div className="flex flex-col gap-8">
+        <div className="flex min-w-0 flex-col gap-8">
           <div className="flex flex-col gap-4">
             <h1
               id="product-detail-title"
@@ -53,13 +76,16 @@ export default function ProductDetailHero({
               {title}
             </h1>
             <p className="font-fraunces text-sm leading-6 text-[#504444] sm:text-base">
-              {summary}{" "}
-              <button
-                type="button"
-                className="font-fraunces text-primary underline-offset-2 hover:underline"
-              >
-                Read More
-              </button>
+              {shortSummary}{" "}
+              {summary.length > 160 && (
+                <button
+                  type="button"
+                  className="font-fraunces text-primary underline-offset-2 hover:underline"
+                  onClick={() => setExpanded((value) => !value)}
+                >
+                  {expanded ? "Show Less" : "Read More"}
+                </button>
+              )}
             </p>
           </div>
 
@@ -74,18 +100,26 @@ export default function ProductDetailHero({
                   Material Selection
                 </p>
                 <p className="font-fraunces text-xs text-[#504444]">
-                  {selectedMaterial}
+                  {activeMaterial}
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">
-                {materialSwatches.map((swatch) => (
+                {swatches.map((swatch) => (
                   <button
                     key={swatch.id}
                     type="button"
                     aria-label={`Select ${swatch.id} material`}
                     aria-pressed={swatch.selected}
-                    className={`size-14 shrink-0 border-4 border-white ${
-                      swatch.selected ? "ring-1 ring-primary" : ""
+                    onClick={() =>
+                      setSwatches((current) =>
+                        current.map((item) => ({
+                          ...item,
+                          selected: item.id === swatch.id,
+                        })),
+                      )
+                    }
+                    className={`size-14 shrink-0 border-4 border-white transition-shadow ${
+                      swatch.selected ? "ring-1 ring-primary" : "hover:ring-1 hover:ring-primary/40"
                     }`}
                     style={{ backgroundColor: swatch.color }}
                   />
@@ -144,13 +178,13 @@ export default function ProductDetailHero({
                 ))}
               </div>
 
-              <button
-                type="button"
+              <Link
+                href={`/contact?interest=${encodeURIComponent(title)}`}
                 className="inline-flex h-12 w-full items-center justify-center gap-3 bg-primary px-6 font-fraunces text-sm uppercase tracking-[var(--tracking-cta)] text-white transition-colors hover:bg-primary/90"
               >
-                Add to Cart
+                Enquire Now
                 <ArrowIcon className="text-white" />
-              </button>
+              </Link>
             </div>
           </div>
         </div>

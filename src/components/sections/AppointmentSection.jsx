@@ -1,8 +1,12 @@
-import FormField, { SelectField, SubmitButton } from "@/components/ui/FormField";
+"use client";
+
+import ContactForm from "@/components/ui/ContactForm";
+import { studioContact } from "@/data/landingContent";
 
 export default function AppointmentSection() {
   return (
     <section
+      id="appointment"
       aria-labelledby="appointment-title"
       className="bg-appointment-bg py-12 md:px-6 lg:px-8 lg:py-16"
     >
@@ -20,29 +24,7 @@ export default function AppointmentSection() {
             </p>
           </header>
 
-          <form className="flex flex-col gap-10">
-            <div className="grid gap-10 sm:grid-cols-2 sm:gap-6">
-              <FormField
-                id="full-name"
-                label="Full Name"
-                placeholder="e.g. Julianne Smith"
-              />
-              <FormField
-                id="contact-number"
-                label="Contact Number"
-                type="tel"
-                placeholder="+91 00000 00000"
-              />
-            </div>
-            <SelectField id="project-location" label="Project Location" />
-            <FormField
-              id="requirement-brief"
-              label="Requirement Brief"
-              as="textarea"
-              placeholder="Describe your vision, approximate area, and style preferences..."
-            />
-            <SubmitButton />
-          </form>
+          <ContactForm source="appointment" submitLabel="Submit Request" />
         </div>
 
         <aside className="relative min-h-80 lg:min-h-full">
@@ -55,26 +37,29 @@ export default function AppointmentSection() {
             />
           </figure>
 
-          <div className="bg-transparent font-fraunces backdrop-blur-sm border-white/60 border absolute bottom-0 left-2 right-2 mx-auto max-w-full px-5 py-5 lg:bottom-6 lg:left-3 lg:right-3 rounded-3xl">
-            <h3 className=" text-sm font-semibold uppercase leading-4 tracking-wide text-nav">
+          <div className="absolute bottom-0 left-2 right-2 mx-auto max-w-full rounded-3xl border border-white/60 bg-white/40 px-5 py-5 font-fraunces backdrop-blur-sm lg:bottom-6 lg:left-3 lg:right-3">
+            <h3 className="text-sm font-semibold uppercase leading-4 tracking-wide text-nav">
               General Inquiries
             </h3>
             <address className="mt-3 not-italic">
               <p className="font-fraunces text-sm leading-5 text-nav">
                 <a
-                  href="mailto:studio@antares.design"
+                  href={`mailto:${studioContact.email}`}
                   className="transition-colors hover:text-primary"
                 >
-                  studio@antares.design
+                  {studioContact.email}
                 </a>
               </p>
               <p className="mt-1 font-fraunces text-sm leading-5 text-nav">
                 <a
-                  href="tel:+9198XXXXXXXX"
+                  href={studioContact.phoneHref}
                   className="transition-colors hover:text-primary"
                 >
-                  +91 9834567890
+                  {studioContact.phoneDisplay}
                 </a>
+              </p>
+              <p className="mt-2 font-fraunces text-sm leading-5 text-muted">
+                {studioContact.address}
               </p>
             </address>
           </div>

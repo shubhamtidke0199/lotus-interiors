@@ -10,8 +10,9 @@ const valuePropRows = [
 export default function WhyChooseUsSection() {
   return (
     <section
+      id="why-choose-us"
       aria-labelledby="why-choose-us-title"
-      className="bg-white  py-12 md:px-6 sm:py-14 lg:px-8 lg:py-16"
+      className="scroll-mt-28 bg-white py-12 md:px-6 sm:py-14 lg:px-8 lg:py-16"
     >
       <div className="container-site flex flex-col  lg:flex-row lg:items-stretch lg:gap-2">
         <figure className="relative h-80 w-full shrink-0 overflow-hidden  bg-why-choose-lavender shadow-[0px_4px_20px_rgba(0,0,0,0.08)] sm:h-[28rem] lg:h-auto lg:min-h-[36rem] lg:w-[45%]">

@@ -10,7 +10,7 @@ export const materialSwatches = [
 export const productSpecs = [
   { label: "Theme", value: "Sliding" },
   { label: "Size", value: "Medium" },
-  { label: "Gender", value: "Male" },
+  { label: "Configuration", value: "Custom" },
   { label: "Floor Material", value: "Laminate" },
   { label: "Type", value: "Sliding" },
 ];
@@ -49,7 +49,7 @@ const defaultProductDetail = {
   title: "Warm Wood Sliding Wardrobe with Mirror Open Shelves",
   summary:
     "This floor-to-ceiling sliding wardrobe combines warm wood tones with soft beige panels for a balanced, modern look. The sliding shutters save space and keep the room visually calm while offering generous storage.",
-  price: "$4,250",
+  price: "Rs. 4,25,000",
   selectedMaterial: "Full Grain Leather",
   frameFinish: "Matte",
   gallery: {

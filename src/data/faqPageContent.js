@@ -5,7 +5,7 @@ export const faqIntro = {
 
 export const faqQuote = {
   text: '"Design is not just what it looks like and feels like. Design is how it works for you."',
-  attribution: "— Antares Philosophy",
+  attribution: "— Lotus Philosophy",
   image: "/images/faq/main-img.png",
 };
 

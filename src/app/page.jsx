@@ -1,5 +1,3 @@
-import Navbar from "@/components/layouts/Navbar";
-import SiteFooter from "@/components/layouts/SiteFooter";
 import AppointmentSection from "@/components/sections/AppointmentSection";
 import ConsultationCTASection from "@/components/sections/ConsultationCTASection";
 import DesignProcessSection from "@/components/sections/DesignProcessSection";
@@ -13,21 +11,17 @@ import WhyChooseUsSection from "@/components/sections/WhyChooseUsSection";
 
 export default function Index() {
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-      <main>
-        <HeroSection />
-        <DesignProcessSection />
-        <ServicesSection />
-        <WhyChooseUsSection />
-        <ProductsSection />
-        <PortfolioSection />
-        <PresenceSection />
-        <ConsultationCTASection />
-        <TestimonialsSection />
-        <AppointmentSection />
-      </main>
-      <SiteFooter />
-    </div>
+    <main className="bg-white">
+      <HeroSection />
+      <DesignProcessSection />
+      <ServicesSection />
+      <WhyChooseUsSection />
+      <ProductsSection />
+      <PortfolioSection />
+      <PresenceSection />
+      <ConsultationCTASection />
+      <TestimonialsSection />
+      <AppointmentSection />
+    </main>
   );
 }
