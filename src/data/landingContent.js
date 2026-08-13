@@ -515,6 +515,18 @@ export const testimonials = [
     author: "Rohan & Meera Kapoor",
     role: "Private Residence, Pune",
   },
+  {
+    quote:
+      "What stood out was how carefully they listened. Every room feels personal, calm, and elevated—without ever losing the warmth of a lived-in home.",
+    author: "Sneha & Arjun Mehta",
+    role: "Family Home, Mumbai",
+  },
+  {
+    quote:
+      "The process was seamless from concept to handover. Lotus brought clarity, craftsmanship, and a quiet luxury that still surprises guests.",
+    author: "Vikram Shah",
+    role: "Principal Architect, Studio North",
+  },
 ];
 
 export const footerColumns = [

@@ -1,108 +1,133 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 import { testimonials } from "@/data/landingContent";
 
-function ChevronIcon({ direction = "left", className = "" }) {
+const SCROLL_SPEED = 0.4;
+const RESUME_DELAY_MS = 1800;
+
+function QuoteIcon() {
   return (
     <svg
       aria-hidden="true"
-      viewBox="0 0 15 12"
+      viewBox="0 0 48 36"
       fill="none"
-      className={`h-3 w-4 ${direction === "left" ? "rotate-180" : ""} ${className}`}
+      className="h-8 w-10 text-testimonial-accent/80 sm:h-9 sm:w-11"
     >
       <path
-        d="M9.34611 11.3076L8.29228 10.2231L12.1115 6.4038H0V4.90384H12.1115L8.29228 1.08459L9.34611 0L14.9999 5.65382L9.34611 11.3076Z"
+        d="M0 36V21.6C0 14.4 1.6 9.07 4.8 5.6 8 2.13 12.53 0.27 18.4 0v7.2c-3.2.53-5.6 1.87-7.2 4-1.6 2.13-2.4 5.07-2.4 8.8H18.4V36H0Zm29.6 0V21.6c0-7.2 1.6-12.53 4.8-16 3.2-3.47 7.73-5.33 13.6-5.6v7.2c-3.2.53-5.6 1.87-7.2 4-1.6 2.13-2.4 5.07-2.4 8.8h9.6V36H29.6Z"
         fill="currentColor"
       />
     </svg>
   );
 }
 
-function QuoteMarkIcon() {
+function TestimonialSlide({ testimonial }) {
   return (
-    <div aria-hidden="true" className="mb-5 flex gap-2.5">
-      <span className="size-8 rounded-full bg-white/35" />
-      <span className="size-8 rounded-full bg-white/35" />
-    </div>
-  );
-}
-
-function TestimonialCard({
-  testimonial,
-  titleId,
-  onPrevious,
-  onNext,
-  showNavigation = true,
-}) {
-  return (
-    <article className="testimonial-glass-card flex min-h-[26rem] w-full max-w-4xl flex-col rounded-3xl px-5 py-8 sm:px-8 lg:min-h-[28rem] lg:px-8 lg:pb-12 lg:pt-20">
-      <div className="grid flex-1 gap-8 lg:grid-cols-2 lg:gap-14">
-        <header className="flex flex-col justify-between">
-          <div>
-            <p className="type-eyebrow text-testimonial-accent">Client Voices</p>
-            <h2
-              id={titleId}
-              className="type-section-heading mt-6 text-heading"
-            >
-              Shared visions, meticulously realized.
-            </h2>
-          </div>
-
-          {showNavigation && (
-            <div className="mt-6 flex gap-3">
-              <button
-                type="button"
-                aria-label="Previous testimonial"
-                onClick={onPrevious}
-                className="inline-flex size-10 items-center justify-center rounded-lg bg-white text-nav shadow-sm transition-opacity hover:opacity-80"
-              >
-                <ChevronIcon direction="left" />
-              </button>
-              <button
-                type="button"
-                aria-label="Next testimonial"
-                onClick={onNext}
-                className="inline-flex size-10 items-center justify-center rounded-lg bg-white text-nav shadow-sm transition-opacity hover:opacity-80"
-              >
-                <ChevronIcon direction="right" />
-              </button>
-            </div>
-          )}
-        </header>
-
-        <figure className="flex flex-col">
-          <QuoteMarkIcon />
-          <blockquote className="font-fraunces text-base font-normal leading-7 text-heading sm:text-lg sm:leading-8">
-            &ldquo;{testimonial.quote}&rdquo;
-          </blockquote>
-          <figcaption className="mt-8 flex flex-col gap-1">
-            <cite className="not-italic font-fraunces text-sm font-semibold leading-5 text-heading">
-              {testimonial.author}
-            </cite>
-            <p className="font-fraunces text-xs uppercase leading-4 tracking-wide text-testimonial-accent">
-              {testimonial.role}
-            </p>
-          </figcaption>
-        </figure>
+    <article className="testimonial-glass-card flex h-full min-h-[22rem] w-[min(88vw,22rem)] shrink-0 flex-col justify-between rounded-3xl px-6 py-8 sm:min-h-[24rem] sm:w-[28rem] sm:px-8 sm:py-10 lg:min-h-[26rem] lg:w-[34rem] lg:px-10 lg:py-12">
+      <div>
+        <QuoteIcon />
+        <blockquote className="mt-6 font-fraunces text-lg font-normal leading-8 text-heading sm:text-xl sm:leading-9 lg:text-[1.375rem] lg:leading-9">
+          &ldquo;{testimonial.quote}&rdquo;
+        </blockquote>
       </div>
+
+      <footer className="mt-10 flex flex-col gap-1.5 border-t border-white/50 pt-6">
+        <p className="font-fraunces text-base font-semibold leading-6 text-heading">
+          {testimonial.author}
+        </p>
+        <p className="font-fraunces text-xs uppercase leading-4 tracking-[0.08em] text-testimonial-accent">
+          {testimonial.role}
+        </p>
+      </footer>
     </article>
   );
 }
 
 export default function TestimonialsSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const slideCount = testimonials.length;
+  const viewportRef = useRef(null);
+  const pausedRef = useRef(false);
+  const resumeTimerRef = useRef(0);
 
-  const goPrevious = () =>
-    setActiveIndex((prev) => (prev - 1 + slideCount) % slideCount);
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport || testimonials.length === 0) return undefined;
 
-  const goNext = () => setActiveIndex((prev) => (prev + 1) % slideCount);
+    const getLoopWidth = () => viewport.scrollWidth / 2;
+
+    const wrapScroll = () => {
+      const loopWidth = getLoopWidth();
+      if (loopWidth <= 0) return;
+
+      if (viewport.scrollLeft >= loopWidth) {
+        viewport.scrollLeft -= loopWidth;
+      } else if (viewport.scrollLeft <= 0) {
+        viewport.scrollLeft += loopWidth;
+      }
+    };
+
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frameId = 0;
+
+    const tick = () => {
+      if (!pausedRef.current && !motionQuery.matches) {
+        viewport.scrollLeft += SCROLL_SPEED;
+        wrapScroll();
+      }
+      frameId = window.requestAnimationFrame(tick);
+    };
+
+    frameId = window.requestAnimationFrame(tick);
+
+    const pause = () => {
+      pausedRef.current = true;
+      window.clearTimeout(resumeTimerRef.current);
+    };
+
+    const scheduleResume = () => {
+      window.clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = window.setTimeout(() => {
+        pausedRef.current = false;
+      }, RESUME_DELAY_MS);
+    };
+
+    const onPointerEnter = () => pause();
+    const onPointerLeave = () => scheduleResume();
+    const onTouchStart = () => pause();
+    const onTouchEnd = () => scheduleResume();
+    const onWheel = () => {
+      pause();
+      scheduleResume();
+    };
+    const onScroll = () => wrapScroll();
+
+    viewport.addEventListener("pointerenter", onPointerEnter);
+    viewport.addEventListener("pointerleave", onPointerLeave);
+    viewport.addEventListener("touchstart", onTouchStart, { passive: true });
+    viewport.addEventListener("touchend", onTouchEnd);
+    viewport.addEventListener("touchcancel", onTouchEnd);
+    viewport.addEventListener("wheel", onWheel, { passive: true });
+    viewport.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.clearTimeout(resumeTimerRef.current);
+      viewport.removeEventListener("pointerenter", onPointerEnter);
+      viewport.removeEventListener("pointerleave", onPointerLeave);
+      viewport.removeEventListener("touchstart", onTouchStart);
+      viewport.removeEventListener("touchend", onTouchEnd);
+      viewport.removeEventListener("touchcancel", onTouchEnd);
+      viewport.removeEventListener("wheel", onWheel);
+      viewport.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  const loopedTestimonials = [...testimonials, ...testimonials];
 
   return (
     <section
       aria-labelledby="testimonials-title"
-      className="relative overflow-hidden py-12 lg:py-20"
+      className="relative overflow-hidden py-14 sm:py-16 lg:py-24"
     >
       <img
         src="/images/testimonials/background.webp"
@@ -111,25 +136,35 @@ export default function TestimonialsSection() {
         className="absolute inset-0 size-full object-cover"
         loading="lazy"
       />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/25"
+      />
 
-      <div className="container-site relative z-10 px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-center gap-5 lg:gap-6">
-          <div
-            aria-hidden="true"
-            className="testimonial-glass-card hidden min-h-[26rem] w-full max-w-[12vw] shrink-0 scale-[0.92] rounded-3xl opacity-45 lg:block"
-          />
+      <div className="relative z-10">
+        <header className="container-site mx-auto max-w-2xl px-4 text-center sm:px-6 lg:px-8">
+          <p className="type-eyebrow text-testimonial-accent">Client Voices</p>
+          <h2
+            id="testimonials-title"
+            className="type-section-heading mt-3 text-heading sm:mt-4"
+          >
+            Shared visions, meticulously realized.
+          </h2>
+        </header>
 
-          <TestimonialCard
-            testimonial={testimonials[activeIndex]}
-            titleId="testimonials-title"
-            onPrevious={goPrevious}
-            onNext={goNext}
-          />
-
-          <div
-            aria-hidden="true"
-            className="testimonial-glass-card hidden min-h-[26rem] w-full max-w-[12vw] shrink-0 scale-[0.92] rounded-3xl opacity-45 lg:block"
-          />
+        <div
+          ref={viewportRef}
+          className="testimonials-carousel-viewport mt-10 touch-pan-y overflow-x-auto overscroll-x-contain sm:mt-12 lg:mt-14"
+          aria-label="Client testimonials"
+        >
+          <div className="flex w-max gap-4 px-4 sm:gap-5 sm:px-6 lg:gap-6 lg:px-8">
+            {loopedTestimonials.map((testimonial, index) => (
+              <TestimonialSlide
+                key={`${testimonial.author}-${index}`}
+                testimonial={testimonial}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
