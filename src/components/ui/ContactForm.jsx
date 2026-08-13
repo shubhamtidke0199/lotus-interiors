@@ -1,17 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import FormField, { SelectField, SubmitButton } from "@/components/ui/FormField";
-
-const CITY_OPTIONS = ["Select City", "Nagpur", "Mumbai", "Pune", "Other"];
+import FormField, { SubmitButton } from "@/components/ui/FormField";
 
 export default function ContactForm({
   source = "contact",
   className = "",
-  showName = true,
-  showPhone = true,
-  showLocation = true,
-  showBrief = true,
   submitLabel = "Submit Request",
   defaultMessage,
 }) {
@@ -68,52 +62,35 @@ export default function ContactForm({
   }
 
   return (
-    <form className={`flex flex-col gap-10 ${className}`} onSubmit={handleSubmit}>
-      {(showName || showPhone) && (
-        <div className="grid gap-10 sm:grid-cols-2 sm:gap-6">
-          {showName && (
-            <FormField
-              id="full-name"
-              name="name"
-              label="Full Name"
-              placeholder="e.g. Julianne Smith"
-              required
-            />
-          )}
-          {showPhone && (
-            <FormField
-              id="contact-number"
-              name="phone"
-              label="Contact Number"
-              type="tel"
-              placeholder="+91 98765 43210"
-              required
-            />
-          )}
-        </div>
-      )}
-
-      {showLocation && (
-        <SelectField
-          id="project-location"
-          name="location"
-          label="Project Location"
-          options={CITY_OPTIONS}
-          required
-        />
-      )}
-
-      {showBrief && (
+    <form className={`flex flex-col gap-8 ${className}`} onSubmit={handleSubmit}>
+      <div className="grid gap-8 sm:grid-cols-2 sm:gap-6">
         <FormField
-          id="requirement-brief"
-          name="message"
-          label="Requirement Brief"
-          as="textarea"
-          placeholder="Describe your vision, approximate area, and style preferences..."
+          id="email"
+          name="email"
+          label="Email"
+          type="email"
+          placeholder="you@example.com"
           required
-          defaultValue={defaultMessage}
         />
-      )}
+        <FormField
+          id="phone"
+          name="phone"
+          label="Phone"
+          type="tel"
+          placeholder="+91 98765 43210"
+          required
+        />
+      </div>
+
+      <FormField
+        id="message"
+        name="message"
+        label="Requirement / Query"
+        as="textarea"
+        placeholder="Tell us about your project, space, or question..."
+        required
+        defaultValue={defaultMessage}
+      />
 
       {error && (
         <p className="font-fraunces text-sm text-red-700" role="alert">

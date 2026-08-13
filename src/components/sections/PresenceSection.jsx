@@ -1,12 +1,12 @@
 import Link from "next/link";
 import ArrowIcon from "@/components/icons/ArrowIcon";
-import LocationCard from "@/components/ui/LocationCard";
+import LocationsCarousel from "@/components/ui/LocationsCarousel";
 import SectionIntro from "@/components/ui/SectionIntro";
 import { locations } from "@/data/landingContent";
 
 function PresencePromoCard() {
   return (
-    <article className="relative flex h-80 w-full min-w-[17.5rem] shrink-0 flex-col overflow-hidden bg-[#faf9fc] sm:h-[26rem] sm:w-[28rem] sm:min-w-[28rem]">
+    <article className="relative flex h-80 w-full shrink-0 flex-col overflow-hidden bg-[#faf9fc] sm:h-[26rem] md:w-[28rem] md:min-w-[28rem] lg:w-[30rem] lg:min-w-[30rem]">
       <img
         src="/images/presence/background.webp"
         alt=""
@@ -61,11 +61,9 @@ export default function PresenceSection() {
           description="Designing elegant spaces with complete solutions from planning to execution."
         />
 
-        <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:gap-4 sm:px-6 lg:mx-0 lg:px-0">
+        <div className="flex flex-col gap-3 sm:gap-4 md:flex-row md:items-stretch">
           <PresencePromoCard />
-          {locations.map((location) => (
-            <LocationCard key={location.city} {...location} />
-          ))}
+          <LocationsCarousel locations={locations} />
         </div>
       </div>
     </section>

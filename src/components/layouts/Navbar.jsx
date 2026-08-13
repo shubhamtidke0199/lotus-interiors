@@ -13,6 +13,7 @@ const navLinks = [
   { label: "Products", href: "/products" },
   { label: "Blogs", href: "/blogs" },
   { label: "FAQ", href: "/faq" },
+  { label: "Contact", href: "/contact" },
 ];
 
 function linkIsActive(pathname, href) {
@@ -49,7 +50,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b bg-white/95 backdrop-blur-md transition-[height,box-shadow,border-color] duration-300 ${
+      className={`sticky top-0 z-50 border-b bg-white/50 backdrop-blur-md transition-[height,box-shadow,border-color] duration-300 ${
         scrolled
           ? "border-footer-border shadow-[0_8px_24px_rgba(28,27,27,0.06)]"
           : "border-transparent"
