@@ -565,6 +565,39 @@ export const footerLegalLinks = [
   { label: "Press Kit", href: "/press" },
 ];
 
+export const footerSocialLinks = [
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com",
+    icon: "/images/footer/social/youtube.svg",
+    className: "bg-[#ff0000]",
+  },
+  {
+    label: "X",
+    href: "https://x.com",
+    icon: "/images/footer/social/x.svg",
+    className: "bg-[#080808]",
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com",
+    icon: "/images/footer/social/instagram.svg",
+    className: "bg-[#c31162]",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com",
+    icon: "/images/footer/social/linkedin.svg",
+    className: "bg-[#0076b2]",
+  },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com",
+    icon: "/images/footer/social/facebook.svg",
+    className: "bg-[#3d5a98]",
+  },
+];
+
 export const studioContact = {
   email: "hello@lotusdesignstudio.com",
   phoneDisplay: "+91 98345 67890",

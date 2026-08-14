@@ -8,9 +8,13 @@ export default function ContactForm({
   className = "",
   submitLabel = "Submit Request",
   defaultMessage,
+  idPrefix = "",
 }) {
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
+  const emailId = `${idPrefix}email`;
+  const phoneId = `${idPrefix}phone`;
+  const messageId = `${idPrefix}message`;
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -65,7 +69,7 @@ export default function ContactForm({
     <form className={`flex flex-col gap-8 ${className}`} onSubmit={handleSubmit}>
       <div className="grid gap-8 sm:grid-cols-2 sm:gap-6">
         <FormField
-          id="email"
+          id={emailId}
           name="email"
           label="Email"
           type="email"
@@ -73,7 +77,7 @@ export default function ContactForm({
           required
         />
         <FormField
-          id="phone"
+          id={phoneId}
           name="phone"
           label="Phone"
           type="tel"
@@ -83,7 +87,7 @@ export default function ContactForm({
       </div>
 
       <FormField
-        id="message"
+        id={messageId}
         name="message"
         label="Requirement / Query"
         as="textarea"

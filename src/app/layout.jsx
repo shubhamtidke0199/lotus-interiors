@@ -1,6 +1,7 @@
 import { Fraunces, Marcellus } from "next/font/google";
 import Navbar from "@/components/layouts/Navbar";
 import SiteFooter from "@/components/layouts/SiteFooter";
+import { ContactModalProvider } from "@/components/contact/ContactModalContext";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -55,11 +56,13 @@ export default function RootLayout({ children }) {
         >
           Skip to content
         </a>
-        <Navbar />
-        <div id="main-content" className="flex flex-1 flex-col">
-          {children}
-        </div>
-        <SiteFooter />
+        <ContactModalProvider>
+          <Navbar />
+          <div id="main-content" className="flex flex-1 flex-col">
+            {children}
+          </div>
+          <SiteFooter />
+        </ContactModalProvider>
       </body>
     </html>
   );

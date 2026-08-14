@@ -1,5 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import ArrowIcon from "@/components/icons/ArrowIcon";
+import {
+  getContactModalOptionsFromHref,
+  isContactHref,
+  useContactModal,
+} from "@/components/contact/ContactModalContext";
 
 const variants = {
   filled:
@@ -22,8 +29,10 @@ export default function PrimaryButton({
   href,
   variant = "filled",
   className = "",
+  onClick,
   ...props
 }) {
+  const { openContactModal } = useContactModal();
   const classes = [
     "inline-flex items-center justify-center transition-colors",
     variants[variant],
@@ -35,9 +44,39 @@ export default function PrimaryButton({
   const iconClass =
     variant === "filled" || variant === "hero" ? "text-white" : "text-primary";
 
+  const openFromHref = (event) => {
+    if (!isContactHref(href)) return false;
+    event.preventDefault();
+    event.stopPropagation();
+    openContactModal(getContactModalOptionsFromHref(href));
+    return true;
+  };
+
   if (href) {
+    if (isContactHref(href)) {
+      return (
+        <button
+          type="button"
+          className={classes}
+          onClick={(event) => {
+            openFromHref(event);
+            onClick?.(event);
+          }}
+          {...props}
+        >
+          <span className={labelStyles[variant]}>{children}</span>
+          <ArrowIcon className={iconClass} />
+        </button>
+      );
+    }
+
     return (
-      <Link href={href} className={classes} {...props}>
+      <Link
+        href={href}
+        className={classes}
+        onClick={onClick}
+        {...props}
+      >
         <span className={labelStyles[variant]}>{children}</span>
         <ArrowIcon className={iconClass} />
       </Link>
@@ -45,7 +84,7 @@ export default function PrimaryButton({
   }
 
   return (
-    <button type="button" className={classes} {...props}>
+    <button type="button" className={classes} onClick={onClick} {...props}>
       <span className={labelStyles[variant]}>{children}</span>
       <ArrowIcon className={iconClass} />
     </button>
