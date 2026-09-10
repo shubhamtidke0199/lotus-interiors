@@ -50,7 +50,7 @@ export default function ProductsCatalogCard({
       </div>
 
       <Link
-        href={`/contact?interest=${encodeURIComponent(name)}`}
+        href={`/contact?interest=${encodeURIComponent(name)}&product=${encodeURIComponent(id)}`}
         className="mt-1 flex h-11 w-full items-center justify-center border border-[rgba(206,198,183,0.2)] bg-primary font-fraunces text-xs uppercase tracking-[1.2px] text-white transition-colors hover:bg-primary/90"
       >
         Enquire Now

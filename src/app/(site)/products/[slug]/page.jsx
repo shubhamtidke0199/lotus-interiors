@@ -2,18 +2,13 @@ import { notFound } from "next/navigation";
 import ProductDetailHero from "@/components/sections/ProductDetailHero";
 import ProductMaterialMasterySection from "@/components/sections/ProductMaterialMasterySection";
 import ProductSustainabilitySection from "@/components/sections/ProductSustainabilitySection";
-import {
-  getAllProductSlugs,
-  getProductDetail,
-} from "@/data/productDetailContent";
+import { getProductDetailBySlug } from "@/lib/cms/catalog";
 
-export function generateStaticParams() {
-  return getAllProductSlugs().map((slug) => ({ slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const product = getProductDetail(slug);
+  const product = await getProductDetailBySlug(slug);
 
   if (!product) {
     return { title: "Product Not Found" };
@@ -27,7 +22,7 @@ export async function generateMetadata({ params }) {
 
 export default async function ProductDetailPage({ params }) {
   const { slug } = await params;
-  const product = getProductDetail(slug);
+  const product = await getProductDetailBySlug(slug);
 
   if (!product) {
     notFound();
@@ -36,6 +31,7 @@ export default async function ProductDetailPage({ params }) {
   return (
     <main className="bg-white">
       <ProductDetailHero
+        slug={product.slug}
         title={product.title}
         summary={product.summary}
         price={product.price}

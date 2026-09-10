@@ -45,7 +45,7 @@ export const materialMasteryCards = [
   },
 ];
 
-const defaultProductDetail = {
+export const defaultProductDetail = {
   title: "Warm Wood Sliding Wardrobe with Mirror Open Shelves",
   summary:
     "This floor-to-ceiling sliding wardrobe combines warm wood tones with soft beige panels for a balanced, modern look. The sliding shutters save space and keep the room visually calm while offering generous storage.",

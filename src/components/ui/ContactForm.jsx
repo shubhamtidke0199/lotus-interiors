@@ -8,6 +8,7 @@ export default function ContactForm({
   className = "",
   submitLabel = "Submit Request",
   defaultMessage,
+  productId = "",
   idPrefix = "",
 }) {
   const [status, setStatus] = useState("idle");
@@ -21,7 +22,8 @@ export default function ContactForm({
     setStatus("loading");
     setError("");
 
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     const payload = Object.fromEntries(formData.entries());
 
     try {
@@ -36,8 +38,8 @@ export default function ContactForm({
         throw new Error(data.error || "Something went wrong.");
       }
 
+      form.reset();
       setStatus("success");
-      event.currentTarget.reset();
     } catch (err) {
       setStatus("error");
       setError(err.message || "Unable to send right now. Please try again.");
@@ -67,6 +69,7 @@ export default function ContactForm({
 
   return (
     <form className={`flex flex-col gap-8 ${className}`} onSubmit={handleSubmit}>
+      {productId ? <input type="hidden" name="productId" value={productId} /> : null}
       <div className="grid gap-8 sm:grid-cols-2 sm:gap-6">
         <FormField
           id={emailId}

@@ -5,9 +5,11 @@ import { useSearchParams } from "next/navigation";
 import ProductsCatalogCard from "@/components/ui/ProductsCatalogCard";
 import ProductsFilterSidebar from "@/components/ui/ProductsFilterSidebar";
 import ProductSearchBar from "@/components/ui/ProductSearchBar";
-import { catalogProducts } from "@/data/productsPageContent";
 
-export default function ProductsCatalogSection() {
+export default function ProductsCatalogSection({
+  products = [],
+  categories = [],
+}) {
   const searchParams = useSearchParams();
   const queryFromUrl = searchParams.get("q") ?? "";
   const [sort, setSort] = useState("latest");
@@ -16,7 +18,7 @@ export default function ProductsCatalogSection() {
   const filteredProducts = useMemo(() => {
     const query = queryFromUrl.trim().toLowerCase();
 
-    let next = catalogProducts.filter((product) => {
+    let next = products.filter((product) => {
       const matchesQuery =
         !query ||
         product.name.toLowerCase().includes(query) ||
@@ -44,7 +46,7 @@ export default function ProductsCatalogSection() {
     }
 
     return next;
-  }, [queryFromUrl, sort, activeBrands]);
+  }, [products, queryFromUrl, sort, activeBrands]);
 
   return (
     <section
@@ -74,6 +76,7 @@ export default function ProductsCatalogSection() {
         <div className="flex flex-col gap-8 lg:flex-row lg:gap-10">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <ProductsFilterSidebar
+              categories={categories}
               activeBrands={activeBrands}
               onBrandChange={setActiveBrands}
             />

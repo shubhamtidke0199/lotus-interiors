@@ -10,6 +10,7 @@ import {
 } from "@/data/productDetailContent";
 
 export default function ProductDetailHero({
+  slug,
   title,
   summary,
   price,
@@ -179,7 +180,9 @@ export default function ProductDetailHero({
               </div>
 
               <Link
-                href={`/contact?interest=${encodeURIComponent(title)}`}
+                href={`/contact?interest=${encodeURIComponent(title)}${
+                  slug ? `&product=${encodeURIComponent(slug)}` : ""
+                }`}
                 className="inline-flex h-12 w-full items-center justify-center gap-3 bg-primary px-6 font-fraunces text-sm uppercase tracking-[var(--tracking-cta)] text-white transition-colors hover:bg-primary/90"
               >
                 Enquire Now
