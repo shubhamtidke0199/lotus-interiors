@@ -93,10 +93,11 @@ export default function ContactModal({ isOpen, options, onClose }) {
 
         <div className="overflow-y-auto bg-product-bg/40 px-6 py-7 sm:px-8 sm:py-8">
           <ContactForm
-            key={`${options.source}-${options.defaultMessage}-${isOpen}`}
+            key={`${options.source}-${options.defaultMessage}-${options.productId}-${isOpen}`}
             source={options.source}
             defaultMessage={options.defaultMessage}
             submitLabel={options.submitLabel}
+            productId={options.productId}
             idPrefix="modal-"
             className="gap-7"
           />

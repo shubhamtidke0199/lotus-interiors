@@ -3,6 +3,7 @@ export default function robots() {
     rules: {
       userAgent: "*",
       allow: "/",
+      disallow: ["/admin", "/api/admin"],
     },
     sitemap: "https://lotusdesignstudio.com/sitemap.xml",
   };

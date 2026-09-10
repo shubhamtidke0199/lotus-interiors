@@ -31,11 +31,14 @@ export function isContactHref(href) {
 
 export function getContactModalOptionsFromHref(href) {
   let interest = "";
+  let productId = "";
   try {
     const url = new URL(href, "https://lotusdesignstudio.com");
     interest = url.searchParams.get("interest") || "";
+    productId = url.searchParams.get("product") || "";
   } catch {
     interest = "";
+    productId = "";
   }
 
   return {
@@ -43,6 +46,7 @@ export function getContactModalOptionsFromHref(href) {
     title: interest ? "Enquire Now" : "Book a Consultation",
     defaultMessage: interest ? `I'm interested in ${interest}.` : "",
     submitLabel: interest ? "Send Enquiry" : "Submit Request",
+    productId,
   };
 }
 
@@ -55,6 +59,7 @@ export function ContactModalProvider({ children }) {
       "Share a few details and a Lotus designer will get back to you within one business day.",
     defaultMessage: "",
     submitLabel: "Submit Request",
+    productId: "",
   });
 
   const openContactModal = useCallback((nextOptions = {}) => {
@@ -65,6 +70,7 @@ export function ContactModalProvider({ children }) {
         "Share a few details and a Lotus designer will get back to you within one business day.",
       defaultMessage: "",
       submitLabel: "Submit Request",
+      productId: "",
       ...nextOptions,
     });
     setIsOpen(true);

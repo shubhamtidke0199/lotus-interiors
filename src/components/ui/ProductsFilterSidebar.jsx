@@ -56,6 +56,7 @@ function ColorFilter({ label, color }) {
 }
 
 export default function ProductsFilterSidebar({
+  categories,
   activeBrands = [],
   onBrandChange,
 }) {
@@ -80,7 +81,7 @@ export default function ProductsFilterSidebar({
         </summary>
         <div className="mt-6 flex flex-col gap-8 lg:mt-0 lg:gap-10">
           <FilterSection title="Category">
-            {brandFilters.map((brand) => (
+            {(categories ?? brandFilters).map((brand) => (
               <CheckboxFilter
                 key={brand}
                 label={brand}

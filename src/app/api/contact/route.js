@@ -1,3 +1,5 @@
+import { createEnquiry, getProductById } from "@/lib/cms/store";
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request) {
@@ -15,6 +17,8 @@ export async function POST(request) {
     body.message ?? body["requirement-brief"] ?? body.brief ?? "",
   ).trim();
   const source = String(body.source ?? "contact").trim();
+  const interest = String(body.interest ?? "").trim();
+  let productId = String(body.productId ?? body.product ?? "").trim();
 
   if (!email) {
     return Response.json({ error: "Please enter your email." }, { status: 400 });
@@ -24,7 +28,7 @@ export async function POST(request) {
     return Response.json({ error: "Please enter a valid email." }, { status: 400 });
   }
 
-  if (!phone) {
+  if (!phone && source !== "consultation") {
     return Response.json({ error: "Please enter your phone number." }, { status: 400 });
   }
 
@@ -35,13 +39,35 @@ export async function POST(request) {
     );
   }
 
-  console.info("[lotus-contact]", {
-    source,
-    email,
-    phone,
-    message,
-    receivedAt: new Date().toISOString(),
-  });
+  let productName = interest;
+  if (productId) {
+    const product = await getProductById(productId);
+    if (product) {
+      productId = product.id;
+      productName = product.name;
+    }
+  }
+
+  try {
+    await createEnquiry({
+      productId,
+      productName,
+      email,
+      phone,
+      message:
+        message ||
+        (source === "consultation"
+          ? "Consultation request from homepage CTA."
+          : ""),
+      source,
+    });
+  } catch (error) {
+    console.error("[lotus-contact]", error);
+    return Response.json(
+      { error: "Unable to save your request right now. Please try again." },
+      { status: 500 },
+    );
+  }
 
   return Response.json({
     ok: true,
