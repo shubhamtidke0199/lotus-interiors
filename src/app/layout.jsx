@@ -1,4 +1,5 @@
 import { Fraunces, Marcellus } from "next/font/google";
+import { ContactModalProvider } from "@/components/contact/ContactModalContext";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -53,7 +54,7 @@ export default function RootLayout({ children }) {
         >
           Skip to content
         </a>
-        {children}
+        <ContactModalProvider>{children}</ContactModalProvider>
       </body>
     </html>
   );
