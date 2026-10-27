@@ -3,16 +3,30 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { ExternalLink, LoaderCircle, LogOut, Menu, X } from "lucide-react";
+import AdminBusyOverlay from "@/components/admin/AdminBusyOverlay";
 
-const links = [
-  { href: "/admin", label: "Overview" },
-  { href: "/admin/products", label: "Products" },
-  { href: "/admin/categories", label: "Categories" },
-  { href: "/admin/orders", label: "Orders" },
+const navGroups = [
+  {
+    label: "Workspace",
+    links: [{ href: "/admin", label: "Overview", exact: true }],
+  },
+  {
+    label: "Catalog",
+    links: [
+      { href: "/admin/products", label: "Products" },
+      { href: "/admin/categories", label: "Categories" },
+      { href: "/admin/attributes", label: "Attributes" },
+    ],
+  },
+  {
+    label: "Inbox",
+    links: [{ href: "/admin/orders", label: "Enquiries" }],
+  },
 ];
 
-function linkActive(pathname, href) {
-  if (href === "/admin") return pathname === "/admin";
+function linkActive(pathname, href, exact) {
+  if (exact || href === "/admin") return pathname === "/admin";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
@@ -22,6 +36,12 @@ export default function AdminSidebar() {
   const [open, setOpen] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
 
+  const currentLabel =
+    navGroups
+      .flatMap((group) => group.links)
+      .find((link) => linkActive(pathname, link.href, link.exact))?.label ??
+    "Admin";
+
   async function signOut() {
     setSigningOut(true);
     await fetch("/api/admin/logout", { method: "POST" });
@@ -30,53 +50,87 @@ export default function AdminSidebar() {
   }
 
   return (
-    <aside className="border-b border-white/10 bg-footer-dark text-white lg:flex lg:min-h-full lg:w-64 lg:flex-col lg:border-b-0 lg:border-r">
-      <div className="flex items-center justify-between px-5 py-4 lg:block lg:px-6 lg:py-8">
+    <aside className="z-30 flex shrink-0 flex-col border-b border-white/10 bg-[color:var(--admin-sidebar)] text-white lg:h-full lg:w-[15.5rem] lg:border-b-0 lg:border-r lg:border-white/10">
+      <AdminBusyOverlay
+        show={signingOut}
+        fullscreen
+        label="Signing out…"
+      />
+      <div className="flex shrink-0 items-center justify-between gap-3 px-4 py-3.5 lg:block lg:px-5 lg:pb-6 lg:pt-7">
         <div>
-          <p className="type-eyebrow text-accent-peach/80">Lotus Studio</p>
-          <p className="mt-1 font-fraunces text-lg">Admin</p>
+          <p className="font-helvetica text-[10px] font-medium uppercase tracking-[0.2em] text-[color:var(--admin-sidebar-text)]">
+            Lotus
+          </p>
+          <p className="mt-1 font-helvetica text-sm font-medium tracking-[-0.01em] text-white">
+            Studio console
+          </p>
+          <p className="mt-0.5 font-helvetica text-xs text-[color:var(--admin-sidebar-text)] lg:hidden">
+            {currentLabel}
+          </p>
         </div>
         <button
           type="button"
-          className="font-fraunces text-sm text-white/80 lg:hidden"
+          className="inline-flex items-center gap-2 border border-white/15 px-3 py-1.5 font-helvetica text-xs text-white/85 lg:hidden"
           onClick={() => setOpen((value) => !value)}
+          aria-expanded={open}
         >
+          {open ? (
+            <X className="size-3.5" aria-hidden="true" />
+          ) : (
+            <Menu className="size-3.5" aria-hidden="true" />
+          )}
           {open ? "Close" : "Menu"}
         </button>
       </div>
 
       <nav
-        className={`${open ? "flex" : "hidden"} flex-col gap-1 px-3 pb-4 lg:flex lg:flex-1 lg:px-4`}
+        className={`${open ? "flex" : "hidden"} min-h-0 flex-col gap-6 overflow-y-auto px-3 pb-5 lg:flex lg:flex-1 lg:px-3`}
       >
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            onClick={() => setOpen(false)}
-            className={`rounded-sm px-3 py-2.5 font-fraunces text-sm tracking-wide ${
-              linkActive(pathname, link.href)
-                ? "bg-white/10 text-white"
-                : "text-white/70 hover:bg-white/5 hover:text-white"
-            }`}
-          >
-            {link.label}
-          </Link>
+        {navGroups.map((group) => (
+          <div key={group.label}>
+            <p className="mb-2 px-2.5 font-helvetica text-[10px] font-medium uppercase tracking-[0.16em] text-white/35">
+              {group.label}
+            </p>
+            <div className="flex flex-col gap-0.5">
+              {group.links.map((link) => {
+                const active = linkActive(pathname, link.href, link.exact);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className={`admin-sidebar-link ${active ? "is-active" : ""}`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         ))}
       </nav>
 
-      <div className={`${open ? "block" : "hidden"} px-5 pb-5 lg:mt-auto lg:block lg:px-6 lg:pb-8`}>
+      <div
+        className={`${open ? "flex" : "hidden"} shrink-0 flex-col gap-3 border-t border-white/10 px-5 py-4 lg:flex`}
+      >
         <Link
           href="/"
-          className="block font-fraunces text-sm text-white/60 hover:text-white"
+          className="inline-flex items-center gap-1.5 font-helvetica text-xs text-[color:var(--admin-sidebar-text)] transition-colors hover:text-white"
         >
-          View website
+          View live site
+          <ExternalLink className="size-3" aria-hidden="true" />
         </Link>
         <button
           type="button"
           onClick={signOut}
           disabled={signingOut}
-          className="mt-3 font-fraunces text-sm text-accent-peach hover:underline disabled:opacity-60"
+          className="inline-flex w-fit items-center gap-1.5 font-helvetica text-xs text-white/70 transition-colors hover:text-white disabled:opacity-50"
         >
+          {signingOut ? (
+            <LoaderCircle className="size-3 animate-spin" aria-hidden="true" />
+          ) : (
+            <LogOut className="size-3" aria-hidden="true" />
+          )}
           {signingOut ? "Signing out…" : "Sign out"}
         </button>
       </div>

@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import ProductsCatalogCard from "@/components/ui/ProductsCatalogCard";
+import { parsePrice } from "@/lib/cms/format";
 import ProductsFilterSidebar from "@/components/ui/ProductsFilterSidebar";
 import ProductSearchBar from "@/components/ui/ProductSearchBar";
 
@@ -33,15 +34,11 @@ export default function ProductsCatalogSection({
 
     if (sort === "price-asc") {
       next = [...next].sort(
-        (a, b) =>
-          Number(a.salePrice.replace(/[^0-9.]/g, "")) -
-          Number(b.salePrice.replace(/[^0-9.]/g, "")),
+        (a, b) => parsePrice(a.salePrice) - parsePrice(b.salePrice),
       );
     } else if (sort === "price-desc") {
       next = [...next].sort(
-        (a, b) =>
-          Number(b.salePrice.replace(/[^0-9.]/g, "")) -
-          Number(a.salePrice.replace(/[^0-9.]/g, "")),
+        (a, b) => parsePrice(b.salePrice) - parsePrice(a.salePrice),
       );
     }
 

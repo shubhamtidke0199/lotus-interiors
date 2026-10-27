@@ -32,8 +32,12 @@ export default function FormField({
   rows = 4,
   required = false,
   defaultValue,
+  value,
+  onChange,
+  autoFocus = false,
 }) {
   const fieldName = name ?? id;
+  const controlled = value !== undefined;
 
   return (
     <div className="relative">
@@ -50,7 +54,7 @@ export default function FormField({
           rows={rows}
           placeholder={placeholder}
           required={required}
-          defaultValue={defaultValue}
+          {...(controlled ? { value, onChange } : { defaultValue })}
           className={`${fieldClassName} min-h-24 resize-y`}
         />
       ) : (
@@ -60,7 +64,8 @@ export default function FormField({
           type={type}
           placeholder={placeholder}
           required={required}
-          defaultValue={defaultValue}
+          autoFocus={autoFocus}
+          {...(controlled ? { value, onChange } : { defaultValue })}
           className={fieldClassName}
         />
       )}

@@ -1,42 +1,310 @@
 {
+  "attributeDefinitions": [
+    {
+      "id": "material",
+      "slug": "material",
+      "label": "Material",
+      "type": "select",
+      "required": false,
+      "filterable": true,
+      "sortOrder": 1,
+      "unit": "",
+      "options": [
+        {
+          "id": "full-grain-leather",
+          "label": "Full Grain Leather"
+        },
+        {
+          "id": "teak",
+          "label": "Solid Teak"
+        },
+        {
+          "id": "walnut",
+          "label": "Walnut"
+        },
+        {
+          "id": "oak",
+          "label": "Oak"
+        },
+        {
+          "id": "cane",
+          "label": "Cane"
+        },
+        {
+          "id": "fabric",
+          "label": "Premium Fabric"
+        },
+        {
+          "id": "laminate",
+          "label": "Matte Laminate"
+        },
+        {
+          "id": "acrylic",
+          "label": "Architectural Acrylic"
+        }
+      ],
+      "fields": [],
+      "active": true
+    },
+    {
+      "id": "colour",
+      "slug": "colour",
+      "label": "Colour options",
+      "type": "color",
+      "required": false,
+      "filterable": true,
+      "sortOrder": 2,
+      "unit": "",
+      "options": [
+        {
+          "id": "walnut",
+          "label": "Walnut",
+          "hex": "#7c5050"
+        },
+        {
+          "id": "rose",
+          "label": "Rose",
+          "hex": "#b18a8a"
+        },
+        {
+          "id": "espresso",
+          "label": "Espresso",
+          "hex": "#5c4a4a"
+        },
+        {
+          "id": "blush",
+          "label": "Blush",
+          "hex": "#d4c2c2"
+        },
+        {
+          "id": "sand",
+          "label": "Sand",
+          "hex": "#cbb79b"
+        },
+        {
+          "id": "ink",
+          "label": "Ink",
+          "hex": "#2f2a33"
+        },
+        {
+          "id": "dark",
+          "label": "Dark",
+          "hex": "#3e0404"
+        }
+      ],
+      "fields": [],
+      "active": true
+    },
+    {
+      "id": "dimensions",
+      "slug": "dimensions",
+      "label": "Overall dimensions",
+      "type": "dimension_list",
+      "required": false,
+      "filterable": false,
+      "sortOrder": 3,
+      "unit": "cm",
+      "options": [],
+      "fields": [
+        "w",
+        "d",
+        "h"
+      ],
+      "active": true
+    },
+    {
+      "id": "warranty",
+      "slug": "warranty",
+      "label": "Warranty",
+      "type": "text",
+      "required": false,
+      "filterable": false,
+      "sortOrder": 4,
+      "unit": "",
+      "options": [],
+      "fields": [],
+      "active": true
+    },
+    {
+      "id": "use-area",
+      "slug": "use-area",
+      "label": "Use / Area",
+      "type": "select",
+      "required": false,
+      "filterable": true,
+      "sortOrder": 5,
+      "unit": "",
+      "options": [
+        {
+          "id": "living-room",
+          "label": "Living room"
+        },
+        {
+          "id": "bedroom",
+          "label": "Bedroom"
+        },
+        {
+          "id": "dining",
+          "label": "Dining"
+        },
+        {
+          "id": "office",
+          "label": "Office"
+        },
+        {
+          "id": "kitchen",
+          "label": "Kitchen"
+        },
+        {
+          "id": "outdoor",
+          "label": "Outdoor"
+        },
+        {
+          "id": "entryway",
+          "label": "Entryway"
+        }
+      ],
+      "fields": [],
+      "active": true
+    },
+    {
+      "id": "frame-finish",
+      "slug": "frame-finish",
+      "label": "Frame finish",
+      "type": "select",
+      "required": false,
+      "filterable": false,
+      "sortOrder": 6,
+      "unit": "",
+      "options": [
+        {
+          "id": "matte",
+          "label": "Matte"
+        },
+        {
+          "id": "satin",
+          "label": "Satin"
+        },
+        {
+          "id": "gloss",
+          "label": "Gloss"
+        },
+        {
+          "id": "natural",
+          "label": "Natural oil"
+        }
+      ],
+      "fields": [],
+      "active": true
+    }
+  ],
   "categories": [
     {
       "id": "decor-desk",
       "name": "Decor Desk",
       "slug": "decor-desk",
       "sortOrder": 1,
-      "active": true
+      "active": true,
+      "attributeIds": [
+        "material",
+        "colour",
+        "dimensions",
+        "warranty",
+        "use-area",
+        "frame-finish"
+      ]
     },
     {
       "id": "bedroom",
       "name": "Bedroom",
       "slug": "bedroom",
       "sortOrder": 2,
-      "active": true
+      "active": true,
+      "attributeIds": [
+        "use-area",
+        "frame-finish"
+      ]
     },
     {
       "id": "office",
       "name": "Office",
       "slug": "office",
       "sortOrder": 3,
-      "active": true
+      "active": true,
+      "attributeIds": [
+        "material",
+        "colour",
+        "dimensions",
+        "warranty",
+        "use-area",
+        "frame-finish"
+      ]
     },
     {
       "id": "kitchen",
       "name": "Kitchen",
       "slug": "kitchen",
       "sortOrder": 4,
-      "active": true
+      "active": true,
+      "attributeIds": [
+        "material",
+        "colour",
+        "dimensions",
+        "warranty",
+        "use-area",
+        "frame-finish"
+      ]
     },
     {
       "id": "living-room",
       "name": "Living Room",
       "slug": "living-room",
       "sortOrder": 5,
-      "active": true
+      "active": true,
+      "attributeIds": [
+        "material",
+        "colour",
+        "dimensions",
+        "warranty",
+        "use-area",
+        "frame-finish"
+      ]
+    },
+    {
+      "id": "test",
+      "name": "Test",
+      "slug": "test",
+      "sortOrder": 6,
+      "active": true,
+      "attributeIds": [
+        "warranty"
+      ]
     }
   ],
   "products": [
+    {
+      "id": "test-product",
+      "slug": "test-product",
+      "name": "Test Product",
+      "description": "lorem ipsum dolor sit amet consectetur adipiscing elit quod et cupiditate placeat quibusdam odio lorem cum lorem provident et nulla sed est nam laborum eos esse minus quidem possimus tempor amet eiusmod id libero labore est praesentium do ullamco eu quibusdam fugiat nostrud aut adipiscing accusamus at consectetur nulla ut",
+      "categoryId": "bedroom",
+      "originalPrice": 60000,
+      "salePrice": 39982,
+      "onSale": false,
+      "published": true,
+      "image": "/uploads/img-mvqy3upg-d6yslq.png",
+      "images": [
+        "/uploads/img-mvqy42qr-dfaaa0.png",
+        "/uploads/img-mvqy42rr-5nhr32.png",
+        "/uploads/img-mvqy42s4-utnzrk.png"
+      ],
+      "attributes": {
+        "use-area": "kitchen",
+        "frame-finish": "satin"
+      },
+      "createdAt": "2026-10-27T17:14:54.331Z",
+      "updatedAt": "2026-10-27T17:14:54.331Z"
+    },
     {
       "id": "nagpur-teak-lounge-chair",
       "slug": "nagpur-teak-lounge-chair",
@@ -48,10 +316,15 @@
       "onSale": false,
       "published": true,
       "image": "/images/products-page/main-img2.png",
-      "galleryTop": "",
-      "galleryBottom": "",
-      "selectedMaterial": "",
-      "frameFinish": "Matte",
+      "images": [],
+      "attributes": {
+        "material": "",
+        "colour": [],
+        "dimensions": [],
+        "warranty": "",
+        "use-area": "",
+        "frame-finish": "matte"
+      },
       "createdAt": "2026-09-10T10:27:36.550Z",
       "updatedAt": "2026-09-10T10:27:36.550Z"
     },
@@ -66,10 +339,15 @@
       "onSale": false,
       "published": true,
       "image": "/images/products-page/main-img2.png",
-      "galleryTop": "",
-      "galleryBottom": "",
-      "selectedMaterial": "Full Grain Leather",
-      "frameFinish": "Matte",
+      "images": [],
+      "attributes": {
+        "material": "full-grain-leather",
+        "colour": [],
+        "dimensions": [],
+        "warranty": "",
+        "use-area": "",
+        "frame-finish": "matte"
+      },
       "createdAt": "2026-08-29T10:27:36.548Z",
       "updatedAt": "2026-09-10T10:27:36.548Z"
     },
@@ -84,10 +362,15 @@
       "onSale": true,
       "published": true,
       "image": "/images/products-page/card-bg-img1.png",
-      "galleryTop": "",
-      "galleryBottom": "",
-      "selectedMaterial": "Full Grain Leather",
-      "frameFinish": "Matte",
+      "images": [],
+      "attributes": {
+        "material": "full-grain-leather",
+        "colour": [],
+        "dimensions": [],
+        "warranty": "",
+        "use-area": "",
+        "frame-finish": "matte"
+      },
       "createdAt": "2026-08-30T10:27:36.548Z",
       "updatedAt": "2026-09-10T10:27:36.548Z"
     },
@@ -102,10 +385,15 @@
       "onSale": true,
       "published": true,
       "image": "/images/products-page/main-img3.png",
-      "galleryTop": "",
-      "galleryBottom": "",
-      "selectedMaterial": "Full Grain Leather",
-      "frameFinish": "Matte",
+      "images": [],
+      "attributes": {
+        "material": "full-grain-leather",
+        "colour": [],
+        "dimensions": [],
+        "warranty": "",
+        "use-area": "",
+        "frame-finish": "matte"
+      },
       "createdAt": "2026-08-31T10:27:36.549Z",
       "updatedAt": "2026-09-10T10:27:36.549Z"
     },
@@ -120,10 +408,15 @@
       "onSale": true,
       "published": true,
       "image": "/images/products-page/card-bg-img2.png",
-      "galleryTop": "",
-      "galleryBottom": "",
-      "selectedMaterial": "Full Grain Leather",
-      "frameFinish": "Matte",
+      "images": [],
+      "attributes": {
+        "material": "full-grain-leather",
+        "colour": [],
+        "dimensions": [],
+        "warranty": "",
+        "use-area": "",
+        "frame-finish": "matte"
+      },
       "createdAt": "2026-09-01T10:27:36.549Z",
       "updatedAt": "2026-09-10T10:27:36.549Z"
     },
@@ -138,10 +431,15 @@
       "onSale": true,
       "published": true,
       "image": "/images/products-page/card-bg-img3.png",
-      "galleryTop": "",
-      "galleryBottom": "",
-      "selectedMaterial": "Full Grain Leather",
-      "frameFinish": "Matte",
+      "images": [],
+      "attributes": {
+        "material": "full-grain-leather",
+        "colour": [],
+        "dimensions": [],
+        "warranty": "",
+        "use-area": "",
+        "frame-finish": "matte"
+      },
       "createdAt": "2026-09-02T10:27:36.549Z",
       "updatedAt": "2026-09-10T10:27:36.549Z"
     },
@@ -156,10 +454,15 @@
       "onSale": true,
       "published": true,
       "image": "/images/products-page/card-bg-img4.png",
-      "galleryTop": "",
-      "galleryBottom": "",
-      "selectedMaterial": "Full Grain Leather",
-      "frameFinish": "Matte",
+      "images": [],
+      "attributes": {
+        "material": "full-grain-leather",
+        "colour": [],
+        "dimensions": [],
+        "warranty": "",
+        "use-area": "",
+        "frame-finish": "matte"
+      },
       "createdAt": "2026-09-03T10:27:36.549Z",
       "updatedAt": "2026-09-10T10:27:36.549Z"
     },
@@ -174,10 +477,15 @@
       "onSale": true,
       "published": true,
       "image": "/images/products-page/card-bg-img5.png",
-      "galleryTop": "",
-      "galleryBottom": "",
-      "selectedMaterial": "Full Grain Leather",
-      "frameFinish": "Matte",
+      "images": [],
+      "attributes": {
+        "material": "full-grain-leather",
+        "colour": [],
+        "dimensions": [],
+        "warranty": "",
+        "use-area": "",
+        "frame-finish": "matte"
+      },
       "createdAt": "2026-09-04T10:27:36.549Z",
       "updatedAt": "2026-09-10T10:27:36.549Z"
     },
@@ -192,10 +500,15 @@
       "onSale": true,
       "published": true,
       "image": "/images/products-page/card-bg-img6.png",
-      "galleryTop": "",
-      "galleryBottom": "",
-      "selectedMaterial": "Full Grain Leather",
-      "frameFinish": "Matte",
+      "images": [],
+      "attributes": {
+        "material": "full-grain-leather",
+        "colour": [],
+        "dimensions": [],
+        "warranty": "",
+        "use-area": "",
+        "frame-finish": "matte"
+      },
       "createdAt": "2026-09-05T10:27:36.549Z",
       "updatedAt": "2026-09-10T10:27:36.549Z"
     },
@@ -210,10 +523,15 @@
       "onSale": true,
       "published": true,
       "image": "/images/products-page/card-bg-img7.png",
-      "galleryTop": "",
-      "galleryBottom": "",
-      "selectedMaterial": "Full Grain Leather",
-      "frameFinish": "Matte",
+      "images": [],
+      "attributes": {
+        "material": "full-grain-leather",
+        "colour": [],
+        "dimensions": [],
+        "warranty": "",
+        "use-area": "",
+        "frame-finish": "matte"
+      },
       "createdAt": "2026-09-06T10:27:36.549Z",
       "updatedAt": "2026-09-10T10:27:36.549Z"
     },
@@ -228,10 +546,15 @@
       "onSale": true,
       "published": true,
       "image": "/images/products-page/main-bg2.png",
-      "galleryTop": "",
-      "galleryBottom": "",
-      "selectedMaterial": "Full Grain Leather",
-      "frameFinish": "Matte",
+      "images": [],
+      "attributes": {
+        "material": "full-grain-leather",
+        "colour": [],
+        "dimensions": [],
+        "warranty": "",
+        "use-area": "",
+        "frame-finish": "matte"
+      },
       "createdAt": "2026-09-07T10:27:36.549Z",
       "updatedAt": "2026-09-10T10:27:36.549Z"
     },
@@ -246,10 +569,15 @@
       "onSale": true,
       "published": true,
       "image": "/images/products-page/card-bg-img8.png",
-      "galleryTop": "",
-      "galleryBottom": "",
-      "selectedMaterial": "Full Grain Leather",
-      "frameFinish": "Matte",
+      "images": [],
+      "attributes": {
+        "material": "full-grain-leather",
+        "colour": [],
+        "dimensions": [],
+        "warranty": "",
+        "use-area": "",
+        "frame-finish": "matte"
+      },
       "createdAt": "2026-09-08T10:27:36.549Z",
       "updatedAt": "2026-09-10T10:27:36.549Z"
     },
@@ -264,10 +592,15 @@
       "onSale": true,
       "published": true,
       "image": "/images/products-page/card-bg-img9.png",
-      "galleryTop": "",
-      "galleryBottom": "",
-      "selectedMaterial": "Full Grain Leather",
-      "frameFinish": "Matte",
+      "images": [],
+      "attributes": {
+        "material": "full-grain-leather",
+        "colour": [],
+        "dimensions": [],
+        "warranty": "",
+        "use-area": "",
+        "frame-finish": "matte"
+      },
       "createdAt": "2026-09-09T10:27:36.549Z",
       "updatedAt": "2026-09-10T10:27:36.549Z"
     }

@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: {
     default: "Admin",
-    template: "%s | Lotus Admin",
+    template: "%s · Lotus Admin",
   },
   robots: {
     index: false,
@@ -12,5 +12,5 @@ export const metadata = {
 };
 
 export default function AdminRootLayout({ children }) {
-  return <div className="min-h-full bg-[#f7f3ea]">{children}</div>;
+  return <div className="admin-app">{children}</div>;
 }

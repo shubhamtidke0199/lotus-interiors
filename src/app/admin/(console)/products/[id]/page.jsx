@@ -1,17 +1,18 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import ProductForm from "@/components/admin/ProductForm";
+import { adminPanelPad, statusBadgeClass } from "@/components/admin/adminUi";
 import { getCatalog, getProductById } from "@/lib/cms/store";
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
   const product = await getProductById(id);
-  return { title: product ? `Edit ${product.name}` : "Product" };
+  return { title: product ? `Edit · ${product.name}` : "Product" };
 }
 
 export default async function EditProductPage({ params }) {
   const { id } = await params;
-  const [{ categories }, product] = await Promise.all([
+  const [{ categories, attributeDefinitions }, product] = await Promise.all([
     getCatalog(),
     getProductById(id),
   ]);
@@ -19,16 +20,29 @@ export default async function EditProductPage({ params }) {
   if (!product) notFound();
 
   return (
-    <main>
-      <Link
-        href="/admin/products"
-        className="font-fraunces text-sm text-muted hover:text-primary"
-      >
-        ← Products
-      </Link>
-      <h1 className="mt-4 font-fraunces text-3xl text-heading">Edit product</h1>
-      <div className="mt-8 max-w-4xl bg-white px-6 py-8 sm:px-8">
-        <ProductForm product={product} categories={categories} />
+    <main className="flex flex-col gap-8">
+      <AdminPageHeader
+        backHref="/admin/products"
+        backLabel="Products"
+        eyebrow="Catalog"
+        title={product.name}
+        description={`/${product.slug}`}
+        actions={
+          <span
+            className={statusBadgeClass(
+              product.published ? "published" : "draft",
+            )}
+          >
+            {product.published ? "Published" : "Draft"}
+          </span>
+        }
+      />
+      <div className={`${adminPanelPad} max-w-4xl`}>
+        <ProductForm
+          product={product}
+          categories={categories}
+          attributeDefinitions={attributeDefinitions}
+        />
       </div>
     </main>
   );

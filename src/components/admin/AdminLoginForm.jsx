@@ -2,17 +2,28 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { LoaderCircle } from "lucide-react";
+import AdminBusyOverlay from "@/components/admin/AdminBusyOverlay";
+import {
+  adminBtnGhost,
+  adminBtnPrimary,
+  adminError,
+  adminInput,
+  adminLabel,
+} from "@/components/admin/adminUi";
 
 export default function AdminLoginForm() {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const showBusy = busy || isPending;
 
   async function handleSubmit(event) {
     event.preventDefault();
-    setLoading(true);
+    setBusy(true);
     setError("");
 
     try {
@@ -25,20 +36,26 @@ export default function AdminLoginForm() {
       if (!response.ok) {
         throw new Error(data.error || "Unable to sign in.");
       }
-      router.replace("/admin");
-      router.refresh();
+      startTransition(() => {
+        router.replace("/admin");
+        router.refresh();
+      });
+      setBusy(false);
     } catch (err) {
       setError(err.message);
-      setLoading(false);
+      setBusy(false);
     }
   }
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+    <form className="relative flex flex-col gap-5" onSubmit={handleSubmit}>
+      <AdminBusyOverlay
+        show={showBusy}
+        label={busy ? "Signing in…" : "Opening console…"}
+      />
+
       <label className="flex flex-col gap-2">
-        <span className="font-helvetica text-sm uppercase tracking-wide text-muted">
-          Password
-        </span>
+        <span className={adminLabel}>Password</span>
         <input
           type="password"
           name="password"
@@ -46,28 +63,30 @@ export default function AdminLoginForm() {
           required
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          className="h-12 border-0 border-b border-appointment-line bg-transparent font-fraunces text-base text-nav outline-none focus:border-primary"
+          className={adminInput}
+          placeholder="••••••••"
+          disabled={showBusy}
         />
       </label>
 
       {error ? (
-        <p className="font-fraunces text-sm text-red-700" role="alert">
+        <p className={adminError} role="alert">
           {error}
         </p>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="inline-flex h-12 items-center justify-center bg-primary px-8 font-fraunces text-sm uppercase tracking-[var(--tracking-cta)] text-white hover:bg-primary/90 disabled:opacity-60"
-      >
-        {loading ? "Signing in…" : "Sign in"}
+      <button type="submit" disabled={showBusy} className={adminBtnPrimary}>
+        {showBusy ? (
+          <>
+            <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />
+            Signing in…
+          </>
+        ) : (
+          "Continue"
+        )}
       </button>
 
-      <Link
-        href="/"
-        className="text-center font-fraunces text-sm text-muted hover:text-primary"
-      >
+      <Link href="/" className={`${adminBtnGhost} justify-center`}>
         Back to website
       </Link>
     </form>

@@ -1,138 +1,367 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState, useTransition } from "react";
+import { Eye, EyeOff, LoaderCircle, Pencil, Plus, Trash2 } from "lucide-react";
+import AdminBusyOverlay from "@/components/admin/AdminBusyOverlay";
+import AdminPagination from "@/components/admin/AdminPagination";
+import {
+  adminBtnDanger,
+  adminBtnGhost,
+  adminBtnPrimary,
+  adminBtnSecondary,
+  adminChip,
+  adminChipActive,
+  adminError,
+  adminInput,
+  adminLabel,
+  adminRow,
+  adminTableWrap,
+  adminTd,
+  adminTh,
+  statusBadgeClass,
+} from "@/components/admin/adminUi";
+import { paginate } from "@/lib/cms/pagination";
 
-export default function CategoryManager({ categories }) {
+export default function CategoryManager({ categories, attributeDefinitions }) {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const [name, setName] = useState("");
+  const [attributeIds, setAttributeIds] = useState(
+    () => attributeDefinitions.map((definition) => definition.id),
+  );
   const [error, setError] = useState("");
-  const [saving, setSaving] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [busyLabel, setBusyLabel] = useState("");
+  const [editingId, setEditingId] = useState(null);
+  const [draftAttributeIds, setDraftAttributeIds] = useState([]);
+  const [page, setPage] = useState(1);
+  const pagination = useMemo(() => paginate(categories, page), [categories, page]);
+  const showBusy = busy || isPending;
+
+  function toggleCreateAttribute(id) {
+    setAttributeIds((current) =>
+      current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
+    );
+  }
+
+  function beginEdit(category) {
+    setEditingId(category.id);
+    setDraftAttributeIds([...(category.attributeIds || [])]);
+  }
+
+  function refreshPage(label = "Updating…") {
+    setBusyLabel(label);
+    startTransition(() => {
+      router.refresh();
+    });
+  }
 
   async function createCategory(event) {
     event.preventDefault();
-    setSaving(true);
+    setBusy(true);
+    setBusyLabel("Adding category…");
     setError("");
     try {
       const response = await fetch("/api/admin/categories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ name, attributeIds }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Unable to add category.");
       setName("");
-      router.refresh();
+      setAttributeIds(attributeDefinitions.map((definition) => definition.id));
+      refreshPage("Refreshing categories…");
     } catch (err) {
       setError(err.message);
     } finally {
-      setSaving(false);
+      setBusy(false);
+    }
+  }
+
+  async function saveCategoryAttributes(category) {
+    setBusy(true);
+    setBusyLabel("Saving fields…");
+    setError("");
+    try {
+      const response = await fetch(`/api/admin/categories/${category.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...category, attributeIds: draftAttributeIds }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to update category attributes.");
+      }
+      setEditingId(null);
+      setDraftAttributeIds([]);
+      refreshPage("Refreshing categories…");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setBusy(false);
     }
   }
 
   async function toggleActive(category) {
+    setBusy(true);
+    setBusyLabel(category.active ? "Hiding category…" : "Showing category…");
     setError("");
-    const response = await fetch(`/api/admin/categories/${category.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...category, active: !category.active }),
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      setError(data.error || "Unable to update category.");
-      return;
+    try {
+      const response = await fetch(`/api/admin/categories/${category.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...category, active: !category.active }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Unable to update category.");
+      refreshPage("Refreshing categories…");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setBusy(false);
     }
-    router.refresh();
   }
 
   async function remove(category) {
     if (!window.confirm(`Delete category “${category.name}”?`)) return;
+    setBusy(true);
+    setBusyLabel("Deleting category…");
     setError("");
-    const response = await fetch(`/api/admin/categories/${category.id}`, {
-      method: "DELETE",
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      setError(data.error || "Unable to delete category.");
-      return;
+    try {
+      const response = await fetch(`/api/admin/categories/${category.id}`, {
+        method: "DELETE",
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Unable to delete category.");
+      refreshPage("Refreshing categories…");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setBusy(false);
     }
-    router.refresh();
   }
 
   return (
-    <div className="flex flex-col gap-8">
-      <form className="flex flex-col gap-4 sm:flex-row sm:items-end" onSubmit={createCategory}>
-        <label className="flex min-w-0 flex-1 flex-col gap-2">
-          <span className="font-helvetica text-xs uppercase tracking-wide text-muted">
-            New category
-          </span>
-          <input
-            required
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            placeholder="Kitchen"
-            className="h-11 w-full border-0 border-b border-appointment-line bg-transparent font-fraunces text-sm outline-none focus:border-primary"
-          />
-        </label>
-        <button
-          type="submit"
-          disabled={saving}
-          className="inline-flex h-11 items-center justify-center bg-primary px-6 font-fraunces text-sm uppercase tracking-[var(--tracking-cta)] text-white hover:bg-primary/90 disabled:opacity-60"
-        >
-          {saving ? "Adding…" : "Add category"}
-        </button>
+    <div className="relative flex flex-col gap-8">
+      <AdminBusyOverlay
+        show={showBusy}
+        label={isPending && !busy ? "Updating…" : busyLabel || "Working…"}
+      />
+
+      <form
+        className="border border-[color:var(--admin-line)] bg-[color:var(--admin-surface)] p-5"
+        onSubmit={createCategory}
+      >
+        <p className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
+          New category
+        </p>
+        <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end">
+          <label className="flex min-w-0 flex-1 flex-col gap-2">
+            <span className={adminLabel}>Name</span>
+            <input
+              required
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              placeholder="Kitchen"
+              className={adminInput}
+              disabled={showBusy}
+            />
+          </label>
+          <button type="submit" disabled={showBusy} className={adminBtnPrimary}>
+            {showBusy ? (
+              <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />
+            ) : (
+              <Plus className="size-3.5" aria-hidden="true" />
+            )}
+            {busy ? "Adding…" : "Add category"}
+          </button>
+        </div>
+
+        {attributeDefinitions.length > 0 ? (
+          <fieldset className="mt-5 flex flex-col gap-3" disabled={showBusy}>
+            <legend className={adminLabel}>Default attributes for new products</legend>
+            <div className="flex flex-wrap gap-2">
+              {attributeDefinitions.map((definition) => {
+                const checked = attributeIds.includes(definition.id);
+                return (
+                  <label
+                    key={definition.id}
+                    className={`cursor-pointer ${checked ? adminChipActive : adminChip}`}
+                  >
+                    <input
+                      type="checkbox"
+                      className="sr-only"
+                      checked={checked}
+                      onChange={() => toggleCreateAttribute(definition.id)}
+                    />
+                    {definition.label}
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
+        ) : null}
       </form>
 
       {error ? (
-        <p className="font-fraunces text-sm text-red-700" role="alert">
+        <p className={adminError} role="alert">
           {error}
         </p>
       ) : null}
 
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[36rem] text-left">
+      <div className={adminTableWrap}>
+        <table className="w-full min-w-[44rem] text-left">
           <thead>
-            <tr className="border-b border-product-bg font-helvetica text-xs uppercase tracking-wide text-muted">
-              <th className="py-3 pr-4 font-normal">Name</th>
-              <th className="py-3 pr-4 font-normal">Slug</th>
-              <th className="py-3 pr-4 font-normal">Status</th>
-              <th className="py-3 font-normal">Actions</th>
+            <tr>
+              <th className={adminTh}>Category</th>
+              <th className={adminTh}>Attributes</th>
+              <th className={adminTh}>Status</th>
+              <th className={adminTh}> </th>
             </tr>
           </thead>
           <tbody>
-            {categories.map((category) => (
-              <tr key={category.id} className="border-b border-product-bg">
-                <td className="py-4 pr-4 font-fraunces text-sm text-nav">
-                  {category.name}
-                </td>
-                <td className="py-4 pr-4 font-fraunces text-sm text-muted">
-                  {category.slug}
-                </td>
-                <td className="py-4 pr-4 font-fraunces text-sm">
-                  {category.active ? "Active" : "Hidden"}
-                </td>
-                <td className="py-4">
-                  <div className="flex flex-wrap gap-3">
-                    <button
-                      type="button"
-                      className="font-fraunces text-sm text-primary hover:underline"
-                      onClick={() => toggleActive(category)}
+            {pagination.items.map((category) => {
+              const bound = category.attributeIds || [];
+              const isEditing = editingId === category.id;
+              return (
+                <tr key={category.id} className={`${adminRow} align-top`}>
+                  <td className={adminTd}>
+                    <p className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
+                      {category.name}
+                    </p>
+                    <p className="mt-0.5 font-helvetica text-xs text-[color:var(--admin-muted)]">
+                      {category.slug}
+                    </p>
+                  </td>
+                  <td className={adminTd}>
+                    {isEditing ? (
+                      <div className="flex max-w-lg flex-col gap-3">
+                        <div className="flex flex-wrap gap-2">
+                          {attributeDefinitions.map((definition) => {
+                            const checked = draftAttributeIds.includes(definition.id);
+                            return (
+                              <label
+                                key={definition.id}
+                                className={`cursor-pointer ${checked ? adminChipActive : adminChip}`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  className="sr-only"
+                                  checked={checked}
+                                  disabled={showBusy}
+                                  onChange={() => {
+                                    setDraftAttributeIds((current) =>
+                                      checked
+                                        ? current.filter((id) => id !== definition.id)
+                                        : [...current, definition.id],
+                                    );
+                                  }}
+                                />
+                                {definition.label}
+                              </label>
+                            );
+                          })}
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            className={adminBtnPrimary}
+                            disabled={showBusy}
+                            onClick={() => saveCategoryAttributes(category)}
+                          >
+                            Save
+                          </button>
+                          <button
+                            type="button"
+                            className={adminBtnGhost}
+                            disabled={showBusy}
+                            onClick={() => {
+                              setEditingId(null);
+                              setDraftAttributeIds([]);
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <span className="font-helvetica text-sm text-[color:var(--admin-muted)]">
+                        {bound.length
+                          ? bound
+                              .map(
+                                (id) =>
+                                  attributeDefinitions.find(
+                                    (definition) => definition.id === id,
+                                  )?.label ?? id,
+                              )
+                              .join(" · ")
+                          : "All attributes"}
+                      </span>
+                    )}
+                  </td>
+                  <td className={adminTd}>
+                    <span
+                      className={statusBadgeClass(
+                        category.active ? "active" : "hidden",
+                      )}
                     >
-                      {category.active ? "Hide" : "Show"}
-                    </button>
-                    <button
-                      type="button"
-                      className="font-fraunces text-sm text-red-700 hover:underline"
-                      onClick={() => remove(category)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                      {category.active ? "Visible" : "Hidden"}
+                    </span>
+                  </td>
+                  <td className={adminTd}>
+                    <div className="flex flex-wrap justify-end gap-1">
+                      <button
+                        type="button"
+                        className={adminBtnSecondary}
+                        disabled={showBusy}
+                        onClick={() => {
+                          if (isEditing) {
+                            setEditingId(null);
+                            setDraftAttributeIds([]);
+                            return;
+                          }
+                          beginEdit(category);
+                        }}
+                      >
+                        <Pencil className="size-3.5" aria-hidden="true" />
+                        {isEditing ? "Close" : "Fields"}
+                      </button>
+                      <button
+                        type="button"
+                        className={adminBtnGhost}
+                        disabled={showBusy}
+                        onClick={() => toggleActive(category)}
+                      >
+                        {category.active ? (
+                          <EyeOff className="size-3.5" aria-hidden="true" />
+                        ) : (
+                          <Eye className="size-3.5" aria-hidden="true" />
+                        )}
+                        {category.active ? "Hide" : "Show"}
+                      </button>
+                      <button
+                        type="button"
+                        className={adminBtnDanger}
+                        disabled={showBusy}
+                        onClick={() => remove(category)}
+                      >
+                        <Trash2 className="size-3.5" aria-hidden="true" />
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
+        <AdminPagination
+          {...pagination}
+          noun="categories"
+          onPageChange={setPage}
+        />
       </div>
     </div>
   );

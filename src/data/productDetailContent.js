@@ -53,9 +53,11 @@ export const defaultProductDetail = {
   selectedMaterial: "Full Grain Leather",
   frameFinish: "Matte",
   gallery: {
-    top: "/images/product-view/background/background-ab6a.png",
     main: "/images/product-view/hero-section-img.png",
-    bottom: "/images/product-view/background/background-ab6axu-aja.png",
+    images: [
+      "/images/product-view/background/background-ab6a.png",
+      "/images/product-view/background/background-ab6axu-aja.png",
+    ],
   },
   sustainability: {
     stat: "0%",

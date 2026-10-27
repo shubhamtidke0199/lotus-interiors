@@ -1,9 +1,20 @@
 import Link from "next/link";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
+import AdminPagination from "@/components/admin/AdminPagination";
+import {
+  adminTableWrap,
+  adminTd,
+  adminTh,
+  adminRow,
+  statusBadgeClass,
+} from "@/components/admin/adminUi";
+import { selectionSummary } from "@/lib/cms/enquiry";
 import { enquiryStatusLabel } from "@/lib/cms/format";
+import { paginate, parsePageParam } from "@/lib/cms/pagination";
 import { getEnquiries } from "@/lib/cms/store";
 
 export const metadata = {
-  title: "Orders",
+  title: "Enquiries",
 };
 
 function formatDate(value) {
@@ -13,60 +24,93 @@ function formatDate(value) {
   }).format(new Date(value));
 }
 
-export default async function AdminOrdersPage() {
+function orderTone(status) {
+  if (status === "new") return "new";
+  if (status === "won") return "won";
+  if (status === "lost") return "lost";
+  return "default";
+}
+
+export default async function AdminOrdersPage({ searchParams }) {
+  const params = await searchParams;
   const orders = await getEnquiries();
+  const pagination = paginate(orders, parsePageParam(params?.page));
+  const newCount = orders.filter((order) => order.status === "new").length;
 
   return (
-    <main>
-      <p className="type-eyebrow text-eyebrow">Inbox</p>
-      <h1 className="mt-2 font-fraunces text-3xl text-heading">Orders</h1>
-      <p className="mt-3 max-w-2xl font-fraunces text-sm leading-6 text-muted">
-        Consultation requests from Enquire Now, contact, and appointment forms.
-        No payment is collected on the site.
-      </p>
+    <main className="flex flex-col gap-8">
+      <AdminPageHeader
+        eyebrow="Inbox"
+        title="Enquiries"
+        description={
+          newCount > 0
+            ? `${newCount} new · ${pagination.total} total. Follow up offline — nothing is charged on the site.`
+            : `${pagination.total} total. Consultation requests from Enquire Now, contact, and appointment forms.`
+        }
+      />
 
-      {orders.length === 0 ? (
-        <p className="mt-10 font-fraunces text-sm text-muted">
-          No orders yet. New enquiries from the website will appear here.
-        </p>
+      {pagination.total === 0 ? (
+        <div className="admin-empty">
+          <p className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
+            Inbox is clear
+          </p>
+          <p className="max-w-md font-helvetica text-sm text-[color:var(--admin-muted)]">
+            New enquiries from the website will appear here for follow-up.
+          </p>
+        </div>
       ) : (
-        <div className="mt-8 overflow-x-auto bg-white">
-          <table className="w-full min-w-[52rem] text-left">
+        <div className={adminTableWrap}>
+          <table className="w-full min-w-[56rem] text-left">
             <thead>
-              <tr className="border-b border-product-bg font-helvetica text-xs uppercase tracking-wide text-muted">
-                <th className="px-5 py-3 font-normal">Received</th>
-                <th className="px-5 py-3 font-normal">Contact</th>
-                <th className="px-5 py-3 font-normal">Product</th>
-                <th className="px-5 py-3 font-normal">Source</th>
-                <th className="px-5 py-3 font-normal">Status</th>
-                <th className="px-5 py-3 font-normal"> </th>
+              <tr>
+                <th className={adminTh}>Received</th>
+                <th className={adminTh}>Contact</th>
+                <th className={adminTh}>Interest</th>
+                <th className={adminTh}>Source</th>
+                <th className={adminTh}>Status</th>
+                <th className={`${adminTh} text-right`}> </th>
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => (
-                <tr key={order.id} className="border-b border-product-bg">
-                  <td className="px-5 py-4 font-fraunces text-sm text-muted">
+              {pagination.items.map((order) => (
+                <tr key={order.id} className={adminRow}>
+                  <td className={`${adminTd} whitespace-nowrap text-[color:var(--admin-muted)]`}>
                     {formatDate(order.createdAt)}
                   </td>
-                  <td className="px-5 py-4">
-                    <p className="font-fraunces text-sm text-nav">{order.email}</p>
-                    <p className="mt-1 font-fraunces text-xs text-muted">
+                  <td className={adminTd}>
+                    <p className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
+                      {order.email}
+                    </p>
+                    <p className="mt-0.5 font-helvetica text-xs text-[color:var(--admin-muted)]">
                       {order.phone || "No phone"}
                     </p>
                   </td>
-                  <td className="px-5 py-4 font-fraunces text-sm text-nav">
-                    {order.productName || "General enquiry"}
+                  <td className={adminTd}>
+                    <p className="font-helvetica text-sm text-[color:var(--admin-ink)]">
+                      {order.productSnapshot?.name ||
+                        order.productName ||
+                        "General enquiry"}
+                    </p>
+                    {selectionSummary(order.productSnapshot).length > 0 ? (
+                      <p className="mt-0.5 font-helvetica text-xs text-[color:var(--admin-muted)]">
+                        {selectionSummary(order.productSnapshot)
+                          .map((item) => item.value)
+                          .join(" · ")}
+                      </p>
+                    ) : null}
                   </td>
-                  <td className="px-5 py-4 font-fraunces text-sm text-muted">
+                  <td className={`${adminTd} text-[color:var(--admin-muted)]`}>
                     {order.source}
                   </td>
-                  <td className="px-5 py-4 font-fraunces text-sm">
-                    {enquiryStatusLabel(order.status)}
+                  <td className={adminTd}>
+                    <span className={statusBadgeClass(orderTone(order.status))}>
+                      {enquiryStatusLabel(order.status)}
+                    </span>
                   </td>
-                  <td className="px-5 py-4 text-right">
+                  <td className={`${adminTd} text-right`}>
                     <Link
                       href={`/admin/orders/${order.id}`}
-                      className="font-fraunces text-sm text-primary hover:underline"
+                      className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)] underline-offset-4 hover:underline"
                     >
                       Open
                     </Link>
@@ -75,6 +119,11 @@ export default async function AdminOrdersPage() {
               ))}
             </tbody>
           </table>
+          <AdminPagination
+            {...pagination}
+            noun="enquiries"
+            basePath="/admin/orders"
+          />
         </div>
       )}
     </main>
