@@ -38,6 +38,10 @@ export default async function ProductDetailPage({ params }) {
         selectedMaterial={product.selectedMaterial}
         frameFinish={product.frameFinish}
         gallery={product.gallery}
+        specs={product.specs}
+        swatches={product.swatches}
+        highlights={product.highlights}
+        dimensions={product.dimensions}
       />
       <ProductMaterialMasterySection />
       <ProductSustainabilitySection {...product.sustainability} />

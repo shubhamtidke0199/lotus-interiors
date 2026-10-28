@@ -1,9 +1,28 @@
 import Link from "next/link";
+import AdminEmptyState from "@/components/admin/AdminEmptyState";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
+import AdminPagination from "@/components/admin/AdminPagination";
+import AdminTableShell, {
+  adminTableHeadClass,
+} from "@/components/admin/AdminTableShell";
+import { statusBadgeClass } from "@/components/admin/adminUi";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { selectionSummary } from "@/lib/cms/enquiry";
 import { enquiryStatusLabel } from "@/lib/cms/format";
+import { paginate, parsePageParam } from "@/lib/cms/pagination";
 import { getEnquiries } from "@/lib/cms/store";
 
 export const metadata = {
-  title: "Orders",
+  title: "Enquiries",
 };
 
 function formatDate(value) {
@@ -13,69 +32,106 @@ function formatDate(value) {
   }).format(new Date(value));
 }
 
-export default async function AdminOrdersPage() {
+function orderTone(status) {
+  if (status === "new") return "new";
+  if (status === "won") return "won";
+  if (status === "lost") return "lost";
+  return "default";
+}
+
+export default async function AdminOrdersPage({ searchParams }) {
+  const params = await searchParams;
   const orders = await getEnquiries();
+  const pagination = paginate(orders, parsePageParam(params?.page));
+  const newCount = orders.filter((order) => order.status === "new").length;
 
   return (
-    <main>
-      <p className="type-eyebrow text-eyebrow">Inbox</p>
-      <h1 className="mt-2 font-fraunces text-3xl text-heading">Orders</h1>
-      <p className="mt-3 max-w-2xl font-fraunces text-sm leading-6 text-muted">
-        Consultation requests from Enquire Now, contact, and appointment forms.
-        No payment is collected on the site.
-      </p>
+    <main className="flex flex-col gap-8">
+      <AdminPageHeader
+        eyebrow="Inbox"
+        title="Enquiries"
+        description={
+          newCount > 0
+            ? `${newCount} new · ${pagination.total} total. Follow up offline — nothing is charged on the site.`
+            : `${pagination.total} total. Consultation requests from Enquire Now, contact, and appointment forms.`
+        }
+      />
 
-      {orders.length === 0 ? (
-        <p className="mt-10 font-fraunces text-sm text-muted">
-          No orders yet. New enquiries from the website will appear here.
-        </p>
+      {pagination.total === 0 ? (
+        <AdminEmptyState
+          title="Inbox is clear"
+          description="New enquiries from the website will appear here for follow-up."
+        />
       ) : (
-        <div className="mt-8 overflow-x-auto bg-white">
-          <table className="w-full min-w-[52rem] text-left">
-            <thead>
-              <tr className="border-b border-product-bg font-helvetica text-xs uppercase tracking-wide text-muted">
-                <th className="px-5 py-3 font-normal">Received</th>
-                <th className="px-5 py-3 font-normal">Contact</th>
-                <th className="px-5 py-3 font-normal">Product</th>
-                <th className="px-5 py-3 font-normal">Source</th>
-                <th className="px-5 py-3 font-normal">Status</th>
-                <th className="px-5 py-3 font-normal"> </th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order) => (
-                <tr key={order.id} className="border-b border-product-bg">
-                  <td className="px-5 py-4 font-fraunces text-sm text-muted">
+        <AdminTableShell>
+          <Table className="min-w-[56rem]">
+            <TableHeader>
+              <TableRow>
+                <TableHead className={adminTableHeadClass}>Received</TableHead>
+                <TableHead className={adminTableHeadClass}>Contact</TableHead>
+                <TableHead className={adminTableHeadClass}>Interest</TableHead>
+                <TableHead className={adminTableHeadClass}>Source</TableHead>
+                <TableHead className={adminTableHeadClass}>Status</TableHead>
+                <TableHead className={`${adminTableHeadClass} text-right`}>
+                  {" "}
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {pagination.items.map((order) => (
+                <TableRow key={order.id}>
+                  <TableCell className="whitespace-nowrap font-helvetica text-muted-foreground">
                     {formatDate(order.createdAt)}
-                  </td>
-                  <td className="px-5 py-4">
-                    <p className="font-fraunces text-sm text-nav">{order.email}</p>
-                    <p className="mt-1 font-fraunces text-xs text-muted">
+                  </TableCell>
+                  <TableCell>
+                    <p className="font-helvetica text-sm font-medium text-foreground">
+                      {order.email}
+                    </p>
+                    <p className="mt-0.5 font-helvetica text-xs text-muted-foreground">
                       {order.phone || "No phone"}
                     </p>
-                  </td>
-                  <td className="px-5 py-4 font-fraunces text-sm text-nav">
-                    {order.productName || "General enquiry"}
-                  </td>
-                  <td className="px-5 py-4 font-fraunces text-sm text-muted">
+                  </TableCell>
+                  <TableCell>
+                    <p className="font-helvetica text-sm text-foreground">
+                      {order.productSnapshot?.name ||
+                        order.productName ||
+                        "General enquiry"}
+                    </p>
+                    {selectionSummary(order.productSnapshot).length > 0 ? (
+                      <p className="mt-0.5 font-helvetica text-xs text-muted-foreground">
+                        {selectionSummary(order.productSnapshot)
+                          .map((item) => item.value)
+                          .join(" · ")}
+                      </p>
+                    ) : null}
+                  </TableCell>
+                  <TableCell className="font-helvetica text-muted-foreground">
                     {order.source}
-                  </td>
-                  <td className="px-5 py-4 font-fraunces text-sm">
-                    {enquiryStatusLabel(order.status)}
-                  </td>
-                  <td className="px-5 py-4 text-right">
-                    <Link
-                      href={`/admin/orders/${order.id}`}
-                      className="font-fraunces text-sm text-primary hover:underline"
+                  </TableCell>
+                  <TableCell>
+                    <Badge className={statusBadgeClass(orderTone(order.status))}>
+                      {enquiryStatusLabel(order.status)}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="link"
+                      className="h-auto p-0 font-helvetica text-sm"
+                      render={<Link href={`/admin/orders/${order.id}`} />}
                     >
                       Open
-                    </Link>
-                  </td>
-                </tr>
+                    </Button>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
-        </div>
+            </TableBody>
+          </Table>
+          <AdminPagination
+            {...pagination}
+            noun="enquiries"
+            basePath="/admin/orders"
+          />
+        </AdminTableShell>
       )}
     </main>
   );

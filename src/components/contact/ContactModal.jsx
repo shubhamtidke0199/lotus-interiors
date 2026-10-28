@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef } from "react";
 import ContactForm from "@/components/ui/ContactForm";
 import { studioContact } from "@/data/landingContent";
+import { getFocusableElements, useFocusTrap } from "@/lib/useFocusTrap";
 
 function CloseIcon({ className = "" }) {
   return (
@@ -28,10 +29,26 @@ export default function ContactModal({ isOpen, options, onClose }) {
   const titleId = useId();
   const descriptionId = useId();
 
+  useFocusTrap(dialogRef, isOpen);
+
   useEffect(() => {
     if (!isOpen) return undefined;
-    closeButtonRef.current?.focus();
-  }, [isOpen]);
+
+    const frame = requestAnimationFrame(() => {
+      const panel = dialogRef.current;
+      if (!panel) return;
+      const focusable = getFocusableElements(panel);
+      const firstField = focusable.find(
+        (el) =>
+          el.tagName === "INPUT" &&
+          el.getAttribute("type") !== "hidden" &&
+          !el.closest("[aria-hidden='true']"),
+      );
+      (firstField ?? closeButtonRef.current)?.focus();
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [isOpen, options.defaultMessage, options.productId]);
 
   if (!isOpen) return null;
 
@@ -93,12 +110,15 @@ export default function ContactModal({ isOpen, options, onClose }) {
 
         <div className="overflow-y-auto bg-product-bg/40 px-6 py-7 sm:px-8 sm:py-8">
           <ContactForm
-            key={`${options.source}-${options.defaultMessage}-${options.productId}-${isOpen}`}
+            key={`${options.source}-${options.defaultMessage}-${options.productId}-${JSON.stringify(options.productSnapshot ?? null)}`}
             source={options.source}
             defaultMessage={options.defaultMessage}
             submitLabel={options.submitLabel}
+            interest={options.interest || ""}
             productId={options.productId}
+            productSnapshot={options.productSnapshot || null}
             idPrefix="modal-"
+            autoFocusEmail
             className="gap-7"
           />
 

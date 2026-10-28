@@ -1,6 +1,35 @@
+import {
+  buildEnquiryMessage,
+  normalizeProductSnapshot,
+} from "@/lib/cms/enquiry";
+import { parseIndiaPhone } from "@/lib/cms/format";
 import { createEnquiry, getProductById } from "@/lib/cms/store";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function parseSnapshotInput(body) {
+  if (body.productSnapshot && typeof body.productSnapshot === "object") {
+    return body.productSnapshot;
+  }
+  if (typeof body.productSnapshot === "string" && body.productSnapshot.trim()) {
+    try {
+      return JSON.parse(body.productSnapshot);
+    } catch {
+      return null;
+    }
+  }
+  if (body.selection && typeof body.selection === "object") {
+    return { selection: body.selection };
+  }
+  if (typeof body.selection === "string" && body.selection.trim()) {
+    try {
+      return { selection: JSON.parse(body.selection) };
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
 
 export async function POST(request) {
   let body;
@@ -12,7 +41,7 @@ export async function POST(request) {
   }
 
   const email = String(body.email ?? "").trim();
-  const phone = String(body.phone ?? body["contact-number"] ?? "").trim();
+  const phoneRaw = String(body.phone ?? body["contact-number"] ?? "").trim();
   const message = String(
     body.message ?? body["requirement-brief"] ?? body.brief ?? "",
   ).trim();
@@ -28,8 +57,20 @@ export async function POST(request) {
     return Response.json({ error: "Please enter a valid email." }, { status: 400 });
   }
 
-  if (!phone && source !== "consultation") {
-    return Response.json({ error: "Please enter your phone number." }, { status: 400 });
+  let phone = "";
+  if (source !== "consultation") {
+    phone = parseIndiaPhone(phoneRaw) ?? "";
+    if (!phone) {
+      return Response.json(
+        {
+          error:
+            "Enter a valid 10-digit Indian mobile number (country code +91 only).",
+        },
+        { status: 400 },
+      );
+    }
+  } else if (phoneRaw) {
+    phone = parseIndiaPhone(phoneRaw) ?? phoneRaw;
   }
 
   if (!message && source !== "consultation") {
@@ -39,26 +80,40 @@ export async function POST(request) {
     );
   }
 
-  let productName = interest;
+  let product = null;
   if (productId) {
-    const product = await getProductById(productId);
+    product = await getProductById(productId);
     if (product) {
       productId = product.id;
-      productName = product.name;
     }
   }
 
+  const productSnapshot = normalizeProductSnapshot(
+    parseSnapshotInput(body),
+    product,
+  );
+  const productName =
+    product?.name ||
+    productSnapshot?.name ||
+    interest ||
+    "";
+
   try {
     await createEnquiry({
-      productId,
+      productId: productId || productSnapshot?.id || "",
       productName,
+      productSnapshot,
       email,
       phone,
-      message:
-        message ||
-        (source === "consultation"
-          ? "Consultation request from homepage CTA."
-          : ""),
+      message: buildEnquiryMessage({
+        message:
+          message ||
+          (source === "consultation"
+            ? "Consultation request from homepage CTA."
+            : ""),
+        productName,
+        snapshot: productSnapshot,
+      }),
       source,
     });
   } catch (error) {

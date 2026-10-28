@@ -9,11 +9,13 @@ export default function ProductsCatalogCard({
   image,
   imageClassName,
   onSale = false,
+  showCompareAt = false,
   staggered = false,
 }) {
+  const compareAt = showCompareAt || onSale;
   return (
     <article
-      className={`group flex flex-col gap-3 pb-8 ${staggered ? "pt-6" : ""}`}
+      className={`group flex h-full flex-col gap-3 pb-8 ${staggered ? "pt-6" : ""}`}
     >
       <Link href={`/products/${id}`} className="relative block bg-[#f7f3ea]">
         <figure className="relative h-72 overflow-hidden">
@@ -32,9 +34,11 @@ export default function ProductsCatalogCard({
       </Link>
 
       <div className="flex items-center gap-2">
-        <span className="font-fraunces text-sm leading-6 text-nav line-through sm:text-base">
-          {originalPrice}
-        </span>
+        {compareAt ? (
+          <span className="font-fraunces text-sm leading-6 text-nav line-through sm:text-base">
+            {originalPrice}
+          </span>
+        ) : null}
         <span className="font-fraunces text-lg leading-6 text-services-eyebrow">
           {salePrice}
         </span>
@@ -46,12 +50,14 @@ export default function ProductsCatalogCard({
             {name}
           </Link>
         </h3>
-        <p className="font-fraunces text-sm leading-5 text-nav">{description}</p>
+        <p className="line-clamp-2 font-fraunces text-sm leading-5 text-nav">
+          {description}
+        </p>
       </div>
 
       <Link
         href={`/contact?interest=${encodeURIComponent(name)}&product=${encodeURIComponent(id)}`}
-        className="mt-1 flex h-11 w-full items-center justify-center border border-[rgba(206,198,183,0.2)] bg-primary font-fraunces text-xs uppercase tracking-[1.2px] text-white transition-colors hover:bg-primary/90"
+        className="mt-auto flex h-11 w-full items-center justify-center border border-[rgba(206,198,183,0.2)] bg-primary font-fraunces text-xs uppercase tracking-[1.2px] text-white transition-colors hover:bg-primary/90"
       >
         Enquire Now
       </Link>

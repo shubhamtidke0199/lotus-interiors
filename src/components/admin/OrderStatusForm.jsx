@@ -1,20 +1,34 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { LoaderCircle } from "lucide-react";
+import AdminBusyOverlay from "@/components/admin/AdminBusyOverlay";
+import { AdminField } from "@/components/admin/AdminField";
+import {
+  adminBtnPrimary,
+  adminInput,
+  adminSuccess,
+  adminTextarea,
+} from "@/components/admin/adminUi";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { ENQUIRY_STATUSES } from "@/lib/cms/format";
 
 export default function OrderStatusForm({ order }) {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const [status, setStatus] = useState(order.status);
   const [notes, setNotes] = useState(order.notes ?? "");
   const [error, setError] = useState("");
-  const [saving, setSaving] = useState(false);
+  const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState(false);
+  const showBusy = busy || isPending;
 
   async function handleSubmit(event) {
     event.preventDefault();
-    setSaving(true);
+    setBusy(true);
     setError("");
     setSaved(false);
 
@@ -27,24 +41,29 @@ export default function OrderStatusForm({ order }) {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Unable to update order.");
       setSaved(true);
-      router.refresh();
+      startTransition(() => {
+        router.refresh();
+      });
     } catch (err) {
       setError(err.message);
     } finally {
-      setSaving(false);
+      setBusy(false);
     }
   }
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-      <label className="flex flex-col gap-2">
-        <span className="font-helvetica text-xs uppercase tracking-wide text-muted">
-          Status
-        </span>
+    <form className="relative flex flex-col gap-5" onSubmit={handleSubmit}>
+      <AdminBusyOverlay
+        show={showBusy}
+        label={busy ? "Saving follow-up…" : "Updating…"}
+      />
+
+      <AdminField label="Status">
         <select
           value={status}
           onChange={(event) => setStatus(event.target.value)}
-          className="h-11 w-full max-w-xs border-0 border-b border-appointment-line bg-transparent font-fraunces text-sm outline-none focus:border-primary"
+          className={adminInput}
+          disabled={showBusy}
         >
           {ENQUIRY_STATUSES.map((item) => (
             <option key={item.id} value={item.id}>
@@ -52,39 +71,40 @@ export default function OrderStatusForm({ order }) {
             </option>
           ))}
         </select>
-      </label>
+      </AdminField>
 
-      <label className="flex flex-col gap-2">
-        <span className="font-helvetica text-xs uppercase tracking-wide text-muted">
-          Internal notes
-        </span>
-        <textarea
+      <AdminField label="Internal notes">
+        <Textarea
           rows={5}
           value={notes}
           onChange={(event) => setNotes(event.target.value)}
           placeholder="Site visit, budget, BHK, follow-up date…"
-          className="min-h-32 w-full resize-y border-0 border-b border-appointment-line bg-transparent py-2 font-fraunces text-sm outline-none focus:border-primary"
+          className={adminTextarea}
+          disabled={showBusy}
         />
-      </label>
+      </AdminField>
 
       {error ? (
-        <p className="font-fraunces text-sm text-red-700" role="alert">
-          {error}
-        </p>
+        <Alert variant="destructive">
+          <AlertDescription className="font-helvetica text-sm">{error}</AlertDescription>
+        </Alert>
       ) : null}
-      {saved ? (
-        <p className="font-fraunces text-sm text-primary" role="status">
-          Saved.
+      {saved && !showBusy ? (
+        <p className={adminSuccess} role="status">
+          Changes saved
         </p>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={saving}
-        className="inline-flex h-11 w-fit items-center bg-primary px-8 font-fraunces text-sm uppercase tracking-[var(--tracking-cta)] text-white hover:bg-primary/90 disabled:opacity-60"
-      >
-        {saving ? "Saving…" : "Update order"}
-      </button>
+      <Button type="submit" disabled={showBusy} className={`${adminBtnPrimary} w-fit`}>
+        {showBusy ? (
+          <>
+            <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />
+            Saving…
+          </>
+        ) : (
+          "Save follow-up"
+        )}
+      </Button>
     </form>
   );
 }

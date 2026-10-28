@@ -18,6 +18,8 @@ export async function PATCH(request, { params }) {
     const category = await saveCategory({ ...body, id });
     revalidatePath("/products");
     revalidatePath("/admin/categories");
+    revalidatePath("/admin/products");
+    revalidatePath("/admin/attributes");
     return Response.json({ category });
   } catch (error) {
     return Response.json(

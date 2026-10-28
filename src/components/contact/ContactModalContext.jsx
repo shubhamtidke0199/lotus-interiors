@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import ContactModal from "@/components/contact/ContactModal";
@@ -46,11 +47,14 @@ export function getContactModalOptionsFromHref(href) {
     title: interest ? "Enquire Now" : "Book a Consultation",
     defaultMessage: interest ? `I'm interested in ${interest}.` : "",
     submitLabel: interest ? "Send Enquiry" : "Submit Request",
+    interest,
     productId,
+    productSnapshot: null,
   };
 }
 
 export function ContactModalProvider({ children }) {
+  const returnFocusRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [options, setOptions] = useState({
     source: "modal",
@@ -59,10 +63,16 @@ export function ContactModalProvider({ children }) {
       "Share a few details and a Lotus designer will get back to you within one business day.",
     defaultMessage: "",
     submitLabel: "Submit Request",
+    interest: "",
     productId: "",
+    productSnapshot: null,
   });
 
   const openContactModal = useCallback((nextOptions = {}) => {
+    const active = document.activeElement;
+    returnFocusRef.current =
+      active instanceof HTMLElement ? active : null;
+
     setOptions({
       source: "modal",
       title: "Book a Consultation",
@@ -70,7 +80,9 @@ export function ContactModalProvider({ children }) {
         "Share a few details and a Lotus designer will get back to you within one business day.",
       defaultMessage: "",
       submitLabel: "Submit Request",
+      interest: "",
       productId: "",
+      productSnapshot: null,
       ...nextOptions,
     });
     setIsOpen(true);
@@ -78,6 +90,13 @@ export function ContactModalProvider({ children }) {
 
   const closeContactModal = useCallback(() => {
     setIsOpen(false);
+    const restore = returnFocusRef.current;
+    returnFocusRef.current = null;
+    if (restore?.isConnected) {
+      requestAnimationFrame(() => {
+        restore.focus();
+      });
+    }
   }, []);
 
   useEffect(() => {

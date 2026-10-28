@@ -1,22 +1,60 @@
+import { buildProductDisplayAttributes } from "@/lib/cms/attributes";
 import { defaultProductDetail } from "@/data/productDetailContent";
-import { formatPrice } from "@/lib/cms/format";
-import { getCatalog, getProductById, getPublishedCatalog } from "@/lib/cms/store";
+import { formatPrice, parsePrice } from "@/lib/cms/format";
+import {
+  getCatalog,
+  getProductById,
+  getPublishedCatalog,
+} from "@/lib/cms/store";
 
 function categoryName(categories, categoryId) {
   return categories.find((category) => category.id === categoryId)?.name ?? "Uncategorised";
 }
 
+export function resolveProductPrices(product) {
+  const original = parsePrice(product?.originalPrice);
+  let sale = parsePrice(product?.salePrice);
+  const onSale = Boolean(product?.onSale);
+
+  if (!original && sale) {
+    return {
+      original: sale,
+      sale,
+      display: sale,
+      showCompareAt: false,
+      onSale: false,
+    };
+  }
+
+  if (!sale) sale = original;
+
+  const showCompareAt =
+    onSale && original > 0 && sale > 0 && sale < original;
+  const display = showCompareAt ? sale : sale || original;
+
+  return {
+    original,
+    sale,
+    display,
+    showCompareAt,
+    onSale: showCompareAt,
+  };
+}
+
 export function toCatalogCard(product, category) {
+  const prices = resolveProductPrices(product);
+
   return {
     id: product.slug,
     name: product.name,
     description: product.description,
-    originalPrice: formatPrice(product.originalPrice),
-    salePrice: formatPrice(product.salePrice) || formatPrice(product.originalPrice),
+    originalPrice: formatPrice(prices.original),
+    salePrice: formatPrice(prices.display),
     category: category?.name ?? "Uncategorised",
     image: product.image,
     imageClassName: "absolute inset-0 size-full object-cover",
-    onSale: Boolean(product.onSale),
+    onSale: prices.onSale,
+    showCompareAt: prices.showCompareAt,
     staggered: false,
   };
 }
@@ -34,29 +72,50 @@ export async function getCatalogCategoryNames() {
 
 export async function getAdminProductList() {
   const { products, categories } = await getCatalog();
-  return products.map((product) => ({
-    ...product,
-    categoryName: categoryName(categories, product.categoryId),
-    priceLabel: formatPrice(product.salePrice) || formatPrice(product.originalPrice),
-  }));
+  return products.map((product) => {
+    const prices = resolveProductPrices(product);
+    return {
+      ...product,
+      categoryName: categoryName(categories, product.categoryId),
+      priceLabel: formatPrice(prices.display),
+    };
+  });
 }
 
 export async function getProductDetailBySlug(slug) {
-  const product = await getProductById(slug);
+  const [{ attributeDefinitions, categories }, product] = await Promise.all([
+    getPublishedCatalog(),
+    getProductById(slug),
+  ]);
+
   if (!product || !product.published) return null;
 
+  const category = categories.find((item) => item.id === product.categoryId);
+  if (!category) return null;
+
+  const display = buildProductDisplayAttributes(product, attributeDefinitions);
+  const prices = resolveProductPrices(product);
+  const highlights = display.warranty
+    ? [{ label: display.warranty.replace(/\s+/g, "\n") }]
+    : [];
+
   return {
-    ...defaultProductDetail,
     slug: product.slug,
     title: product.name,
-    summary: product.description || defaultProductDetail.summary,
-    price: formatPrice(product.salePrice) || formatPrice(product.originalPrice),
-    selectedMaterial: product.selectedMaterial || defaultProductDetail.selectedMaterial,
-    frameFinish: product.frameFinish || defaultProductDetail.frameFinish,
+    summary: product.description || "",
+    price: formatPrice(prices.display),
+    compareAtPrice: prices.showCompareAt ? formatPrice(prices.original) : "",
+    selectedMaterial: display.selectedMaterial,
+    frameFinish: display.frameFinish,
+    specs: display.specs,
+    swatches: display.swatches,
+    dimensions: display.dimensions,
+    highlights,
+    attributes: product.attributes ?? {},
+    sustainability: defaultProductDetail.sustainability,
     gallery: {
-      top: product.galleryTop || defaultProductDetail.gallery.top,
-      main: product.image || defaultProductDetail.gallery.main,
-      bottom: product.galleryBottom || defaultProductDetail.gallery.bottom,
+      main: product.image || "",
+      images: Array.isArray(product.images) ? product.images.filter(Boolean) : [],
     },
   };
 }

@@ -1,84 +1,119 @@
 import Link from "next/link";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
+import AdminPagination from "@/components/admin/AdminPagination";
+import AdminEmptyState from "@/components/admin/AdminEmptyState";
+import { adminTableHeadClass } from "@/components/admin/AdminTableShell";
+import { adminBtnPrimary, statusBadgeClass } from "@/components/admin/adminUi";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { getAdminProductList } from "@/lib/cms/catalog";
+import { paginate, parsePageParam } from "@/lib/cms/pagination";
 
 export const metadata = {
   title: "Products",
 };
 
-export default async function AdminProductsPage() {
+export default async function AdminProductsPage({ searchParams }) {
+  const params = await searchParams;
   const products = await getAdminProductList();
+  const pagination = paginate(products, parsePageParam(params?.page));
 
   return (
-    <main>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="type-eyebrow text-eyebrow">Catalog</p>
-          <h1 className="mt-2 font-fraunces text-3xl text-heading">Products</h1>
-        </div>
-        <Link
-          href="/admin/products/new"
-          className="inline-flex h-11 items-center justify-center bg-primary px-6 font-fraunces text-sm uppercase tracking-[var(--tracking-cta)] text-white hover:bg-primary/90"
-        >
-          Add product
-        </Link>
-      </div>
+    <main className="flex flex-col gap-8">
+      <AdminPageHeader
+        eyebrow="Catalog"
+        title="Products"
+        description={`${pagination.total} piece${pagination.total === 1 ? "" : "s"} in the catalog.`}
+        primaryAction={{ href: "/admin/products/new", label: "Add product" }}
+      />
 
-      {products.length === 0 ? (
-        <p className="mt-10 font-fraunces text-sm text-muted">
-          No products yet. Add the first piece to the catalog.
-        </p>
+      {pagination.total === 0 ? (
+        <AdminEmptyState
+          title="No products yet"
+          description="Add the first piece, assign a category, then fill in its specifications."
+        >
+          <Button className={adminBtnPrimary} render={<Link href="/admin/products/new" />}>
+            Add product
+          </Button>
+        </AdminEmptyState>
       ) : (
-        <div className="mt-8 overflow-x-auto bg-white">
-          <table className="w-full min-w-[48rem] text-left">
-            <thead>
-              <tr className="border-b border-product-bg font-helvetica text-xs uppercase tracking-wide text-muted">
-                <th className="px-5 py-3 font-normal">Product</th>
-                <th className="px-5 py-3 font-normal">Category</th>
-                <th className="px-5 py-3 font-normal">Price</th>
-                <th className="px-5 py-3 font-normal">Status</th>
-                <th className="px-5 py-3 font-normal"> </th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product) => (
-                <tr key={product.id} className="border-b border-product-bg">
-                  <td className="px-5 py-4">
-                    <div className="flex items-center gap-3">
+        <Card className="overflow-hidden">
+          <Table className="min-w-[52rem]">
+            <TableHeader>
+              <TableRow>
+                <TableHead className={adminTableHeadClass}>Product</TableHead>
+                <TableHead className={adminTableHeadClass}>Category</TableHead>
+                <TableHead className={adminTableHeadClass}>Price</TableHead>
+                <TableHead className={adminTableHeadClass}>Status</TableHead>
+                <TableHead className={`${adminTableHeadClass} text-right`}>
+                  {" "}
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {pagination.items.map((product) => (
+                <TableRow key={product.id}>
+                  <TableCell>
+                    <div className="flex items-center gap-3.5">
                       <img
                         src={product.image}
                         alt=""
-                        className="size-14 shrink-0 object-cover bg-product-bg"
+                        className="size-12 shrink-0 rounded-md object-cover bg-muted"
                       />
-                      <div>
-                        <p className="font-fraunces text-sm text-nav">{product.name}</p>
-                        <p className="mt-1 font-fraunces text-xs text-muted">
+                      <div className="min-w-0">
+                        <p className="truncate font-helvetica text-sm font-medium text-foreground">
+                          {product.name}
+                        </p>
+                        <p className="mt-0.5 truncate font-helvetica text-xs text-muted-foreground">
                           /{product.slug}
                         </p>
                       </div>
                     </div>
-                  </td>
-                  <td className="px-5 py-4 font-fraunces text-sm text-muted">
+                  </TableCell>
+                  <TableCell className="font-helvetica text-muted-foreground">
                     {product.categoryName}
-                  </td>
-                  <td className="px-5 py-4 font-fraunces text-sm text-nav">
-                    {product.priceLabel || "—"}
-                  </td>
-                  <td className="px-5 py-4 font-fraunces text-sm">
-                    {product.published ? "Published" : "Draft"}
-                  </td>
-                  <td className="px-5 py-4 text-right">
-                    <Link
-                      href={`/admin/products/${product.id}`}
-                      className="font-fraunces text-sm text-primary hover:underline"
+                  </TableCell>
+                  <TableCell className="font-helvetica">{product.priceLabel || "—"}</TableCell>
+                  <TableCell>
+                    <Badge
+                      className={statusBadgeClass(
+                        product.published ? "published" : "draft",
+                      )}
+                    >
+                      {product.published ? "Published" : "Draft"}
+                    </Badge>
+                    {product.onSale ? (
+                      <Badge className={`${statusBadgeClass("new")} ml-2`}>Sale</Badge>
+                    ) : null}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="link"
+                      className="h-auto p-0 font-helvetica text-sm"
+                      render={<Link href={`/admin/products/${product.id}`} />}
                     >
                       Edit
-                    </Link>
-                  </td>
-                </tr>
+                    </Button>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
-        </div>
+            </TableBody>
+          </Table>
+          <AdminPagination
+            {...pagination}
+            noun="products"
+            basePath="/admin/products"
+          />
+        </Card>
       )}
     </main>
   );
