@@ -1,20 +1,20 @@
 import { LoaderCircle } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function AdminConsoleLoading() {
   return (
-    <div
-      className="flex min-h-[50vh] flex-col items-center justify-center gap-3"
-      role="status"
-      aria-live="polite"
-      aria-busy="true"
-    >
-      <LoaderCircle
-        className="size-6 animate-spin text-[color:var(--admin-ink)]"
-        aria-hidden="true"
-      />
-      <p className="font-helvetica text-sm text-[color:var(--admin-muted)]">
-        Loading…
-      </p>
+    <div className="flex flex-1 items-center justify-center py-24">
+      <Card>
+        <CardContent className="flex items-center gap-3 px-6 py-5">
+          <LoaderCircle
+            className="size-6 animate-spin text-foreground"
+            aria-hidden="true"
+          />
+          <p className="font-helvetica text-sm text-muted-foreground">
+            Loading console…
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -5,6 +5,11 @@ import { useMemo, useState, useTransition } from "react";
 import { Eye, EyeOff, LoaderCircle, Pencil, Plus, Trash2 } from "lucide-react";
 import AdminBusyOverlay from "@/components/admin/AdminBusyOverlay";
 import AdminPagination from "@/components/admin/AdminPagination";
+import AdminPanel from "@/components/admin/AdminPanel";
+import AdminTableShell, {
+  adminTableHeadClass,
+} from "@/components/admin/AdminTableShell";
+import { AdminField } from "@/components/admin/AdminField";
 import {
   adminBtnDanger,
   adminBtnGhost,
@@ -12,15 +17,21 @@ import {
   adminBtnSecondary,
   adminChip,
   adminChipActive,
-  adminError,
-  adminInput,
   adminLabel,
-  adminRow,
-  adminTableWrap,
-  adminTd,
-  adminTh,
   statusBadgeClass,
 } from "@/components/admin/adminUi";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { paginate } from "@/lib/cms/pagination";
 
 export default function CategoryManager({ categories, attributeDefinitions }) {
@@ -144,98 +155,93 @@ export default function CategoryManager({ categories, attributeDefinitions }) {
   }
 
   return (
-    <div className="relative flex flex-col gap-8">
+    <div className="relative flex flex-col gap-6">
       <AdminBusyOverlay
         show={showBusy}
         label={isPending && !busy ? "Updating…" : busyLabel || "Working…"}
       />
 
-      <form
-        className="border border-[color:var(--admin-line)] bg-[color:var(--admin-surface)] p-5"
-        onSubmit={createCategory}
-      >
-        <p className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
-          New category
-        </p>
-        <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end">
-          <label className="flex min-w-0 flex-1 flex-col gap-2">
-            <span className={adminLabel}>Name</span>
-            <input
-              required
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              placeholder="Kitchen"
-              className={adminInput}
-              disabled={showBusy}
-            />
-          </label>
-          <button type="submit" disabled={showBusy} className={adminBtnPrimary}>
-            {showBusy ? (
-              <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />
-            ) : (
-              <Plus className="size-3.5" aria-hidden="true" />
-            )}
-            {busy ? "Adding…" : "Add category"}
-          </button>
-        </div>
+      <AdminPanel title="New category" contentClassName="pt-0">
+        <form onSubmit={createCategory} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
+            <AdminField label="Name" className="min-w-0 flex-1">
+              <Input
+                required
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                placeholder="Kitchen"
+                className="font-helvetica h-10"
+                disabled={showBusy}
+              />
+            </AdminField>
+            <Button type="submit" disabled={showBusy} className={adminBtnPrimary}>
+              {showBusy ? (
+                <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />
+              ) : (
+                <Plus className="size-3.5" aria-hidden="true" />
+              )}
+              {busy ? "Adding…" : "Add category"}
+            </Button>
+          </div>
 
-        {attributeDefinitions.length > 0 ? (
-          <fieldset className="mt-5 flex flex-col gap-3" disabled={showBusy}>
-            <legend className={adminLabel}>Default attributes for new products</legend>
-            <div className="flex flex-wrap gap-2">
-              {attributeDefinitions.map((definition) => {
-                const checked = attributeIds.includes(definition.id);
-                return (
-                  <label
-                    key={definition.id}
-                    className={`cursor-pointer ${checked ? adminChipActive : adminChip}`}
-                  >
-                    <input
-                      type="checkbox"
-                      className="sr-only"
-                      checked={checked}
-                      onChange={() => toggleCreateAttribute(definition.id)}
-                    />
-                    {definition.label}
-                  </label>
-                );
-              })}
-            </div>
-          </fieldset>
-        ) : null}
-      </form>
+          {attributeDefinitions.length > 0 ? (
+            <fieldset className="flex flex-col gap-3" disabled={showBusy}>
+              <legend className={adminLabel}>Default attributes for new products</legend>
+              <div className="flex flex-wrap gap-2">
+                {attributeDefinitions.map((definition) => {
+                  const checked = attributeIds.includes(definition.id);
+                  return (
+                    <label
+                      key={definition.id}
+                      className={`cursor-pointer ${checked ? adminChipActive : adminChip}`}
+                    >
+                      <input
+                        type="checkbox"
+                        className="sr-only"
+                        checked={checked}
+                        onChange={() => toggleCreateAttribute(definition.id)}
+                      />
+                      {definition.label}
+                    </label>
+                  );
+                })}
+              </div>
+            </fieldset>
+          ) : null}
+        </form>
+      </AdminPanel>
 
       {error ? (
-        <p className={adminError} role="alert">
-          {error}
-        </p>
+        <Alert variant="destructive">
+          <AlertDescription className="font-helvetica text-sm">{error}</AlertDescription>
+        </Alert>
       ) : null}
 
-      <div className={adminTableWrap}>
-        <table className="w-full min-w-[44rem] text-left">
-          <thead>
-            <tr>
-              <th className={adminTh}>Category</th>
-              <th className={adminTh}>Attributes</th>
-              <th className={adminTh}>Status</th>
-              <th className={adminTh}> </th>
-            </tr>
-          </thead>
-          <tbody>
+      <AdminTableShell>
+        <Table className="min-w-[44rem]">
+          <TableHeader>
+            <TableRow>
+              <TableHead className={adminTableHeadClass}>Category</TableHead>
+              <TableHead className={adminTableHeadClass}>Attributes</TableHead>
+              <TableHead className={adminTableHeadClass}>Status</TableHead>
+              <TableHead className={adminTableHeadClass}> </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {pagination.items.map((category) => {
               const bound = category.attributeIds || [];
               const isEditing = editingId === category.id;
               return (
-                <tr key={category.id} className={`${adminRow} align-top`}>
-                  <td className={adminTd}>
-                    <p className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
+                <TableRow key={category.id} className="align-top">
+                  <TableCell>
+                    <p className="font-helvetica text-sm font-medium text-foreground">
                       {category.name}
                     </p>
-                    <p className="mt-0.5 font-helvetica text-xs text-[color:var(--admin-muted)]">
+                    <p className="mt-0.5 font-helvetica text-xs text-muted-foreground">
                       {category.slug}
                     </p>
-                  </td>
-                  <td className={adminTd}>
+                  </TableCell>
+                  <TableCell>
                     {isEditing ? (
                       <div className="flex max-w-lg flex-col gap-3">
                         <div className="flex flex-wrap gap-2">
@@ -265,16 +271,17 @@ export default function CategoryManager({ categories, attributeDefinitions }) {
                           })}
                         </div>
                         <div className="flex flex-wrap gap-2">
-                          <button
+                          <Button
                             type="button"
                             className={adminBtnPrimary}
                             disabled={showBusy}
                             onClick={() => saveCategoryAttributes(category)}
                           >
                             Save
-                          </button>
-                          <button
+                          </Button>
+                          <Button
                             type="button"
+                            variant="ghost"
                             className={adminBtnGhost}
                             disabled={showBusy}
                             onClick={() => {
@@ -283,11 +290,11 @@ export default function CategoryManager({ categories, attributeDefinitions }) {
                             }}
                           >
                             Cancel
-                          </button>
+                          </Button>
                         </div>
                       </div>
                     ) : (
-                      <span className="font-helvetica text-sm text-[color:var(--admin-muted)]">
+                      <span className="font-helvetica text-sm text-muted-foreground">
                         {bound.length
                           ? bound
                               .map(
@@ -300,20 +307,21 @@ export default function CategoryManager({ categories, attributeDefinitions }) {
                           : "All attributes"}
                       </span>
                     )}
-                  </td>
-                  <td className={adminTd}>
-                    <span
+                  </TableCell>
+                  <TableCell>
+                    <Badge
                       className={statusBadgeClass(
                         category.active ? "active" : "hidden",
                       )}
                     >
                       {category.active ? "Visible" : "Hidden"}
-                    </span>
-                  </td>
-                  <td className={adminTd}>
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
                     <div className="flex flex-wrap justify-end gap-1">
-                      <button
+                      <Button
                         type="button"
+                        variant="outline"
                         className={adminBtnSecondary}
                         disabled={showBusy}
                         onClick={() => {
@@ -327,9 +335,10 @@ export default function CategoryManager({ categories, attributeDefinitions }) {
                       >
                         <Pencil className="size-3.5" aria-hidden="true" />
                         {isEditing ? "Close" : "Fields"}
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         type="button"
+                        variant="ghost"
                         className={adminBtnGhost}
                         disabled={showBusy}
                         onClick={() => toggleActive(category)}
@@ -340,29 +349,26 @@ export default function CategoryManager({ categories, attributeDefinitions }) {
                           <Eye className="size-3.5" aria-hidden="true" />
                         )}
                         {category.active ? "Hide" : "Show"}
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         type="button"
+                        variant="ghost"
                         className={adminBtnDanger}
                         disabled={showBusy}
                         onClick={() => remove(category)}
                       >
                         <Trash2 className="size-3.5" aria-hidden="true" />
                         Delete
-                      </button>
+                      </Button>
                     </div>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               );
             })}
-          </tbody>
-        </table>
-        <AdminPagination
-          {...pagination}
-          noun="categories"
-          onPageChange={setPage}
-        />
-      </div>
+          </TableBody>
+        </Table>
+        <AdminPagination {...pagination} noun="categories" onPageChange={setPage} />
+      </AdminTableShell>
     </div>
   );
 }

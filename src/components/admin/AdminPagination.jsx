@@ -2,30 +2,33 @@
 
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { adminBtnSecondary } from "@/components/admin/adminUi";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { buildPageHref } from "@/lib/cms/pagination";
 
 function Control({ disabled, href, onClick, children, label }) {
-  const className =
-    "inline-flex h-9 items-center gap-1.5 border border-[color:var(--admin-line)] bg-white px-3 font-helvetica text-xs font-medium text-[color:var(--admin-ink)] transition-colors hover:border-[color:var(--admin-ink)] hover:bg-[color:var(--admin-surface)] disabled:cursor-not-allowed disabled:opacity-40";
+  const className = cn(adminBtnSecondary, "h-9 px-3 text-xs");
 
   if (href && !disabled) {
     return (
-      <Link href={href} className={className} aria-label={label}>
+      <Button variant="outline" className={className} render={<Link href={href} />} aria-label={label}>
         {children}
-      </Link>
+      </Button>
     );
   }
 
   return (
-    <button
+    <Button
       type="button"
+      variant="outline"
       disabled={disabled}
       onClick={onClick}
       className={className}
       aria-label={label}
     >
       {children}
-    </button>
+    </Button>
   );
 }
 
@@ -47,8 +50,8 @@ export default function AdminPagination({
   const useLinks = Boolean(basePath);
 
   return (
-    <div className="flex flex-col gap-3 border-t border-[color:var(--admin-line)] bg-[color:var(--admin-panel)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-      <p className="font-helvetica text-xs text-[color:var(--admin-muted)]">
+    <div className="flex flex-col gap-3 border-t border-border bg-card px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+      <p className="font-helvetica text-xs text-muted-foreground">
         Showing {from}–{to} of {total} {noun}
       </p>
       <div className="flex items-center gap-2">
@@ -67,7 +70,7 @@ export default function AdminPagination({
           <ChevronLeft className="size-3.5" aria-hidden="true" />
           Prev
         </Control>
-        <span className="min-w-[4.5rem] text-center font-helvetica text-xs text-[color:var(--admin-ink)]">
+        <span className="min-w-[4.5rem] text-center font-helvetica text-xs text-foreground">
           {page} / {totalPages}
         </span>
         <Control

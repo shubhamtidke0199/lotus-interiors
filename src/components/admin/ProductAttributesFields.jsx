@@ -1,6 +1,8 @@
 "use client";
 
 import { Plus, Trash2 } from "lucide-react";
+import AdminEmptyState from "@/components/admin/AdminEmptyState";
+import { AdminSectionTitle } from "@/components/admin/AdminField";
 import {
   adminBtnDanger,
   adminBtnSecondary,
@@ -9,6 +11,7 @@ import {
   adminInput,
   adminLabel,
 } from "@/components/admin/adminUi";
+import { Button } from "@/components/ui/button";
 import { createId } from "@/lib/cms/format";
 
 function emptyDimension(unit = "cm") {
@@ -29,14 +32,11 @@ export default function ProductAttributesFields({
 }) {
   if (!definitions?.length) {
     return (
-      <div className="admin-empty">
-        <p className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
-          No attributes for this category
-        </p>
-        <p className="font-helvetica text-sm text-[color:var(--admin-muted)]">
-          Bind fields on Categories, or create them under Attributes.
-        </p>
-      </div>
+      <AdminEmptyState
+        title="No attributes for this category"
+        description="Bind fields on Categories, or create them under Attributes."
+        className="border-0 bg-transparent shadow-none"
+      />
     );
   }
 
@@ -60,14 +60,10 @@ export default function ProductAttributesFields({
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h2 className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
-          Specifications
-        </h2>
-        <p className="mt-1 font-helvetica text-xs leading-5 text-[color:var(--admin-muted)]">
-          Fields come from the selected category. Leave blank when not relevant.
-        </p>
-      </div>
+      <AdminSectionTitle
+        title="Specifications"
+        description="Fields come from the selected category. Leave blank when not relevant."
+      />
 
       <div className="grid gap-5">
         {definitions.map((definition) => {
@@ -184,8 +180,9 @@ export default function ProductAttributesFields({
                     {definition.label}
                     {definition.required ? " *" : ""}
                   </p>
-                  <button
+                  <Button
                     type="button"
+                    variant="outline"
                     className={adminBtnSecondary}
                     onClick={() =>
                       setValue(definition.id, [
@@ -196,7 +193,7 @@ export default function ProductAttributesFields({
                   >
                     <Plus className="size-3.5" aria-hidden="true" />
                     Add size
-                  </button>
+                  </Button>
                 </div>
                 <div className="flex flex-col gap-2">
                   {rows.map((row, index) => (
@@ -236,8 +233,9 @@ export default function ProductAttributesFields({
                           className={adminInput}
                         />
                       ))}
-                      <button
+                      <Button
                         type="button"
+                        variant="ghost"
                         className={adminBtnDanger}
                         onClick={() => {
                           const next = rows.filter((_, rowIndex) => rowIndex !== index);
@@ -251,7 +249,7 @@ export default function ProductAttributesFields({
                       >
                         <Trash2 className="size-3.5" aria-hidden="true" />
                         Remove
-                      </button>
+                      </Button>
                     </div>
                   ))}
                 </div>

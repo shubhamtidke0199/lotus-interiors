@@ -1,6 +1,5 @@
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import CategoryManager from "@/components/admin/CategoryManager";
-import { adminPanelPad } from "@/components/admin/adminUi";
 import { getCatalog } from "@/lib/cms/store";
 
 export const metadata = {
@@ -17,12 +16,10 @@ export default async function AdminCategoriesPage() {
         title="Categories"
         description="Storefront filters and which specification fields appear on products in each group."
       />
-      <div className={adminPanelPad}>
-        <CategoryManager
-          categories={categories}
-          attributeDefinitions={attributeDefinitions}
-        />
-      </div>
+      <CategoryManager
+        categories={categories}
+        attributeDefinitions={attributeDefinitions}
+      />
     </main>
   );
 }

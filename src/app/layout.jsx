@@ -1,6 +1,9 @@
-import { Fraunces, Marcellus } from "next/font/google";
+import { Fraunces, Marcellus, Geist } from "next/font/google";
 import { ContactModalProvider } from "@/components/contact/ContactModalContext";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -45,7 +48,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${marcellus.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", fraunces.variable, marcellus.variable, "font-sans", geist.variable)}
     >
       <body className="flex min-h-full flex-col bg-white font-sans text-nav">
         <a

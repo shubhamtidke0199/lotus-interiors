@@ -1,14 +1,20 @@
 import Link from "next/link";
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import AdminPagination from "@/components/admin/AdminPagination";
+import AdminEmptyState from "@/components/admin/AdminEmptyState";
+import { adminTableHeadClass } from "@/components/admin/AdminTableShell";
+import { adminBtnPrimary, statusBadgeClass } from "@/components/admin/adminUi";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
-  adminBtnPrimary,
-  adminTableWrap,
-  adminTd,
-  adminTh,
-  adminRow,
-  statusBadgeClass,
-} from "@/components/admin/adminUi";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { getAdminProductList } from "@/lib/cms/catalog";
 import { paginate, parsePageParam } from "@/lib/cms/pagination";
 
@@ -31,86 +37,83 @@ export default async function AdminProductsPage({ searchParams }) {
       />
 
       {pagination.total === 0 ? (
-        <div className="admin-empty">
-          <p className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
-            No products yet
-          </p>
-          <p className="max-w-md font-helvetica text-sm text-[color:var(--admin-muted)]">
-            Add the first piece, assign a category, then fill in its
-            specifications.
-          </p>
-          <Link href="/admin/products/new" className={adminBtnPrimary}>
+        <AdminEmptyState
+          title="No products yet"
+          description="Add the first piece, assign a category, then fill in its specifications."
+        >
+          <Button className={adminBtnPrimary} render={<Link href="/admin/products/new" />}>
             Add product
-          </Link>
-        </div>
+          </Button>
+        </AdminEmptyState>
       ) : (
-        <div className={adminTableWrap}>
-          <table className="w-full min-w-[52rem] text-left">
-            <thead>
-              <tr>
-                <th className={adminTh}>Product</th>
-                <th className={adminTh}>Category</th>
-                <th className={adminTh}>Price</th>
-                <th className={adminTh}>Status</th>
-                <th className={`${adminTh} text-right`}> </th>
-              </tr>
-            </thead>
-            <tbody>
+        <Card className="overflow-hidden">
+          <Table className="min-w-[52rem]">
+            <TableHeader>
+              <TableRow>
+                <TableHead className={adminTableHeadClass}>Product</TableHead>
+                <TableHead className={adminTableHeadClass}>Category</TableHead>
+                <TableHead className={adminTableHeadClass}>Price</TableHead>
+                <TableHead className={adminTableHeadClass}>Status</TableHead>
+                <TableHead className={`${adminTableHeadClass} text-right`}>
+                  {" "}
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {pagination.items.map((product) => (
-                <tr key={product.id} className={adminRow}>
-                  <td className={adminTd}>
+                <TableRow key={product.id}>
+                  <TableCell>
                     <div className="flex items-center gap-3.5">
                       <img
                         src={product.image}
                         alt=""
-                        className="size-12 shrink-0 object-cover bg-[color:var(--admin-surface)]"
+                        className="size-12 shrink-0 rounded-md object-cover bg-muted"
                       />
                       <div className="min-w-0">
-                        <p className="truncate font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
+                        <p className="truncate font-helvetica text-sm font-medium text-foreground">
                           {product.name}
                         </p>
-                        <p className="mt-0.5 truncate font-helvetica text-xs text-[color:var(--admin-muted)]">
+                        <p className="mt-0.5 truncate font-helvetica text-xs text-muted-foreground">
                           /{product.slug}
                         </p>
                       </div>
                     </div>
-                  </td>
-                  <td className={`${adminTd} text-[color:var(--admin-muted)]`}>
+                  </TableCell>
+                  <TableCell className="font-helvetica text-muted-foreground">
                     {product.categoryName}
-                  </td>
-                  <td className={adminTd}>{product.priceLabel || "—"}</td>
-                  <td className={adminTd}>
-                    <span
+                  </TableCell>
+                  <TableCell className="font-helvetica">{product.priceLabel || "—"}</TableCell>
+                  <TableCell>
+                    <Badge
                       className={statusBadgeClass(
                         product.published ? "published" : "draft",
                       )}
                     >
                       {product.published ? "Published" : "Draft"}
-                    </span>
+                    </Badge>
                     {product.onSale ? (
-                      <span className={`${statusBadgeClass("new")} ml-2`}>
-                        Sale
-                      </span>
+                      <Badge className={`${statusBadgeClass("new")} ml-2`}>Sale</Badge>
                     ) : null}
-                  </td>
-                  <td className={`${adminTd} text-right`}>
-                    <Link
-                      href={`/admin/products/${product.id}`}
-                      className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)] underline-offset-4 hover:underline"
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="link"
+                      className="h-auto p-0 font-helvetica text-sm"
+                      render={<Link href={`/admin/products/${product.id}`} />}
                     >
                       Edit
-                    </Link>
-                  </td>
-                </tr>
+                    </Button>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
           <AdminPagination
             {...pagination}
             noun="products"
             basePath="/admin/products"
           />
-        </div>
+        </Card>
       )}
     </main>
   );

@@ -1,4 +1,11 @@
 import AdminLoginForm from "@/components/admin/AdminLoginForm";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { isAdminAuthenticated } from "@/lib/admin/auth";
 import { redirect } from "next/navigation";
 
@@ -16,7 +23,7 @@ export default async function AdminLoginPage() {
       id="main-content"
       className="grid min-h-dvh lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]"
     >
-      <section className="relative hidden overflow-hidden bg-[color:var(--admin-sidebar)] lg:flex lg:flex-col lg:justify-between lg:px-12 lg:py-14">
+      <section className="relative hidden overflow-hidden bg-sidebar lg:flex lg:flex-col lg:justify-between lg:px-12 lg:py-14">
         <div
           className="pointer-events-none absolute inset-0 opacity-40"
           style={{
@@ -40,18 +47,22 @@ export default async function AdminLoginPage() {
 
       <section className="flex items-center justify-center px-4 py-14 sm:px-8">
         <div className="w-full max-w-sm">
-          <p className="font-helvetica text-[11px] font-medium uppercase tracking-[0.16em] text-[color:var(--admin-muted)] lg:hidden">
+          <p className="font-helvetica text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground lg:hidden">
             Lotus Interiors
           </p>
-          <h2 className="mt-3 font-helvetica text-2xl font-medium tracking-[-0.02em] text-[color:var(--admin-ink)]">
-            Sign in
-          </h2>
-          <p className="mt-2 font-helvetica text-sm leading-6 text-[color:var(--admin-muted)]">
-            Enter the studio password to continue.
-          </p>
-          <div className="mt-8 border border-[color:var(--admin-line)] bg-[color:var(--admin-panel)] p-6 sm:p-7">
-            <AdminLoginForm />
-          </div>
+          <Card className="mt-8 shadow-sm lg:mt-0">
+            <CardHeader className="px-6 pt-6 sm:px-7 sm:pt-7">
+              <CardTitle className="font-helvetica text-2xl font-medium tracking-[-0.02em] lg:text-xl">
+                Sign in
+              </CardTitle>
+              <CardDescription className="font-helvetica text-sm leading-6">
+                Enter the studio password to continue.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="px-6 pb-6 sm:px-7 sm:pb-7">
+              <AdminLoginForm />
+            </CardContent>
+          </Card>
         </div>
       </section>
     </main>

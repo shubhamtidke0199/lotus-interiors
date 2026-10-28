@@ -4,16 +4,20 @@ import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { AlertCircle, ImagePlus, LoaderCircle, Trash2 } from "lucide-react";
 import AdminBusyOverlay from "@/components/admin/AdminBusyOverlay";
+import { AdminSectionTitle } from "@/components/admin/AdminField";
 import ProductAttributesFields from "@/components/admin/ProductAttributesFields";
 import {
   adminBtnDanger,
   adminBtnPrimary,
   adminBtnSecondary,
-  adminError,
   adminInput,
   adminLabel,
   adminTextarea,
 } from "@/components/admin/adminUi";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import { definitionsForCategory } from "@/lib/cms/attributes";
 import { createId, parsePrice, slugify } from "@/lib/cms/format";
 import {
@@ -355,21 +359,19 @@ export default function ProductForm({ product, categories, attributeDefinitions 
       />
 
       {error ? (
-        <div ref={errorRef} className={`${adminError} flex items-start gap-2`} role="alert">
-          <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-          <p>{error}</p>
+        <div ref={errorRef}>
+          <Alert variant="destructive">
+            <AlertCircle className="size-4" aria-hidden="true" />
+            <AlertDescription className="font-helvetica text-sm">{error}</AlertDescription>
+          </Alert>
         </div>
       ) : null}
 
-      <section className="flex flex-col gap-5">
-        <div>
-          <h2 className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
-            Basics
-          </h2>
-          <p className="mt-1 font-helvetica text-xs text-[color:var(--admin-muted)]">
-            Name, listing, and pricing shown on the storefront.
-          </p>
-        </div>
+      <section className="flex flex-col gap-5 rounded-lg border border-border bg-card p-5 shadow-sm sm:p-6">
+        <AdminSectionTitle
+          title="Basics"
+          description="Name, listing, and pricing shown on the storefront."
+        />
 
         <div className="grid gap-4 lg:grid-cols-2">
           <label className="flex flex-col gap-2">
@@ -403,7 +405,7 @@ export default function ProductForm({ product, categories, attributeDefinitions 
 
         <label className="flex flex-col gap-2">
           <span className={adminLabel}>Description</span>
-          <textarea
+          <Textarea
             rows={4}
             value={form.description}
             disabled={showBusy}
@@ -455,7 +457,7 @@ export default function ProductForm({ product, categories, attributeDefinitions 
         </div>
 
         <div className="flex flex-wrap gap-5">
-          <label className="inline-flex items-center gap-2 font-helvetica text-sm text-[color:var(--admin-ink)]">
+          <label className="inline-flex items-center gap-2 font-helvetica text-sm text-foreground">
             <input
               type="checkbox"
               checked={form.onSale}
@@ -464,7 +466,7 @@ export default function ProductForm({ product, categories, attributeDefinitions 
             />
             On sale
           </label>
-          <label className="inline-flex items-center gap-2 font-helvetica text-sm text-[color:var(--admin-ink)]">
+          <label className="inline-flex items-center gap-2 font-helvetica text-sm text-foreground">
             <input
               type="checkbox"
               checked={form.published}
@@ -476,23 +478,17 @@ export default function ProductForm({ product, categories, attributeDefinitions 
         </div>
       </section>
 
-      <section className="flex flex-col gap-5 border-t border-[color:var(--admin-line)] pt-8">
-        <div>
-          <h2 className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
-            Imagery
-          </h2>
-          <p className="mt-1 font-helvetica text-xs text-[color:var(--admin-muted)]">
-            Choose images now — they upload to Supabase only when you click Save.
-            Removing an existing image also deletes it from Storage on save. JPG,
-            PNG, WebP, or GIF · max 10 MB each.
-          </p>
-        </div>
+      <section className="flex flex-col gap-5 rounded-lg border border-border bg-card p-5 shadow-sm sm:p-6">
+        <AdminSectionTitle
+          title="Imagery"
+          description="Choose images now — they upload to Supabase only when you click Save. Removing an existing image also deletes it from Storage on save. JPG, PNG, WebP, or GIF · max 10 MB each."
+        />
 
         <div className="grid gap-5 lg:grid-cols-2">
           <div className="flex flex-col gap-3">
             <span className={adminLabel}>Cover image *</span>
             <label
-              className={`flex min-h-44 cursor-pointer flex-col items-center justify-center gap-2 border border-dashed border-[color:var(--admin-line)] bg-[color:var(--admin-surface)] px-4 py-6 text-center transition-colors hover:border-[color:var(--admin-ink)] ${
+              className={`flex min-h-44 cursor-pointer flex-col items-center justify-center gap-2 border border-dashed border-border bg-muted/50 px-4 py-6 text-center transition-colors hover:border-foreground/40 ${
                 showBusy ? "pointer-events-none opacity-60" : ""
               }`}
             >
@@ -505,10 +501,10 @@ export default function ProductForm({ product, categories, attributeDefinitions 
               ) : (
                 <>
                   <ImagePlus className="size-6 opacity-50" aria-hidden="true" />
-                  <span className="font-helvetica text-sm text-[color:var(--admin-ink)]">
+                  <span className="font-helvetica text-sm text-foreground">
                     Click to choose cover
                   </span>
-                  <span className="font-helvetica text-xs text-[color:var(--admin-muted)]">
+                  <span className="font-helvetica text-xs text-muted-foreground">
                     Uploads on save · max 10 MB
                   </span>
                 </>
@@ -543,15 +539,16 @@ export default function ProductForm({ product, categories, attributeDefinitions 
                     }}
                   />
                 </label>
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
                   className={adminBtnDanger}
                   disabled={showBusy}
                   onClick={clearCover}
                 >
                   <Trash2 className="size-3.5" aria-hidden="true" />
                   Remove
-                </button>
+                </Button>
               </div>
             ) : null}
           </div>
@@ -586,15 +583,15 @@ export default function ProductForm({ product, categories, attributeDefinitions 
 
             {gallery.length === 0 ? (
               <label
-                className={`flex min-h-44 cursor-pointer flex-col items-center justify-center gap-2 border border-dashed border-[color:var(--admin-line)] bg-[color:var(--admin-surface)] px-4 py-6 text-center transition-colors hover:border-[color:var(--admin-ink)] ${
+                className={`flex min-h-44 cursor-pointer flex-col items-center justify-center gap-2 border border-dashed border-border bg-muted/50 px-4 py-6 text-center transition-colors hover:border-foreground/40 ${
                   showBusy || !canAddGalleryImage ? "pointer-events-none opacity-60" : ""
                 }`}
               >
                 <ImagePlus className="size-6 opacity-50" aria-hidden="true" />
-                <span className="font-helvetica text-sm text-[color:var(--admin-ink)]">
+                <span className="font-helvetica text-sm text-foreground">
                   Click to choose gallery images
                 </span>
-                <span className="font-helvetica text-xs text-[color:var(--admin-muted)]">
+                <span className="font-helvetica text-xs text-muted-foreground">
                   Uploads on save · up to {MAX_GALLERY_IMAGES}
                 </span>
                 <input
@@ -614,7 +611,7 @@ export default function ProductForm({ product, categories, attributeDefinitions 
                 {gallery.map((item) => (
                   <li
                     key={item.id}
-                    className="relative overflow-hidden border border-[color:var(--admin-line)] bg-[color:var(--admin-surface)]"
+                    className="relative overflow-hidden border border-border bg-muted/50"
                   >
                     <img
                       src={item.preview}
@@ -622,13 +619,13 @@ export default function ProductForm({ product, categories, attributeDefinitions 
                       className="aspect-square w-full object-cover"
                     />
                     {!item.remoteUrl ? (
-                      <span className="absolute left-1.5 top-1.5 bg-[color:var(--admin-ink)]/80 px-1.5 py-0.5 font-helvetica text-[10px] uppercase tracking-wide text-white">
+                      <span className="absolute left-1.5 top-1.5 bg-foreground/80 px-1.5 py-0.5 font-helvetica text-[10px] uppercase tracking-wide text-white">
                         New
                       </span>
                     ) : null}
                     <button
                       type="button"
-                      className="absolute right-1.5 top-1.5 inline-flex size-8 items-center justify-center bg-[color:var(--admin-ink)]/85 text-white hover:bg-[color:var(--admin-danger)] disabled:opacity-50"
+                      className="absolute right-1.5 top-1.5 inline-flex size-8 items-center justify-center bg-foreground/85 text-white hover:bg-destructive disabled:opacity-50"
                       onClick={() => removeGalleryItem(item.id)}
                       disabled={showBusy}
                       aria-label="Remove gallery image"
@@ -643,7 +640,7 @@ export default function ProductForm({ product, categories, attributeDefinitions 
         </div>
       </section>
 
-      <section className="border-t border-[color:var(--admin-line)] pt-8">
+      <section className="rounded-lg border border-border bg-card p-5 shadow-sm sm:p-6">
         <ProductAttributesFields
           definitions={activeDefinitions}
           values={form.attributes}
@@ -651,15 +648,10 @@ export default function ProductForm({ product, categories, attributeDefinitions 
         />
       </section>
 
-      <div className="sticky bottom-0 z-10 -mx-5 flex flex-col gap-3 border-t border-[color:var(--admin-line)] bg-[color:var(--admin-panel)] px-5 py-4 sm:-mx-6 sm:px-6">
-        {error ? (
-          <div className={`${adminError} flex items-start gap-2`} role="alert">
-            <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-            <p>{error}</p>
-          </div>
-        ) : null}
-        <div className="flex flex-wrap items-center gap-3">
-          <button type="submit" disabled={showBusy} className={adminBtnPrimary}>
+      <div className="sticky bottom-0 z-10 -mx-5 flex flex-col gap-3 rounded-lg border border-border bg-card/95 px-5 py-4 shadow-md backdrop-blur-sm sm:-mx-6 sm:px-6">
+        <Separator />
+        <div className="flex flex-wrap items-center gap-3 pt-1">
+          <Button type="submit" disabled={showBusy} className={adminBtnPrimary}>
             {showBusy ? (
               <>
                 <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />
@@ -670,17 +662,18 @@ export default function ProductForm({ product, categories, attributeDefinitions 
             ) : (
               "Add product"
             )}
-          </button>
+          </Button>
           {isEdit ? (
-            <button
+            <Button
               type="button"
+              variant="ghost"
               onClick={handleDelete}
               disabled={showBusy}
               className={adminBtnDanger}
             >
               <Trash2 className="size-3.5" aria-hidden="true" />
               Delete
-            </button>
+            </Button>
           ) : null}
         </div>
       </div>

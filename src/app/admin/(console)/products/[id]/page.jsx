@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import ProductForm from "@/components/admin/ProductForm";
-import { adminPanelPad, statusBadgeClass } from "@/components/admin/adminUi";
+import { statusBadgeClass } from "@/components/admin/adminUi";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { getCatalog, getProductById } from "@/lib/cms/store";
 
 export async function generateMetadata({ params }) {
@@ -28,22 +30,22 @@ export default async function EditProductPage({ params }) {
         title={product.name}
         description={`/${product.slug}`}
         actions={
-          <span
-            className={statusBadgeClass(
-              product.published ? "published" : "draft",
-            )}
+          <Badge
+            className={statusBadgeClass(product.published ? "published" : "draft")}
           >
             {product.published ? "Published" : "Draft"}
-          </span>
+          </Badge>
         }
       />
-      <div className={`${adminPanelPad} max-w-4xl`}>
-        <ProductForm
-          product={product}
-          categories={categories}
-          attributeDefinitions={attributeDefinitions}
-        />
-      </div>
+      <Card className="max-w-4xl shadow-sm">
+        <CardContent className="p-5 sm:p-6">
+          <ProductForm
+            product={product}
+            categories={categories}
+            attributeDefinitions={attributeDefinitions}
+          />
+        </CardContent>
+      </Card>
     </main>
   );
 }

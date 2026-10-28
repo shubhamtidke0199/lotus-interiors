@@ -1,6 +1,7 @@
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import AttributeManager from "@/components/admin/AttributeManager";
-import { adminPanelPad, statusBadgeClass } from "@/components/admin/adminUi";
+import { statusBadgeClass } from "@/components/admin/adminUi";
+import { Badge } from "@/components/ui/badge";
 import { getCatalog, getCatalogBackend } from "@/lib/cms/store";
 
 export const metadata = {
@@ -18,14 +19,12 @@ export default async function AdminAttributesPage() {
         title="Attributes"
         description="Reusable product fields — selects, colour swatches, text, numbers, and dimension lists. Bind them to categories, then fill values on each product."
         actions={
-          <span className={statusBadgeClass("default")}>
+          <Badge className={statusBadgeClass("default")}>
             Storage · {backend}
-          </span>
+          </Badge>
         }
       />
-      <div className={adminPanelPad}>
-        <AttributeManager attributes={attributeDefinitions} />
-      </div>
+      <AttributeManager attributes={attributeDefinitions} />
     </main>
   );
 }

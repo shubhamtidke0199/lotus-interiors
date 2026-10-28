@@ -1,13 +1,21 @@
 import Link from "next/link";
+import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import AdminPagination from "@/components/admin/AdminPagination";
+import AdminTableShell, {
+  adminTableHeadClass,
+} from "@/components/admin/AdminTableShell";
+import { statusBadgeClass } from "@/components/admin/adminUi";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
-  adminTableWrap,
-  adminTd,
-  adminTh,
-  adminRow,
-  statusBadgeClass,
-} from "@/components/admin/adminUi";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { selectionSummary } from "@/lib/cms/enquiry";
 import { enquiryStatusLabel } from "@/lib/cms/format";
 import { paginate, parsePageParam } from "@/lib/cms/pagination";
@@ -50,81 +58,80 @@ export default async function AdminOrdersPage({ searchParams }) {
       />
 
       {pagination.total === 0 ? (
-        <div className="admin-empty">
-          <p className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
-            Inbox is clear
-          </p>
-          <p className="max-w-md font-helvetica text-sm text-[color:var(--admin-muted)]">
-            New enquiries from the website will appear here for follow-up.
-          </p>
-        </div>
+        <AdminEmptyState
+          title="Inbox is clear"
+          description="New enquiries from the website will appear here for follow-up."
+        />
       ) : (
-        <div className={adminTableWrap}>
-          <table className="w-full min-w-[56rem] text-left">
-            <thead>
-              <tr>
-                <th className={adminTh}>Received</th>
-                <th className={adminTh}>Contact</th>
-                <th className={adminTh}>Interest</th>
-                <th className={adminTh}>Source</th>
-                <th className={adminTh}>Status</th>
-                <th className={`${adminTh} text-right`}> </th>
-              </tr>
-            </thead>
-            <tbody>
+        <AdminTableShell>
+          <Table className="min-w-[56rem]">
+            <TableHeader>
+              <TableRow>
+                <TableHead className={adminTableHeadClass}>Received</TableHead>
+                <TableHead className={adminTableHeadClass}>Contact</TableHead>
+                <TableHead className={adminTableHeadClass}>Interest</TableHead>
+                <TableHead className={adminTableHeadClass}>Source</TableHead>
+                <TableHead className={adminTableHeadClass}>Status</TableHead>
+                <TableHead className={`${adminTableHeadClass} text-right`}>
+                  {" "}
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {pagination.items.map((order) => (
-                <tr key={order.id} className={adminRow}>
-                  <td className={`${adminTd} whitespace-nowrap text-[color:var(--admin-muted)]`}>
+                <TableRow key={order.id}>
+                  <TableCell className="whitespace-nowrap font-helvetica text-muted-foreground">
                     {formatDate(order.createdAt)}
-                  </td>
-                  <td className={adminTd}>
-                    <p className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
+                  </TableCell>
+                  <TableCell>
+                    <p className="font-helvetica text-sm font-medium text-foreground">
                       {order.email}
                     </p>
-                    <p className="mt-0.5 font-helvetica text-xs text-[color:var(--admin-muted)]">
+                    <p className="mt-0.5 font-helvetica text-xs text-muted-foreground">
                       {order.phone || "No phone"}
                     </p>
-                  </td>
-                  <td className={adminTd}>
-                    <p className="font-helvetica text-sm text-[color:var(--admin-ink)]">
+                  </TableCell>
+                  <TableCell>
+                    <p className="font-helvetica text-sm text-foreground">
                       {order.productSnapshot?.name ||
                         order.productName ||
                         "General enquiry"}
                     </p>
                     {selectionSummary(order.productSnapshot).length > 0 ? (
-                      <p className="mt-0.5 font-helvetica text-xs text-[color:var(--admin-muted)]">
+                      <p className="mt-0.5 font-helvetica text-xs text-muted-foreground">
                         {selectionSummary(order.productSnapshot)
                           .map((item) => item.value)
                           .join(" · ")}
                       </p>
                     ) : null}
-                  </td>
-                  <td className={`${adminTd} text-[color:var(--admin-muted)]`}>
+                  </TableCell>
+                  <TableCell className="font-helvetica text-muted-foreground">
                     {order.source}
-                  </td>
-                  <td className={adminTd}>
-                    <span className={statusBadgeClass(orderTone(order.status))}>
+                  </TableCell>
+                  <TableCell>
+                    <Badge className={statusBadgeClass(orderTone(order.status))}>
                       {enquiryStatusLabel(order.status)}
-                    </span>
-                  </td>
-                  <td className={`${adminTd} text-right`}>
-                    <Link
-                      href={`/admin/orders/${order.id}`}
-                      className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)] underline-offset-4 hover:underline"
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="link"
+                      className="h-auto p-0 font-helvetica text-sm"
+                      render={<Link href={`/admin/orders/${order.id}`} />}
                     >
                       Open
-                    </Link>
-                  </td>
-                </tr>
+                    </Button>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
           <AdminPagination
             {...pagination}
             noun="enquiries"
             basePath="/admin/orders"
           />
-        </div>
+        </AdminTableShell>
       )}
     </main>
   );

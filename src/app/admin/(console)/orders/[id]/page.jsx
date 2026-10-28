@@ -1,14 +1,19 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
+import AdminPanel from "@/components/admin/AdminPanel";
 import OrderStatusForm from "@/components/admin/OrderStatusForm";
-import { adminLabel, adminPanelPad, statusBadgeClass } from "@/components/admin/adminUi";
+import { adminLabel, statusBadgeClass } from "@/components/admin/adminUi";
 import {
   buildWhatsAppFollowUpMessage,
   selectionSummary,
 } from "@/lib/cms/enquiry";
 import { enquiryStatusLabel, whatsappHref } from "@/lib/cms/format";
 import { getEnquiryById, getProductById } from "@/lib/cms/store";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 function formatDate(value) {
   return new Intl.DateTimeFormat("en-IN", {
@@ -64,115 +69,119 @@ export default async function AdminOrderDetailPage({ params }) {
         title={productName}
         description={`${formatDate(order.createdAt)} · ${order.source}`}
         actions={
-          <span className={statusBadgeClass(tone)}>
+          <Badge className={statusBadgeClass(tone)}>
             {enquiryStatusLabel(order.status)}
-          </span>
+          </Badge>
         }
       />
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-        <section className={adminPanelPad}>
-          <h2 className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
-            Contact
-          </h2>
-          <dl className="mt-5 grid gap-5">
+        <AdminPanel title="Contact">
+          <dl className="grid gap-5">
             <div>
               <dt className={adminLabel}>Email</dt>
               <dd className="mt-1.5">
-                <a
-                  href={`mailto:${order.email}`}
-                  className="font-helvetica text-sm text-[color:var(--admin-ink)] underline-offset-4 hover:underline"
+                <Button
+                  variant="link"
+                  className="h-auto p-0 font-helvetica text-sm"
+                  render={<a href={`mailto:${order.email}`} />}
                 >
                   {order.email}
-                </a>
+                </Button>
               </dd>
             </div>
             <div>
               <dt className={adminLabel}>Phone</dt>
               <dd className="mt-1.5 font-helvetica text-sm">
                 {order.phone ? (
-                  <span className="flex flex-wrap gap-4">
-                    <a
-                      href={`tel:${order.phone}`}
-                      className="text-[color:var(--admin-ink)] underline-offset-4 hover:underline"
+                  <span className="flex flex-wrap gap-3">
+                    <Button
+                      variant="link"
+                      className="h-auto p-0 font-helvetica text-sm"
+                      render={<a href={`tel:${order.phone}`} />}
                     >
                       {order.phone}
-                    </a>
+                    </Button>
                     {whatsapp ? (
-                      <a
-                        href={whatsapp}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[color:var(--admin-muted)] underline-offset-4 hover:text-[color:var(--admin-ink)] hover:underline"
+                      <Button
+                        variant="link"
+                        className="h-auto p-0 font-helvetica text-sm text-muted-foreground"
+                        render={
+                          <a href={whatsapp} target="_blank" rel="noreferrer" />
+                        }
                       >
                         WhatsApp follow-up
-                      </a>
+                      </Button>
                     ) : null}
                   </span>
                 ) : (
-                  <span className="text-[color:var(--admin-muted)]">Not provided</span>
+                  <span className="text-muted-foreground">Not provided</span>
                 )}
               </dd>
             </div>
+            <Separator />
             <div>
               <dt className={adminLabel}>Product</dt>
               <dd className="mt-2">
                 {productName !== "General enquiry" || productImage ? (
-                  <div className="flex gap-3.5 border border-[color:var(--admin-line)] bg-[color:var(--admin-surface)] p-3">
-                    {productImage ? (
-                      <img
-                        src={productImage}
-                        alt=""
-                        className="size-16 shrink-0 object-cover bg-white"
-                      />
-                    ) : null}
-                    <div className="min-w-0">
-                      {productHref ? (
-                        <Link
-                          href={productHref}
-                          className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)] underline-offset-4 hover:underline"
-                        >
-                          {productName}
-                        </Link>
-                      ) : (
-                        <p className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
-                          {productName}
-                        </p>
-                      )}
-                      {productPrice ? (
-                        <p className="mt-1 font-helvetica text-xs text-[color:var(--admin-muted)]">
-                          {productPrice}
-                        </p>
+                  <Card className="bg-muted/40 shadow-none">
+                    <CardContent className="flex gap-3.5 p-3">
+                      {productImage ? (
+                        <img
+                          src={productImage}
+                          alt=""
+                          className="size-16 shrink-0 rounded-md object-cover bg-background"
+                        />
                       ) : null}
-                      {selectedOptions.length > 0 ? (
-                        <ul className="mt-2 flex flex-col gap-1">
-                          {selectedOptions.map((item) => (
-                            <li
-                              key={item.label}
-                              className="font-helvetica text-xs text-[color:var(--admin-ink)]"
-                            >
-                              <span className="text-[color:var(--admin-muted)]">
-                                {item.label}:
-                              </span>{" "}
-                              {item.value}
-                              {item.label === "Colour" &&
-                              snapshot?.selection?.colour?.hex ? (
-                                <span
-                                  className="ml-2 inline-block size-3 align-middle border border-[color:var(--admin-line)]"
-                                  style={{
-                                    backgroundColor: snapshot.selection.colour.hex,
-                                  }}
-                                  aria-hidden="true"
-                                />
-                              ) : null}
-                            </li>
-                          ))}
-                        </ul>
-                      ) : null}
-                    </div>
-                  </div>
+                      <div className="min-w-0">
+                        {productHref ? (
+                          <Button
+                            variant="link"
+                            className="h-auto p-0 font-helvetica text-sm font-medium"
+                            render={<Link href={productHref} />}
+                          >
+                            {productName}
+                          </Button>
+                        ) : (
+                          <p className="font-helvetica text-sm font-medium text-foreground">
+                            {productName}
+                          </p>
+                        )}
+                        {productPrice ? (
+                          <p className="mt-1 font-helvetica text-xs text-muted-foreground">
+                            {productPrice}
+                          </p>
+                        ) : null}
+                        {selectedOptions.length > 0 ? (
+                          <ul className="mt-2 flex flex-col gap-1">
+                            {selectedOptions.map((item) => (
+                              <li
+                                key={item.label}
+                                className="font-helvetica text-xs text-foreground"
+                              >
+                                <span className="text-muted-foreground">
+                                  {item.label}:
+                                </span>{" "}
+                                {item.value}
+                                {item.label === "Colour" &&
+                                snapshot?.selection?.colour?.hex ? (
+                                  <span
+                                    className="ml-2 inline-block size-3 align-middle rounded-sm border border-border"
+                                    style={{
+                                      backgroundColor: snapshot.selection.colour.hex,
+                                    }}
+                                    aria-hidden="true"
+                                  />
+                                ) : null}
+                              </li>
+                            ))}
+                          </ul>
+                        ) : null}
+                      </div>
+                    </CardContent>
+                  </Card>
                 ) : (
-                  <p className="font-helvetica text-sm text-[color:var(--admin-muted)]">
+                  <p className="font-helvetica text-sm text-muted-foreground">
                     General enquiry
                   </p>
                 )}
@@ -180,24 +189,19 @@ export default async function AdminOrderDetailPage({ params }) {
             </div>
             <div>
               <dt className={adminLabel}>Message</dt>
-              <dd className="mt-2 whitespace-pre-wrap border border-[color:var(--admin-line)] bg-[color:var(--admin-surface)] px-4 py-3 font-helvetica text-sm leading-6 text-[color:var(--admin-ink)]">
+              <dd className="mt-2 whitespace-pre-wrap rounded-md border border-border bg-muted/50 px-4 py-3 font-helvetica text-sm leading-6 text-foreground">
                 {order.message || "—"}
               </dd>
             </div>
           </dl>
-        </section>
+        </AdminPanel>
 
-        <section className={adminPanelPad}>
-          <h2 className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
-            Follow-up
-          </h2>
-          <p className="mt-1 font-helvetica text-xs text-[color:var(--admin-muted)]">
-            Update status and keep internal notes for the studio.
-          </p>
-          <div className="mt-5">
-            <OrderStatusForm order={order} />
-          </div>
-        </section>
+        <AdminPanel
+          title="Follow-up"
+          description="Update status and keep internal notes for the studio."
+        >
+          <OrderStatusForm order={order} />
+        </AdminPanel>
       </div>
     </main>
   );

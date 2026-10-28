@@ -1,11 +1,20 @@
 import Link from "next/link";
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
+import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import {
   adminBtnPrimary,
   adminBtnSecondary,
-  adminPanel,
   statusBadgeClass,
 } from "@/components/admin/adminUi";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { getCatalogBackend, getDashboardStats, getEnquiries } from "@/lib/cms/store";
 import { enquiryStatusLabel } from "@/lib/cms/format";
 
@@ -62,87 +71,92 @@ export default async function AdminOverviewPage() {
         primaryAction={{ href: "/admin/products/new", label: "Add product" }}
         secondaryAction={{ href: "/admin/orders", label: "Open inbox" }}
         actions={
-          <span className={statusBadgeClass(backend === "supabase" ? "published" : "draft")}>
+          <Badge className={statusBadgeClass(backend === "supabase" ? "published" : "draft")}>
             Data · {backend === "supabase" ? "Supabase" : "Local file"}
-          </span>
+          </Badge>
         }
       />
 
       <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {cards.map((card) => (
-          <Link
-            key={card.label}
-            href={card.href}
-            className={`${adminPanel} group px-5 py-5 transition-colors hover:border-[color:var(--admin-ink)]`}
-          >
-            <div className="flex items-start justify-between gap-3">
-              <p className="font-helvetica text-[11px] font-medium uppercase tracking-[0.14em] text-[color:var(--admin-muted)]">
-                {card.label}
-              </p>
-              {card.emphasize ? (
-                <span className={statusBadgeClass("new")}>Needs attention</span>
-              ) : null}
-            </div>
-            <p className="mt-4 font-helvetica text-3xl font-medium tracking-[-0.03em] text-[color:var(--admin-ink)]">
-              {card.value}
-            </p>
-            <p className="mt-2 font-helvetica text-xs text-[color:var(--admin-muted)] transition-colors group-hover:text-[color:var(--admin-ink)]">
-              {card.meta}
-            </p>
+          <Link key={card.label} href={card.href} className="group block">
+            <Card className="transition-colors hover:border-foreground/30">
+              <CardHeader className="pb-2">
+                <div className="flex items-start justify-between gap-3">
+                  <CardDescription className="font-helvetica text-[11px] font-medium uppercase tracking-[0.14em]">
+                    {card.label}
+                  </CardDescription>
+                  {card.emphasize ? (
+                    <Badge className={statusBadgeClass("new")}>Needs attention</Badge>
+                  ) : null}
+                </div>
+                <CardTitle className="font-helvetica text-3xl font-medium tracking-[-0.03em]">
+                  {card.value}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <p className="font-helvetica text-xs text-muted-foreground transition-colors group-hover:text-foreground">
+                  {card.meta}
+                </p>
+              </CardContent>
+            </Card>
           </Link>
         ))}
       </section>
 
-      <section className={adminPanel}>
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[color:var(--admin-line)] px-5 py-4">
+      <Card>
+        <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
           <div>
-            <h2 className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
+            <CardTitle className="font-helvetica text-sm font-medium">
               Recent enquiries
-            </h2>
-            <p className="mt-0.5 font-helvetica text-xs text-[color:var(--admin-muted)]">
+            </CardTitle>
+            <CardDescription className="font-helvetica text-xs">
               Latest consultation requests from the site
-            </p>
+            </CardDescription>
           </div>
-          <Link href="/admin/orders" className={adminBtnSecondary}>
+          <Button
+            variant="outline"
+            className={adminBtnSecondary}
+            render={<Link href="/admin/orders" />}
+          >
             View all
-          </Link>
-        </div>
+          </Button>
+        </CardHeader>
 
         {recent.length === 0 ? (
-          <div className="admin-empty m-5">
-            <p className="font-helvetica text-sm text-[color:var(--admin-ink)]">
-              No enquiries yet
-            </p>
-            <p className="font-helvetica text-sm text-[color:var(--admin-muted)]">
-              New requests from Enquire Now and contact forms will land here.
-            </p>
+          <div className="p-5">
+            <AdminEmptyState
+              title="No enquiries yet"
+              description="New requests from Enquire Now and contact forms will land here."
+              className="border-0 bg-transparent shadow-none"
+            />
           </div>
         ) : (
-          <ul className="divide-y divide-[color:var(--admin-line)]">
+          <ul className="divide-y divide-border">
             {recent.map((order) => (
               <li key={order.id}>
                 <Link
                   href={`/admin/orders/${order.id}`}
-                  className="flex flex-col gap-2 px-5 py-4 transition-colors hover:bg-[color:var(--admin-surface)]/80 sm:flex-row sm:items-center sm:justify-between"
+                  className="flex flex-col gap-2 px-5 py-4 transition-colors hover:bg-muted/50 sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div className="min-w-0">
-                    <p className="truncate font-helvetica text-sm text-[color:var(--admin-ink)]">
+                    <p className="truncate font-helvetica text-sm text-foreground">
                       {order.productName || "General enquiry"}
                     </p>
-                    <p className="mt-1 truncate font-helvetica text-xs text-[color:var(--admin-muted)]">
+                    <p className="mt-1 truncate font-helvetica text-xs text-muted-foreground">
                       {order.email}
                       {order.phone ? ` · ${order.phone}` : ""}
                     </p>
                   </div>
                   <div className="flex shrink-0 items-center gap-3">
-                    <span
+                    <Badge
                       className={statusBadgeClass(
                         order.status === "new" ? "new" : "default",
                       )}
                     >
                       {enquiryStatusLabel(order.status)}
-                    </span>
-                    <span className="font-helvetica text-xs text-[color:var(--admin-muted)]">
+                    </Badge>
+                    <span className="font-helvetica text-xs text-muted-foreground">
                       {formatDate(order.createdAt)}
                     </span>
                   </div>
@@ -151,15 +165,19 @@ export default async function AdminOverviewPage() {
             ))}
           </ul>
         )}
-      </section>
+      </Card>
 
-      <div className="flex flex-wrap gap-2 lg:hidden">
-        <Link href="/admin/products/new" className={adminBtnPrimary}>
+      <div className="flex flex-wrap gap-2 md:hidden">
+        <Button className={adminBtnPrimary} render={<Link href="/admin/products/new" />}>
           Add product
-        </Link>
-        <Link href="/admin/orders" className={adminBtnSecondary}>
+        </Button>
+        <Button
+          variant="outline"
+          className={adminBtnSecondary}
+          render={<Link href="/admin/orders" />}
+        >
           Open inbox
-        </Link>
+        </Button>
       </div>
     </main>
   );

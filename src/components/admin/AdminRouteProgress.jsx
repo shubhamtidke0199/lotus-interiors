@@ -74,7 +74,7 @@ export default function AdminRouteProgress() {
       aria-hidden={!visible}
     >
       <div
-        className={`h-full origin-left bg-[color:var(--admin-ink)] transition-opacity duration-150 ${
+        className={`h-full origin-left bg-primary transition-opacity duration-150 ${
           visible ? "opacity-100 admin-route-progress" : "opacity-0"
         }`}
       />

@@ -1,7 +1,10 @@
 import Link from "next/link";
+import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import ProductForm from "@/components/admin/ProductForm";
-import { adminBtnPrimary, adminPanelPad } from "@/components/admin/adminUi";
+import { adminBtnPrimary } from "@/components/admin/adminUi";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { getCatalog } from "@/lib/cms/store";
 
 export const metadata = {
@@ -20,26 +23,26 @@ export default async function NewProductPage() {
         title="Add product"
         description="Fixed fields first, then the specifications for the selected category."
       />
-      <div className={`${adminPanelPad} max-w-4xl`}>
-        {categories.length === 0 ? (
-          <div className="admin-empty border-0 bg-transparent p-0">
-            <p className="font-helvetica text-sm font-medium text-[color:var(--admin-ink)]">
-              Create a category first
-            </p>
-            <p className="font-helvetica text-sm text-[color:var(--admin-muted)]">
-              Products need a category before they can be published.
-            </p>
-            <Link href="/admin/categories" className={adminBtnPrimary}>
-              Go to categories
-            </Link>
-          </div>
-        ) : (
-          <ProductForm
-            categories={categories}
-            attributeDefinitions={attributeDefinitions}
-          />
-        )}
-      </div>
+      <Card className="max-w-4xl shadow-sm">
+        <CardContent className="p-5 sm:p-6">
+          {categories.length === 0 ? (
+            <AdminEmptyState
+              title="Create a category first"
+              description="Products need a category before they can be published."
+              className="border-0 bg-transparent shadow-none"
+            >
+              <Button className={adminBtnPrimary} render={<Link href="/admin/categories" />}>
+                Go to categories
+              </Button>
+            </AdminEmptyState>
+          ) : (
+            <ProductForm
+              categories={categories}
+              attributeDefinitions={attributeDefinitions}
+            />
+          )}
+        </CardContent>
+      </Card>
     </main>
   );
 }

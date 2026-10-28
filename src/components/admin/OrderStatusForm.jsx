@@ -4,14 +4,16 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { LoaderCircle } from "lucide-react";
 import AdminBusyOverlay from "@/components/admin/AdminBusyOverlay";
+import { AdminField } from "@/components/admin/AdminField";
 import {
   adminBtnPrimary,
-  adminError,
   adminInput,
-  adminLabel,
   adminSuccess,
   adminTextarea,
 } from "@/components/admin/adminUi";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { ENQUIRY_STATUSES } from "@/lib/cms/format";
 
 export default function OrderStatusForm({ order }) {
@@ -56,8 +58,7 @@ export default function OrderStatusForm({ order }) {
         label={busy ? "Saving follow-up…" : "Updating…"}
       />
 
-      <label className="flex flex-col gap-2">
-        <span className={adminLabel}>Status</span>
+      <AdminField label="Status">
         <select
           value={status}
           onChange={(event) => setStatus(event.target.value)}
@@ -70,11 +71,10 @@ export default function OrderStatusForm({ order }) {
             </option>
           ))}
         </select>
-      </label>
+      </AdminField>
 
-      <label className="flex flex-col gap-2">
-        <span className={adminLabel}>Internal notes</span>
-        <textarea
+      <AdminField label="Internal notes">
+        <Textarea
           rows={5}
           value={notes}
           onChange={(event) => setNotes(event.target.value)}
@@ -82,12 +82,12 @@ export default function OrderStatusForm({ order }) {
           className={adminTextarea}
           disabled={showBusy}
         />
-      </label>
+      </AdminField>
 
       {error ? (
-        <p className={adminError} role="alert">
-          {error}
-        </p>
+        <Alert variant="destructive">
+          <AlertDescription className="font-helvetica text-sm">{error}</AlertDescription>
+        </Alert>
       ) : null}
       {saved && !showBusy ? (
         <p className={adminSuccess} role="status">
@@ -95,7 +95,7 @@ export default function OrderStatusForm({ order }) {
         </p>
       ) : null}
 
-      <button type="submit" disabled={showBusy} className={`${adminBtnPrimary} w-fit`}>
+      <Button type="submit" disabled={showBusy} className={`${adminBtnPrimary} w-fit`}>
         {showBusy ? (
           <>
             <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />
@@ -104,7 +104,7 @@ export default function OrderStatusForm({ order }) {
         ) : (
           "Save follow-up"
         )}
-      </button>
+      </Button>
     </form>
   );
 }

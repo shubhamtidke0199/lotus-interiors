@@ -5,13 +5,11 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { LoaderCircle } from "lucide-react";
 import AdminBusyOverlay from "@/components/admin/AdminBusyOverlay";
-import {
-  adminBtnGhost,
-  adminBtnPrimary,
-  adminError,
-  adminInput,
-  adminLabel,
-} from "@/components/admin/adminUi";
+import { adminBtnGhost, adminBtnPrimary, adminLabel } from "@/components/admin/adminUi";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function AdminLoginForm() {
   const router = useRouter();
@@ -54,28 +52,33 @@ export default function AdminLoginForm() {
         label={busy ? "Signing in…" : "Opening console…"}
       />
 
-      <label className="flex flex-col gap-2">
-        <span className={adminLabel}>Password</span>
-        <input
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="admin-password" className={adminLabel}>
+          Password
+        </Label>
+        <Input
+          id="admin-password"
           type="password"
           name="password"
           autoComplete="current-password"
           required
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          className={adminInput}
           placeholder="••••••••"
           disabled={showBusy}
+          className="font-helvetica h-10"
         />
-      </label>
+      </div>
 
       {error ? (
-        <p className={adminError} role="alert">
-          {error}
-        </p>
+        <Alert variant="destructive">
+          <AlertDescription className="font-helvetica text-sm">
+            {error}
+          </AlertDescription>
+        </Alert>
       ) : null}
 
-      <button type="submit" disabled={showBusy} className={adminBtnPrimary}>
+      <Button type="submit" disabled={showBusy} className={adminBtnPrimary}>
         {showBusy ? (
           <>
             <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />
@@ -84,11 +87,15 @@ export default function AdminLoginForm() {
         ) : (
           "Continue"
         )}
-      </button>
+      </Button>
 
-      <Link href="/" className={`${adminBtnGhost} justify-center`}>
+      <Button
+        variant="ghost"
+        className={`${adminBtnGhost} justify-center`}
+        render={<Link href="/" />}
+      >
         Back to website
-      </Link>
+      </Button>
     </form>
   );
 }
